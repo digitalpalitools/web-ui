@@ -6,7 +6,6 @@ import TelemetryProvider from './services/Telemetry/TelemetryProvider'
 import theme from './Theme'
 
 const Page1 = lazy(() => import('./pages/Page1/Page1'))
-const Page2 = lazy(() => import('./pages/Page2/Page2'))
 
 const { REACT_APP_VERSION, REACT_APP_AI_INSTRUMENTATION_KEY } = process.env
 
@@ -43,7 +42,6 @@ const App = () => (
             <Suspense fallback={<div>Loading...</div>}>
               <Switch>
                 <Route exact path="/" component={Page1} />
-                <Route exact path="/page2" component={Page2} />
                 <Route component={() => <div>Not Found</div>} />
               </Switch>
             </Suspense>

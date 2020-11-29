@@ -1,54 +1,40 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import * as React from 'react'
-import styled from 'styled-components'
-import * as M from '@material-ui/core'
-import * as Icons from '@material-ui/icons'
+import JSZip from 'jszip'
 
 export type Page1Props = {
   message: string
 }
 
-const ButtonX = styled.button``
-
 const UploadButton = () => {
-  const [selectedFile, setSelectedFile] = React.useState(null)
+  const [selectedFiles, setSelectedFiles] = React.useState([] as string[])
 
-  const onFileChange = (event: any) => {
-    setSelectedFile(event.target.files[0])
+  const onFileChange = async (event: any) => {
+    const zip = await JSZip.loadAsync(event.target.files[0])
+
+    setSelectedFiles(Object.keys(zip.files))
   }
 
   return (
     <div>
-      <input accept=".ods" id="contained-button-file" type="file" onChange={onFileChange} />
       <label htmlFor="contained-button-file">
-        <M.Button variant="contained" color="primary" component="span">
-          Upload
-        </M.Button>
+        <input accept=".ods" id="contained-button-file" type="file" onChange={onFileChange} />
       </label>
-      <p>{selectedFile}</p>
+      <div>
+        {selectedFiles.map((f) => (
+          <p key={f}>{f}</p>
+        ))}
+      </div>
     </div>
   )
 }
 
 export const Page1 = (props: Page1Props) => {
-  // eslint-disable-next-line no-debugger
-  debugger
-  const [count, setCount] = React.useState(0)
-
   const { message } = props
-
-  const handleClick = () => setCount(count + 1)
 
   return (
     <div>
+      <p>This is page 1 - {message}</p>
       <UploadButton />
-
-      <p>
-        This is page 1 - {message} {count}
-      </p>
-      <ButtonX type="button" onClick={handleClick}>
-        <Icons.ThreeDRotation />
-      </ButtonX>
     </div>
   )
 }
