@@ -1,49 +1,23 @@
-[![Continuous Deployment](https://github.com/kitamstudios/cra-template-kitamstudios/workflows/Continuous%20Deployment/badge.svg)](https://github.com/kitamstudios/cra-template-kitamstudios/actions?query=workflow%3A%22Continuous+Deployment%22)
+[![Continuous Deployment](https://github.com/kitamstudios/dpd-tools/workflows/Continuous%20Deployment/badge.svg)](https://github.com/kitamstudios/dpd-tools/actions?query=workflow%3A%22Continuous+Deployment%22)
 
-# Kitam Studios - Template for React Applications
+# Digital Pāli Dictionary Tools
 
-Deployed at [craks-1](https://apps.kitamstudios.com/craks-1)
+A set of tools for Digital Pāli Dictionary. Deployed at [dpd-tools](https://apps.kitamstudios.com/dpd-tools).
 
-## Available out of the box
+Create from the [dpd-tools](https://github.com/kitamstudios/dpd-tools) template. See [template README.md](https://github.com/kitamstudios/dpd-tools/blob/358acedc91c62b31910087d54ffa2623761506e0/README.md) for template features available out of the box.
 
-- Core
-  - [x] [Folder structure](https://maxrozen.com/guidelines-improve-react-app-folder-structure/)
-  - [x] Code splitting per route
-  - [x] Unit tests: jest
-  - [x] editorconfig, stylelint, [eslint, prettier](https://medium.com/@brygrill/create-react-app-with-typescript-eslint-prettier-and-github-actions-f3ce6a571c97)
-  - [x] husky integration
-  - [x] Footer with version
-  - [x] AppInsights
-  - [ ] Loader spinner
-  - [ ] PWA: manifest.json, Icon placeholders, Install offline prompt, Update check
-- Styling
-  - [x] [Material-UI](https://material-ui.com/)
-  - [x] [styled-components](https://styled-components.com/)
-  - [x] Placeholder images ([lorempixel](https://lorempixel.com/))
-- VSCode
-  - [x] editorconfig, stylelint, [eslint, prettier](https://medium.com/@brygrill/create-react-app-with-typescript-eslint-prettier-and-github-actions-f3ce6a571c97)
-  - [x] Workspace settings
-  - [x] Workspace recommended extensions
-  - [x] F5 debugging from VSCode
-- CI/CD - GitHub Actions
-  - [x] Build, lint, unit test
-  - [x] Deploy to Azure blob storage
-  - [x] Multiple sites per Azure Storage static site [.env, homepage in package.json, HashRouter, base href in index.html, manifest.json replace scope during deploy]
+## Features
 
-- TODO
-  - [ ] Create config along the lines of https://github.com/wesbos/eslint-config-wesbos
-  - [ ] Theming
-  - [ ] Redux code splitting per route
-  - [ ] Add AppInsightsErrorBoundary (throwing "Uncaught ReferenceError: __extends is not defined" right now)
+- Generate Anki importable CSV for
+  - [ ] Vocab study
+  - [ ] Root study
+- [ ] Generate StarDict
 
-## Useful documents
+### TODO
 
-- [React+TypeScript Cheatsheets](https://github.com/typescript-cheatsheets/react)
-- [Official Tutorial: Intro to React](https://reactjs.org/tutorial/tutorial.html)
-- [Create React App](https://create-react-app.dev/)
-- [Redux](https://redux.js.org/)
-- [styled-components](https://styled-components.com/)
-- [Tailwind CSS](https://tailwindcss.com/docs)
+- Telemetry
+  - [ ] Add AppInsightsErrorBoundary
+  - [ ] Track feature metrics
 
 ## Available Scripts
 

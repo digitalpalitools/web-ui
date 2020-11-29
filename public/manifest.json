@@ -1,7 +1,7 @@
 {
-  "name": "Kitam Studios - create-react-app template",
-  "short_name": "Kitam Studios App Template",
-  "description": "An app template for create-react-app with common bells and whistles - by Kitam Studios",
+  "name": "Digital Pāli Dictionary Tools",
+  "short_name": "DPD Tools",
+  "description": "A set of tools for Digital Pāli Dictionary.",
   "icons": [
     {
       "src": "./favicon-16x16.png",
@@ -57,9 +57,9 @@
   "orientation":  "landscape",
   "shortcuts": [
     {
-      "name": "Kitam Studios App Template",
-      "short_name": "CRAKS",
-      "description": "An app template for create-react-app with common bells and whistles - by Kitam Studios.",
+      "name": "Digital Pāli Dictionary Tools",
+      "short_name": "DPD Tools",
+      "description": "A set of tools for Digital Pāli Dictionary.",
       "url": ".",
       "icons": [{ "src": "./android-chrome-192x192.png", "sizes": "192x192" }]
     }

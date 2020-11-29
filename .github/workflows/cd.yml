@@ -41,7 +41,7 @@ jobs:
       - name: Build
         run: yarn build
         env:
-          REACT_APP_RELATIVE_ROOT: /craks-1 # NOTE: Ensure no trailing '/'
+          REACT_APP_RELATIVE_ROOT: /dpd-tools # NOTE: Ensure no trailing '/'
           REACT_APP_VERSION: ${{steps.createbuildversion.outputs.buildversion}}
           REACT_APP_AI_INSTRUMENTATION_KEY: ${{ secrets.AZURE_CREDENTIALS_KSAPPLICATIONS_AI_KEY }}
 
@@ -50,14 +50,14 @@ jobs:
         with:
           pathtosettingsfile: './build/manifest.json'
           keyname1: 'scope'
-          valuetoset: '/craks-1/'
+          valuetoset: '/dpd-tools/'
 
       - name: Deploy
         uses: azure/CLI@v1
         with:
           azcliversion: 2.0.72
           inlineScript: |
-              az storage blob upload-batch --account-name ksapplications -d '$web\craks-1' -s ./build
+              az storage blob upload-batch --account-name ksapplications -d '$web\dpd-tools' -s ./build
 
       - name: Azure Logout
         run: |
