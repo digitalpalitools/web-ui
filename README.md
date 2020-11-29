@@ -16,6 +16,7 @@ Create from the [dpd-tools](https://github.com/kitamstudios/dpd-tools) template.
 ### TODO
 
 - Telemetry
+  - [ ] BUG: TypeError: Cannot read property 'trackMetric' of null
   - [ ] Add AppInsightsErrorBoundary
   - [ ] Track feature metrics
 
