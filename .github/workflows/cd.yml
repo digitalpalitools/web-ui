@@ -31,7 +31,7 @@ jobs:
           yarn lint:css
 
       - name: Test
-        run: yarn test --colors --coverage
+        run: yarn test --colors --coverage --passWithNoTests
 
       - name: Azure Login
         uses: azure/login@v1

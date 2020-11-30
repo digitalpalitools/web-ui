@@ -1,4 +1,4 @@
-[![Continuous Deployment](https://github.com/kitamstudios/dpd-tools/workflows/Continuous%20Deployment/badge.svg)](https://github.com/kitamstudios/dpd-tools/actions?query=workflow%3A%22Continuous+Deployment%22)
+[![Continuous Deployment](https://github.com/digitalpalitools/dpd-tools/workflows/Continuous%20Deployment/badge.svg)](https://github.com/digitalpalitools/dpd-tools/actions?query=workflow%3A%22Continuous+Deployment%22)
 
 # Digital Pāli Dictionary Tools
 
