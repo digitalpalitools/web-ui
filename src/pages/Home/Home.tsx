@@ -1,66 +1,58 @@
 import * as React from 'react'
-import JSZip from 'jszip'
+/* eslint-disable import/no-webpack-loader-syntax */
+import Worker from 'worker-loader!./OdsProcessorWorker'
+// import * as Comlink from 'comlink'
 
 export type Page1Props = {
   message: string
 }
 
-const sheetName = 'PALI'
+// const worker = new OdsProcessorWorker()
+// worker.postMessage('Hello Worker')
+// worker.onmessage = (e) => {
+//   console.log('main.js: Message received from worker:', e.data)
+// }
 
 const UploadButton = () => {
   const [selectedFiles, setSelectedFiles] = React.useState([] as string[])
+  const odsProcessor = React.useMemo(() => {
+    const w = new Worker()
+    w.postMessage({ cmd: 'start', msg: `some random id ${Math.random()}` })
+    return w
+  }, [])
 
-  const onFileChange = async (event: any) => {
-    const zip = await JSZip.loadAsync(event.target.files[0])
+  // const onFileChange = async (event: any) => {
+  //   console.log(event)
+  //   const x = await odsProcessor.double(2)
+  //   setSelectedFiles([`${x}`, ...selectedFiles])
 
-    const xmlStr = await zip.file('content.xml')?.async('string')
+  //   return Promise.resolve()
+  // }
 
-    const parser = new DOMParser()
-    const documentContent = parser.parseFromString(xmlStr || 'not found - add error handling here', 'application/xml')
-    const allAutomaticStyles = documentContent.getElementsByTagName('office:automatic-styles')
+  odsProcessor.onmessage = (event) => {
+    setSelectedFiles([`${JSON.stringify(event.data)}`, ...selectedFiles])
+  }
 
-    const boldStyles = [] as any[]
-    Array.from(allAutomaticStyles).forEach((automaticStyles) => {
-      Array.from(automaticStyles.children).forEach((automaticStyle) => {
-        Array.from(automaticStyle.children).forEach((style) => {
-          if (style.tagName === 'style:text-properties' && style.getAttribute('fo:font-weight') === 'bold') {
-            boldStyles.push(automaticStyle.getAttribute('style:name'))
-          }
-        })
-      })
-    })
-
-    console.log(boldStyles)
-
-    const allSpreadsheets = documentContent.getElementsByTagName('office:spreadsheet')
-
-    const firstSpreadsheet = allSpreadsheets[0]
-    const table = Array.from(firstSpreadsheet.getElementsByTagName('table:table')).find(
-      (t) => t.getAttribute('table:name') === sheetName,
-    )
-
-    if (!table) {
-      // TODO: Bubble up to the user
-      console.error(`Sorry, could not find sheet named ${sheetName}`)
-      return Promise.reject()
-    }
-
-    const [, , ...rows] = Array.from(table.getElementsByTagName('table:table-row'))
-    console.log(rows[0])
-
-    setSelectedFiles(Object.keys(zip.files))
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const clickHandler = async (event: any) => {
+    console.log(typeof event)
+    odsProcessor.postMessage({ cmd: 'message', msg: Date.now() })
 
     return Promise.resolve()
   }
 
   return (
     <div>
-      <label htmlFor="contained-button-file">
+      {/* <label htmlFor="contained-button-file">
         <input accept=".ods" id="contained-button-file" type="file" onChange={onFileChange} />
-      </label>
+      </label> */}
+      <button type="button" onClick={clickHandler}>
+        worker comms
+      </button>
       <div>
-        {selectedFiles.map((f) => (
-          <p key={f}>{f}</p>
+        {selectedFiles.map((f, i) => (
+          // eslint-disable-next-line react/no-array-index-key
+          <p key={Date.now() + i}>{f}</p>
         ))}
       </div>
     </div>
