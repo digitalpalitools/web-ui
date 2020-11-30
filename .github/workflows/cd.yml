@@ -5,7 +5,7 @@ on:
     branches: [ master ]
 
 jobs:
-  continuos-deployment:
+  continuous-deployment:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -33,11 +33,6 @@ jobs:
       - name: Test
         run: yarn test --colors --coverage --passWithNoTests
 
-      - name: Azure Login
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS_KSAPPLICATIONS_STORAGE }}
-
       - name: Build
         run: yarn build
         env:
@@ -51,6 +46,11 @@ jobs:
           pathtosettingsfile: './build/manifest.json'
           keyname1: 'scope'
           valuetoset: '/dpd-tools/'
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS_KSAPPLICATIONS_STORAGE }}
 
       - name: Deploy
         uses: azure/CLI@v1

@@ -5,28 +5,29 @@ import styled from 'styled-components'
 import TelemetryProvider from './services/Telemetry/TelemetryProvider'
 import theme from './Theme'
 
-const Page1 = lazy(() => import('./pages/Page1/Page1'))
+const HomePage = lazy(() => import('./pages/Home/Home'))
 
 const { REACT_APP_VERSION, REACT_APP_AI_INSTRUMENTATION_KEY } = process.env
 
-function Copyright({ version }: any) {
-  const Y = styled.div`
+const Footer = ({ version }: any) => {
+  const CenteredDiv = styled.div`
     align-self: center;
     margin-top: auto;
   `
+
   return (
-    <Y>
+    <CenteredDiv>
       <M.Typography variant="caption" color="textSecondary">
         <M.Link color="inherit" href="https://www.kitamstudios.com/">
           Kitam Studios
         </M.Link>
         {` | ${version}`}
       </M.Typography>
-    </Y>
+    </CenteredDiv>
   )
 }
 
-const X = styled(M.Container)`
+const FullHeightContainer = styled(M.Container)`
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -36,19 +37,19 @@ const App = () => (
   <M.StylesProvider injectFirst>
     <M.ThemeProvider theme={theme}>
       <M.CssBaseline />
-      <X>
+      <FullHeightContainer>
         <Router>
           <TelemetryProvider instrumentationKey={REACT_APP_AI_INSTRUMENTATION_KEY || '0xBAADF00D'}>
             <Suspense fallback={<div>Loading...</div>}>
               <Switch>
-                <Route exact path="/" component={Page1} />
+                <Route exact path="/" component={HomePage} />
                 <Route component={() => <div>Not Found</div>} />
               </Switch>
             </Suspense>
           </TelemetryProvider>
         </Router>
-        <Copyright version={REACT_APP_VERSION} />
-      </X>
+        <Footer version={REACT_APP_VERSION} />
+      </FullHeightContainer>
     </M.ThemeProvider>
   </M.StylesProvider>
 )
