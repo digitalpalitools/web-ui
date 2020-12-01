@@ -1,24 +1,90 @@
-// import JSZip from 'jszip'
+import JSZip from 'jszip'
+import { DOMParser } from 'xmldom'
+
+const sheetName = 'PALI'
+
+const processODS = async (file: File, self: Worker) => {
+  console.log('OdsProcessor: processODS', file)
+  let start = Date.now()
+  const zip = await JSZip.loadAsync(file)
+  let end = Date.now()
+  console.log('OdsProcessor: processODS: Time taken for loading zip', (end - start) / 1000.0)
+
+  start = Date.now()
+  const xmlStr = await zip.file('content.xml')?.async('string')
+  end = Date.now()
+  console.log('OdsProcessor: processODS: Time taken for getting content.xml', (end - start) / 1000.0)
+
+  start = Date.now()
+  const parser = new DOMParser()
+  const documentContent = parser.parseFromString(xmlStr || 'not found - add error handling here', 'application/xml')
+  end = Date.now()
+  console.log('OdsProcessor: processODS: Time taken for parsing', (end - start) / 1000.0)
+
+  start = Date.now()
+  const allAutomaticStyles = documentContent.getElementsByTagName('office:automatic-styles')
+  end = Date.now()
+  console.log('OdsProcessor: processODS: Time taken for getting automatic styles', (end - start) / 1000.0)
+
+  start = Date.now()
+  const boldStyles = [] as any[]
+  Array.from(allAutomaticStyles)
+    .map((e) => e as Element)
+    .forEach((automaticStyles) => {
+      Array.from(automaticStyles?.childNodes)
+        .map((e) => e as Element)
+        .forEach((automaticStyle) => {
+          Array.from(automaticStyle?.childNodes)
+            .map((e) => e as Element)
+            .forEach((style) => {
+              if (style?.tagName === 'style:text-properties' && style?.getAttribute('fo:font-weight') === 'bold') {
+                boldStyles.push(automaticStyle.getAttribute('style:name'))
+              }
+            })
+        })
+    })
+  end = Date.now()
+  console.log('OdsProcessor: processODS: Time taken for getting all bold styles', (end - start) / 1000.0)
+
+  self.postMessage({ command: 'ProcessODS', data: boldStyles })
+
+  const allSpreadsheets = documentContent.getElementsByTagName('office:spreadsheet')
+
+  const firstSpreadsheet = allSpreadsheets[0]
+  const table = Array.from(firstSpreadsheet.getElementsByTagName('table:table')).find(
+    (t) => t.getAttribute('table:name') === sheetName,
+  )
+
+  if (!table) {
+    self.postMessage({ command: 'ProcessODS - error', data: `Sorry, could not find sheet named ${sheetName}` })
+    return Promise.reject()
+  }
+
+  self.postMessage({ command: 'ProcessODS', data: 'random test message' })
+  const rows = table.getElementsByTagName('table:table-row')
+  console.log('OdsProcessor: processODS: row # 2', rows[2])
+  self.postMessage({ command: 'ProcessODS', data: rows.length })
+
+  return Promise.resolve()
+}
 
 declare const self: Worker
 
-// const ctx: Worker = self as any
+self.onmessage = async (event) => {
+  const { data } = event
+  console.log('OdsProcessor: onmessage', data)
 
-// Post data to parent thread
-
-let id = 'not set'
-
-self.onmessage = (event) => {
-  console.log('>>>>', event.data)
-  switch (event.data.cmd) {
-    case 'start':
-      id = event.data.msg
-      console.log('worker, id = ', id)
+  switch (data.command) {
+    case 'create-vocab-csv':
+      await processODS(data.odsFile, self)
       break
-    case 'message':
-      self.postMessage({ foo: event.data.msg, id })
-      console.log('worker, id = ', id)
+
+    case 'create-root-csv':
       break
+
+    case 'create-startdict':
+      break
+
     default:
       console.error('unknown message', event)
   }
@@ -31,80 +97,3 @@ self.onmessageerror = (event) => {
 self.onerror = (event) => {
   console.error('worker.onerror', event)
 }
-
-// Export as you would in a normal module:
-export function meaningOfLife() {
-  return 42
-}
-
-export class MyClass {
-  value: number
-
-  constructor(value = 25) {
-    this.value = value
-  }
-
-  increment() {
-    this.value += 1
-  }
-
-  // Tip: async functions make the interface identical
-  async getValue() {
-    return Promise.resolve(this.value)
-  }
-}
-
-// export default () => {
-//   self.addEventListener('tw_hello', (e: any) => {
-//     console.log('>>> Argument', e)
-//     postMessage('fw_hell')
-//   })
-// }
-
-// const sheetName = 'PALI'
-
-// // eslint-disable-next-line @typescript-eslint/no-unused-vars
-// const ProcessODS = async (event: any) => {
-//   const zip = await JSZip.loadAsync(event.target.files[0])
-
-//   const xmlStr = await zip.file('content.xml')?.async('string')
-
-//   const parser = new DOMParser()
-//   const documentContent = parser.parseFromString(xmlStr || 'not found - add error handling here', 'application/xml')
-//   const allAutomaticStyles = documentContent.getElementsByTagName('office:automatic-styles')
-
-//   const boldStyles = [] as any[]
-//   Array.from(allAutomaticStyles).forEach((automaticStyles) => {
-//     Array.from(automaticStyles.children).forEach((automaticStyle) => {
-//       Array.from(automaticStyle.children).forEach((style) => {
-//         if (style.tagName === 'style:text-properties' && style.getAttribute('fo:font-weight') === 'bold') {
-//           boldStyles.push(automaticStyle.getAttribute('style:name'))
-//         }
-//       })
-//     })
-//   })
-
-//   console.log(boldStyles)
-
-//   const allSpreadsheets = documentContent.getElementsByTagName('office:spreadsheet')
-
-//   const firstSpreadsheet = allSpreadsheets[0]
-//   const table = Array.from(firstSpreadsheet.getElementsByTagName('table:table')).find(
-//     (t) => t.getAttribute('table:name') === sheetName,
-//   )
-
-//   if (!table) {
-//     // TODO: Bubble up to the user
-//     console.error(`Sorry, could not find sheet named ${sheetName}`)
-//     return Promise.reject()
-//   }
-
-//   const [, , ...rows] = Array.from(table.getElementsByTagName('table:table-row'))
-//   console.log(rows[0])
-
-//   // setSelectedFiles(Object.keys(zip.files))
-
-//   return Promise.resolve()
-// }
-
-// console.log(ProcessODS)
