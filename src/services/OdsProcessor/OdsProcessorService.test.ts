@@ -2,9 +2,6 @@ import fs from 'fs'
 import util from 'util'
 import * as Ods from './OdsProcessorService'
 
-// TODO
-// - Bold style not coming across (even with python)
-
 const errorReporter = (e: any) => console.error(e)
 const sheetName = 'PALI-X'
 const odsFile = './src/services/OdsProcessor/testdata/Pali_English_Dictionary_10_rows.ods'

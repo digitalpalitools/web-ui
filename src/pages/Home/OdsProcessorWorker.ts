@@ -1,69 +1,44 @@
-import JSZip from 'jszip'
-import { DOMParser } from 'xmldom'
+import * as S from '../../services'
 
 const sheetName = 'PALI'
+const columnCount = 40
 
-const processODS = async (file: File, self: Worker) => {
-  console.log('OdsProcessor: processODS', file)
+const processODS = async (file: File, self: Worker): Promise<void> => {
+  const infoReporter = (message: any) => self.postMessage({ command: 'ProcessODS', data: message })
+  const errorReporter = (message: any) => self.postMessage({ command: 'ProcessODS', data: message })
+
+  console.log(`OdsProcessor: processODS: Starting processing ${file.name}`)
   let start = Date.now()
-  const zip = await JSZip.loadAsync(file)
+  const contentsXml = await S.Ods.parseContentsXML(file, errorReporter)
   let end = Date.now()
-  console.log('OdsProcessor: processODS: Time taken for loading zip', (end - start) / 1000.0)
+  infoReporter(`OdsProcessor: processODS: Parsed ODS. (${(end - start) / 1000.0} s)`)
 
-  start = Date.now()
-  const xmlStr = await zip.file('content.xml')?.async('string')
-  end = Date.now()
-  console.log('OdsProcessor: processODS: Time taken for getting content.xml', (end - start) / 1000.0)
-
-  start = Date.now()
-  const parser = new DOMParser()
-  const documentContent = parser.parseFromString(xmlStr || 'not found - add error handling here', 'application/xml')
-  end = Date.now()
-  console.log('OdsProcessor: processODS: Time taken for parsing', (end - start) / 1000.0)
-
-  start = Date.now()
-  const allAutomaticStyles = documentContent.getElementsByTagName('office:automatic-styles')
-  end = Date.now()
-  console.log('OdsProcessor: processODS: Time taken for getting automatic styles', (end - start) / 1000.0)
-
-  start = Date.now()
-  const boldStyles = [] as any[]
-  Array.from(allAutomaticStyles)
-    .map((e) => e as Element)
-    .forEach((automaticStyles) => {
-      Array.from(automaticStyles?.childNodes)
-        .map((e) => e as Element)
-        .forEach((automaticStyle) => {
-          Array.from(automaticStyle?.childNodes)
-            .map((e) => e as Element)
-            .forEach((style) => {
-              if (style?.tagName === 'style:text-properties' && style?.getAttribute('fo:font-weight') === 'bold') {
-                boldStyles.push(automaticStyle.getAttribute('style:name'))
-              }
-            })
-        })
-    })
-  end = Date.now()
-  console.log('OdsProcessor: processODS: Time taken for getting all bold styles', (end - start) / 1000.0)
-
-  self.postMessage({ command: 'ProcessODS', data: boldStyles })
-
-  const allSpreadsheets = documentContent.getElementsByTagName('office:spreadsheet')
-
-  const firstSpreadsheet = allSpreadsheets[0]
-  const table = Array.from(firstSpreadsheet.getElementsByTagName('table:table')).find(
-    (t) => t.getAttribute('table:name') === sheetName,
-  )
-
-  if (!table) {
-    self.postMessage({ command: 'ProcessODS - error', data: `Sorry, could not find sheet named ${sheetName}` })
-    return Promise.reject()
+  if (!contentsXml) {
+    errorReporter('Unable to parse content.xml')
+    return Promise.resolve()
   }
 
-  self.postMessage({ command: 'ProcessODS', data: 'random test message' })
-  const rows = table.getElementsByTagName('table:table-row')
-  console.log('OdsProcessor: processODS: row # 2', rows[2])
-  self.postMessage({ command: 'ProcessODS', data: rows.length })
+  start = Date.now()
+  const boldStyles = S.Ods.getBoldStyles(contentsXml)
+  end = Date.now()
+  infoReporter(`OdsProcessor: processODS: Obtained all bold styles. (${(end - start) / 1000.0} s)`)
+
+  start = Date.now()
+  const rows = S.Ods.getRowsInSheet(contentsXml, sheetName, errorReporter)
+  end = Date.now()
+  infoReporter(`OdsProcessor: processODS: Obtaining sheet '${sheetName}'. (${(end - start) / 1000.0} s)`)
+
+  if (!rows) {
+    errorReporter(`Unable to find sheet ${sheetName}`)
+    return Promise.resolve()
+  }
+
+  start = Date.now()
+  const inMemCsv = S.Ods.createInMemoryCSV(rows, boldStyles, columnCount)
+  end = Date.now()
+  infoReporter(
+    `OdsProcessor: processODS: Created in memory csv with ${inMemCsv.length} rows. (${(end - start) / 1000.0} s)`,
+  )
 
   return Promise.resolve()
 }

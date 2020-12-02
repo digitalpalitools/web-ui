@@ -16,11 +16,12 @@ const UploadButton = () => {
   }
 
   const onSendToWorker = () => {
+    setMessagesFromWorker([])
     odsProcessor.postMessage({ command: 'create-vocab-csv', odsFile: selectedFiles })
   }
 
   odsProcessor.onmessage = (event) => {
-    setMessagesFromWorker([`${JSON.stringify(event.data)}`, ...messagesFromWorker])
+    setMessagesFromWorker([...messagesFromWorker, `${JSON.stringify(event.data)}`])
   }
 
   return (

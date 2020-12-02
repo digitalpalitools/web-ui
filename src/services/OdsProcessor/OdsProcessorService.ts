@@ -97,8 +97,6 @@ export const getCellText = (cell: Element, boldStyles: string[]): string => {
 }
 
 export const createInMemoryCSV = (rows: Element[], boldStyles: string[], columnCount: number): string[][] => {
-  console.log(rows.length, boldStyles.length)
-
   const rowReducer = (rowAcc: string[][], row: Element) => {
     const baseCells = row.getElementsByTagName('table:table-cell')
     const flatCells = Array.from(baseCells).reduce((accFlatCell, cell) => {
