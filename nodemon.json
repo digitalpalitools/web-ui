@@ -1,0 +1,9 @@
+{
+  "verbose": true,
+  "watch": [
+    "src"
+  ],
+  "ext": ".ts,.js",
+  "ignore": [],
+  "exec": "set TS_NODE_PROJECT=tsconfig.commonjs.json&& node -r ts-node/register ./src/index-cli.ts generate-files"
+}

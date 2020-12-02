@@ -1,9 +1,13 @@
 {
   "name": "@digitalpalitools/dpd-tools",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "private": true,
   "homepage": ".",
+  "main": "src/index-cli.ts",
   "scripts": {
+    "cli:start": "nodemon",
+    "cli:run": "set TS_NODE_PROJECT=tsconfig.commonjs.json&& node -r ts-node/register ./src/index-cli.ts generate-files",
+    "cli:build": "rimraf ./build && tsc",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -27,7 +31,6 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
     "styled-components": "^5.2.1",
-    "typescript": "^4.1.2",
     "web-vitals": "^0.2.4",
     "workbox-background-sync": "^5.1.3",
     "workbox-broadcast-update": "^5.1.3",
@@ -41,11 +44,18 @@
     "workbox-routing": "^5.1.3",
     "workbox-strategies": "^5.1.3",
     "workbox-streams": "^5.1.3",
-    "xmldom": "^0.4.0"
+    "xmldom": "^0.4.0",
+    "buffer": "^6.0.3",
+    "csvtojson": "^2.0.10",
+    "luxon": "^1.25.0",
+    "winston": "^3.3.3",
+    "yargs": "^16.0.3"
   },
   "devDependencies": {
+    "@types/luxon": "^1.25.0",
+    "@types/node": "^13.7.1",
+    "@types/yargs": "^15.0.7",
     "@types/jest": "^26.0.15",
-    "@types/node": "^12.0.0",
     "@types/react": "^16.9.53",
     "@types/react-dom": "^16.9.8",
     "@types/react-router-dom": "^5.1.6",
@@ -74,8 +84,10 @@
     "stylelint-config-styled-components": "^0.1.1",
     "stylelint-processor-styled-components": "^1.10.0",
     "ts-jest": "^26.4.4",
+    "nodemon": "^1.19.1",
     "ts-node": "^9.0.0",
-    "worker-loader": "^3.0.5"
+    "worker-loader": "^3.0.5",
+    "typescript": "^4.1.2"
   },
   "husky": {
     "hooks": {
