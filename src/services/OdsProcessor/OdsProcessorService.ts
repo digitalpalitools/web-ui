@@ -68,3 +68,53 @@ export const getRowsInSheet = (
 
   return rows
 }
+
+const processText = (nodes: NodeListOf<ChildNode>, boldStyles: string[]): string => {
+  const nodeTexts = Array.from(nodes).map((n) => {
+    if (n.nodeType === n.TEXT_NODE) {
+      return n.nodeValue
+    }
+
+    const ne = n as Element
+    const isBold =
+      ne && ne.tagName === 'text:span' && boldStyles.indexOf(ne.getAttribute('text:style-name') || '') !== -1
+    const tag = isBold ? ['<b>', '</b>'] : ['', '']
+    return `${tag[0]}${processText(ne.childNodes, boldStyles)}${tag[1]}`
+  })
+
+  return nodeTexts.join('')
+}
+
+export const getCellText = (cell: Element, boldStyles: string[]): string => {
+  const cellContents = cell.getElementsByTagName('text:p')
+  if (cellContents.length > 0) {
+    return Array.from(cellContents)
+      .map((x) => processText(x.childNodes, boldStyles))
+      .join('<br/>')
+  }
+
+  return ''
+}
+
+export const createInMemoryCSV = (rows: Element[], boldStyles: string[], columnCount: number): string[][] => {
+  console.log(rows.length, boldStyles.length)
+
+  const rowReducer = (rowAcc: string[][], row: Element) => {
+    const baseCells = row.getElementsByTagName('table:table-cell')
+    const flatCells = Array.from(baseCells).reduce((accFlatCell, cell) => {
+      const repeatCount = parseInt(cell.getAttribute('table:number-columns-repeated') || '', 10) || 0
+      if (repeatCount > 0) {
+        const repCells = Array(repeatCount).fill(cell)
+        return accFlatCell.concat(repCells)
+      }
+
+      return [...accFlatCell, cell]
+    }, [] as Element[])
+
+    const cells = flatCells.splice(0, columnCount).map((c) => getCellText(c, boldStyles))
+
+    return [...rowAcc, cells]
+  }
+
+  return rows.reduce(rowReducer, [] as string[][])
+}
