@@ -13,7 +13,8 @@
       },
       "runtimeArgs": [
         "-r",
-        "ts-node/register"
+        "ts-node/register",
+        "--max-old-space-size=8192",
       ],
       "program": "${workspaceFolder}/src/index-cli.ts",
       "args": ["generate-files"],

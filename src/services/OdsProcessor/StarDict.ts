@@ -125,7 +125,7 @@ const readWordGroups = (allWords: PaliWord[], reporter: Reporter): PaliWordGroup
     return acc
   }, {} as PaliWordGroup)
 
-  reporter.Info(`... Grouped ${allWords.length} into ${Object.keys(words).length} groups.`)
+  reporter.Info(`... Grouped ${allWords.length} words into ${Object.keys(words).length} groups.`)
 
   return words
 }
