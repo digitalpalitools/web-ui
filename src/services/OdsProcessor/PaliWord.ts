@@ -223,12 +223,16 @@ export class PaliWord {
     return this.record.map((x) => `"${x}"`).join('\t')
   }
 
+  createTocSummary(): string {
+    return `<li><a href="#${this.tocId()}">${this.pali1}: ${this.pos}, ${this.inEnglish}</a></li>`
+  }
+
   createWordData(): string {
     /* eslint-disable */ // ESList is unable to handle the complicated templating + concatenation
     const html = `
   <hr />
   <div>
-    <h4>${this.pali1}</h4>
+    <h4 id="${this.tocId()}">${this.pali1}</h4>
     <table>
       <tbody>` +
       `<tr style="vertical-align: top;"><td>Pāli</td><td><span>${this.pali2}</span></td></tr>` +
@@ -259,4 +263,6 @@ export class PaliWord {
 
     return html
   }
+
+  private tocId = () => `${this.pali1.replace(/\s/g, '')}`
 }

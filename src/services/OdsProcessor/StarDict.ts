@@ -16,15 +16,22 @@ interface IdxInfo {
   fileSize: number
 }
 
+const createHtmlForWordGroup = (ws: PaliWord[]): string => {
+  const sws = ws.sort((w1, w2) => w1.pali1.localeCompare(w2.pali1))
+
+  const toc = ws.length < 10 ? '' : sws.map((w) => w.createTocSummary()).join('\n')
+
+  const html = sws.map((w) => w.createWordData()).join('')
+
+  return `${toc}<br/>${html}`
+}
+
 const createDict = (wordGroups: PaliWordGroup, reporter: Reporter): [IdxWord[], Buffer] => {
   reporter.Info(`... Creating dict: ${Object.keys(wordGroups).length} word groups.`)
 
   type IdBufferMap = { [id: string]: Buffer }
   const buffers = Object.entries(wordGroups).reduce((acc, [id, ws]) => {
-    const html = ws
-      .sort((w1, w2) => w1.pali1.localeCompare(w2.pali1))
-      .map((w) => w.createWordData())
-      .join('')
+    const html = createHtmlForWordGroup(ws)
     acc[id] = Buffer.from(html, 'utf-8')
     return acc
   }, {} as IdBufferMap)
@@ -101,7 +108,7 @@ bookname=Digital Pāli Dictionary (DPD)
 wordcount=${idxInfo.wordCount}
 idxfilesize=${idxInfo.fileSize}
 author=A Pāli Instructor
-website=https://github.com/parthopdas/bdhrs-palidict
+website=https://github.com/digitalpalitools/dpd-tools
 description=A detailed Pāli language word lookup
 date=${timeStamp.toUTC().toISO({ suppressMilliseconds: true })}
 sametypesequence=h
