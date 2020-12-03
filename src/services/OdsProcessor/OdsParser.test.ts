@@ -1,8 +1,8 @@
 import fs from 'fs'
 import util from 'util'
-import * as Ods from './OdsProcessorService'
+import { Reporter } from './Common'
+import { createInMemoryCSV, getBoldStyles, getCellText, getRowsInSheet, parseContentsXML } from './OdsParser'
 
-const errorReporter = (e: any) => console.error(e)
 const sheetName = 'PALI-X'
 const odsFile = './src/services/OdsProcessor/testdata/Pali_English_Dictionary_10_rows.ods'
 const boldStylesInOds = [
@@ -27,42 +27,47 @@ const boldStylesInOds = [
   'T5',
 ]
 
+const reporter: Reporter = {
+  Info: () => {},
+  Error: (message: any) => console.error(message),
+}
+
 test('can obtain boldStyles', async () => {
   const odsData = await util.promisify(fs.readFile)(odsFile)
-  const doc = await Ods.parseContentsXML(odsData, errorReporter)
+  const doc = await parseContentsXML(odsData, reporter)
 
-  const boldStyles = doc ? Ods.getBoldStyles(doc) : []
+  const boldStyles = doc ? getBoldStyles(doc) : []
 
   expect(boldStyles.sort((a, b) => a.localeCompare(b))).toEqual(boldStylesInOds)
 })
 
 test('can obtain rows', async () => {
   const odsData = await util.promisify(fs.readFile)(odsFile)
-  const doc = await Ods.parseContentsXML(odsData, errorReporter)
+  const doc = await parseContentsXML(odsData, reporter)
 
-  const rows = doc ? Ods.getRowsInSheet(doc, sheetName, errorReporter) : []
+  const rows = doc ? getRowsInSheet(doc, sheetName, reporter) : []
 
   expect(rows).toHaveLength(11)
 })
 
 test('getCellText - simple', async () => {
   const odsData = await util.promisify(fs.readFile)(odsFile)
-  const doc = await Ods.parseContentsXML(odsData, errorReporter)
-  const rows = (doc ? Ods.getRowsInSheet(doc, sheetName, errorReporter) : []) || []
+  const doc = await parseContentsXML(odsData, reporter)
+  const rows = (doc ? getRowsInSheet(doc, sheetName, reporter) : []) || []
 
   const cell = rows[5].getElementsByTagName('table:table-cell')[4]
 
-  const text = Ods.getCellText(cell, boldStylesInOds)
+  const text = getCellText(cell, boldStylesInOds)
 
   expect(text).toEqual('adj, pp of bahulīkaroti, comp vb')
 })
 
 test('getCellText - with bold and breaks', async () => {
   const odsData = await util.promisify(fs.readFile)(odsFile)
-  const doc = await Ods.parseContentsXML(odsData, errorReporter)
-  const rows = (doc ? Ods.getRowsInSheet(doc, sheetName, errorReporter) : []) || []
+  const doc = await parseContentsXML(odsData, reporter)
+  const rows = (doc ? getRowsInSheet(doc, sheetName, reporter) : []) || []
 
-  const text = Ods.createInMemoryCSV(rows, boldStylesInOds, 40)[6][30]
+  const text = createInMemoryCSV(rows, boldStylesInOds, 40)[6][30]
 
   expect(text).toEqual(
     // eslint-disable-next-line max-len

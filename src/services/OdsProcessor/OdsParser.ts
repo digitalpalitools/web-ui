@@ -1,18 +1,16 @@
 import JSZip from 'jszip'
 import { DOMParser } from 'xmldom'
+import { PaliWord } from './PaliWord'
+import { Reporter } from './Common'
 
-type OdsProcessorInputType = Blob | Uint8Array
-type ErrorReporter = (error: string) => void
+type OdsParserInput = Blob | Uint8Array
 
-export const parseContentsXML = async (
-  file: OdsProcessorInputType,
-  errorReporter: ErrorReporter,
-): Promise<Document | null> => {
+export const parseContentsXML = async (file: OdsParserInput, reporter: Reporter): Promise<Document | null> => {
   const zip = await JSZip.loadAsync(file)
 
   const xmlStr = await zip.file('content.xml')?.async('string')
   if (!xmlStr) {
-    errorReporter('content.xml not found. Invalid ODS file.')
+    reporter.Error('content.xml not found. Invalid ODS file.')
     return null
   }
   const parser = new DOMParser()
@@ -47,11 +45,7 @@ export const getBoldStyles = (contentsXml: Document): string[] => {
   return boldStyles
 }
 
-export const getRowsInSheet = (
-  contentsXml: Document,
-  sheetName: string,
-  errorReporter: ErrorReporter,
-): Element[] | null => {
+export const getRowsInSheet = (contentsXml: Document, sheetName: string, reporter: Reporter): Element[] | null => {
   const allSpreadsheets = contentsXml.getElementsByTagName('office:spreadsheet')
 
   const firstSpreadsheet = allSpreadsheets[0]
@@ -60,7 +54,7 @@ export const getRowsInSheet = (
   )
 
   if (!table) {
-    errorReporter(`Could not find sheet named ${sheetName}`)
+    reporter.Error(`Could not find sheet named ${sheetName}`)
     return null
   }
 
@@ -115,4 +109,49 @@ export const createInMemoryCSV = (rows: Element[], boldStyles: string[], columnC
   }
 
   return rows.reduce(rowReducer, [] as string[][])
+}
+
+export const readAllPaliWords = async (
+  file: OdsParserInput,
+  sheetName: string,
+  columnCount: number,
+  reporter: Reporter,
+): Promise<PaliWord[]> => {
+  reporter.Info(`OdsProcessor: processODS: Starting processing.`)
+  let start = Date.now()
+  const contentsXml = await parseContentsXML(file, reporter)
+  let end = Date.now()
+  reporter.Info(`OdsProcessor: processODS: Parsed ODS. (${(end - start) / 1000.0} s)`)
+
+  if (!contentsXml) {
+    reporter.Error('Unable to parse content.xml')
+    return Promise.reject()
+  }
+
+  start = Date.now()
+  const boldStyles = getBoldStyles(contentsXml)
+  end = Date.now()
+  reporter.Info(`OdsProcessor: processODS: Obtained all bold styles. (${(end - start) / 1000.0} s)`)
+
+  start = Date.now()
+  const rows = getRowsInSheet(contentsXml, sheetName, reporter)
+  end = Date.now()
+  reporter.Info(`OdsProcessor: processODS: Obtaining sheet '${sheetName}'. (${(end - start) / 1000.0} s)`)
+
+  if (!rows) {
+    reporter.Error(`Unable to find sheet ${sheetName}`)
+    return Promise.reject()
+  }
+
+  start = Date.now()
+  const inMemCsv = createInMemoryCSV(rows, boldStyles, columnCount)
+  end = Date.now()
+  reporter.Info(
+    `OdsProcessor: processODS: Created in memory csv with ${inMemCsv.length} rows. (${(end - start) / 1000.0} s)`,
+  )
+
+  return inMemCsv
+    .slice(1)
+    .map((r) => new PaliWord(r))
+    .filter((w) => w.inEnglish)
 }

@@ -42,7 +42,7 @@
   - "2"
 */
 
-class PaliWord {
+export class PaliWord {
   readonly record: any
 
   constructor(record: string[]) {
@@ -256,6 +256,3 @@ class PaliWord {
     return html
   }
 }
-/* eslint-enable dot-notation */
-
-export default PaliWord

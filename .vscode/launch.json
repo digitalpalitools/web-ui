@@ -8,6 +8,9 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Node",
+      "env": {
+        "TS_NODE_PROJECT": "tsconfig.commonjs.json",
+      },
       "runtimeArgs": [
         "-r",
         "ts-node/register"
