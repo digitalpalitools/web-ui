@@ -43,7 +43,7 @@
 */
 
 export class PaliWord {
-  readonly record: any
+  readonly record: string[]
 
   constructor(record: string[]) {
     this.record = record
@@ -217,6 +217,10 @@ export class PaliWord {
     }
 
     return this.pali1
+  }
+
+  toCsvRow(): string {
+    return this.record.map((x) => `"${x}"`).join('\t')
   }
 
   createWordData(): string {
