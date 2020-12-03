@@ -35,7 +35,6 @@
   "include": [
     "*.js",
     "*.ts",
-    "src/twin.d.ts",
     "src",
   ]
 }

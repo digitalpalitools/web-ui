@@ -9,7 +9,7 @@
       "request": "launch",
       "name": "Launch Node",
       "env": {
-        "TS_NODE_PROJECT": "tsconfig.commonjs.json",
+        "TS_NODE_PROJECT": "tsconfig.cli.json",
       },
       "runtimeArgs": [
         "-r",

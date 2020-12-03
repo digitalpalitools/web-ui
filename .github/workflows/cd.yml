@@ -33,6 +33,9 @@ jobs:
       - name: Test
         run: yarn test --colors --coverage
 
+      - name: Build CLI
+        run: yarn cli:build
+
       - name: Build
         run: yarn build
         env:

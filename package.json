@@ -6,8 +6,8 @@
   "main": "src/index-cli.ts",
   "scripts": {
     "cli:start": "nodemon",
-    "cli:run": "set TS_NODE_PROJECT=tsconfig.commonjs.json&& node --max-old-space-size=8192 -r ts-node/register ./src/index-cli.ts generate-files",
-    "cli:build": "rimraf ./build && tsc",
+    "cli:run": "set TS_NODE_PROJECT=tsconfig.cli.json&& node --max-old-space-size=8192 -r ts-node/register ./src/index-cli.ts generate-files",
+    "cli:build": "rimraf ./build && tsc --project ./tsconfig.cli.json",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
