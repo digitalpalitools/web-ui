@@ -26,12 +26,7 @@ const generateStarDict = async (allWords: PaliWord[], dirName: string, reporter:
   const dictoutPath = path.join(dirName, dictName)
   await fs.mkdir(dictoutPath, { recursive: true })
 
-  const dict = await Ods.generateStarDict(
-    allWords.slice(1),
-    luxon.DateTime.local(),
-    (p: string) => fs.readFile(p),
-    reporter,
-  )
+  const dict = await Ods.generateStarDict(allWords.slice(1), luxon.DateTime.local(), reporter)
   const tasks = Object.keys(dict).map((k) => fs.writeFile(path.join(dictoutPath, `${dictName}.${k}`), dict[k]))
   await Promise.allSettled(tasks)
 }
