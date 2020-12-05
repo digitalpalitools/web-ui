@@ -16,14 +16,37 @@ interface IdxInfo {
   fileSize: number
 }
 
+const htmlTemplate = `
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+* {
+  font-family: "Verajja Serif", "DejaVu Sans", sans-serif;
+}
+table.word-info-table tr {
+  vertical-align: top;
+}
+span.sutta-source {
+  color: orange;
+}
+</style>
+</head>
+<body>
+{{__CONTENTS__}}
+</body>
+</html>`
+
+const padTrailingNumbers = (s: string) => s.replace(/\d+/g, (m) => '00'.substr(m.length - 1) + m)
+
 const createHtmlForWordGroup = (ws: PaliWord[]): string => {
-  const sws = ws.sort((w1, w2) => w1.pali1.localeCompare(w2.pali1))
+  const sws = ws.sort((w1, w2) => padTrailingNumbers(w1.pali1).localeCompare(padTrailingNumbers(w2.pali1)))
 
   const toc = ws.length < 2 ? '' : sws.map((w) => w.createTocSummary()).join('\n')
 
   const html = sws.map((w) => w.createWordData()).join('')
 
-  return `${toc}<br/>${html}`
+  return htmlTemplate.replace('{{__CONTENTS__}}', `${toc}<br/>${html}`)
 }
 
 const createDict = (wordGroups: PaliWordGroup, reporter: Reporter): [IdxWord[], Buffer] => {

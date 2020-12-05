@@ -224,7 +224,7 @@ export class PaliWord {
   }
 
   createTocSummary(): string {
-    return `<li><a href="#${this.tocId()}">${this.pali1}: ${this.pos}, ${this.inEnglish}</a></li>`
+    return `<li><a href="#${this.tocId()}">${this.pali1}</a>: ${this.pos}, ${this.inEnglish}</li>`
   }
 
   createWordData(): string {
@@ -233,31 +233,31 @@ export class PaliWord {
   <hr />
   <div>
     <h4 id="${this.tocId()}">${this.pali1}</h4>
-    <table>
+    <table class="word-info-table">
       <tbody>` +
-      `<tr style="vertical-align: top;"><td>Pāli</td><td><span>${this.pali2}</span></td></tr>` +
-      (this.grammar && `<tr style="vertical-align: top;"><td>Grammar</td><td><span>${this.grammar}` + (this.verb && `, ${this.verb}`) + (this.neg && `, ${this.neg}`) + (this.trans && `, ${this.trans}`) + (this.case && ` (${this.case})`) + `</span></td></tr>`) +
-      (this.inEnglish && `<tr style="vertical-align: top;"><td>English</td><td><span><strong>${this.inEnglish}</strong></span></td></tr>`) +
-      (this.family && `<tr style="vertical-align: top;"><td>Family</td><td><span>${this.family}</span></td></tr>`) +
-      (this.paliRoot && `<tr style="vertical-align: top;"><td>Root</td><td><span>${this.paliRoot}<sup>${this.v}</sup>${this.grp} ${this.sgn} (${this.rootMeaning})</span></td></tr>`) +
-      (this.base && `<tr style="vertical-align: top;"><td>Base</td><td><span>${this.base}</span></td></tr>`) +
-      (this.construction && `<tr style="vertical-align: top;"><td>Construction</td><td><span>${this.construction}</span></td></tr>`) +
-      (this.derivative && `<tr style="vertical-align: top;"><td>Derivative</td><td><span>${this.derivative} (${this.suffix})</span></td></tr>`) +
-      (this.compound && `<tr style="vertical-align: top;"><td>Compound</td><td><span>${this.compound} (${this.compoundConstruction})</span></td></tr>`) +
-      (this.antonyms && `<tr style="vertical-align: top;"><td>Antonym</td><td><span>${this.antonyms}</span></td></tr>`) +
-      (this.synonyms && `<tr style="vertical-align: top;"><td>Synonym</td><td><span>${this.synonyms}</span></td></tr>`) +
-      (this.variant && `<tr style="vertical-align: top;"><td>Variant</td><td><span>${this.variant}</span></td></tr>`) +
-      (this.sanskrit && `<tr style="vertical-align: top;"><td>Sanskrit</td><td><span>${this.sanskrit}</span></td></tr>`) +
-      (this.sanskritRoot && `<tr style="vertical-align: top;"><td>Sanskrit Root</td><td><span>${this.sanskritRoot}</span></td></tr>`) +
-      (this.commentary && `<tr style="vertical-align: top;"><td>Commentary</td><td><span>${this.commentary}</span></td></tr>`) +
-      (this.notes && `<tr style="vertical-align: top;"><td>Notes</td><td><span>${this.notes}</span></td></tr>`) +
+      `<tr><td>Pāli</td><td><span>${this.pali2}</span></td></tr>` +
+      (this.grammar && `<tr><td>Grammar</td><td><span>${this.grammar}` + (this.verb && `, ${this.verb}`) + (this.neg && `, ${this.neg}`) + (this.trans && `, ${this.trans}`) + (this.case && ` (${this.case})`) + `</span></td></tr>`) +
+      (this.inEnglish && `<tr><td>English</td><td><span><strong>${this.inEnglish}</strong></span></td></tr>`) +
+      (this.family && `<tr><td>Family</td><td><span>${this.family}</span></td></tr>`) +
+      (this.paliRoot && `<tr><td>Root</td><td><span>${this.paliRoot}<sup>${this.v}</sup>${this.grp} ${this.sgn} (${this.rootMeaning})</span></td></tr>`) +
+      (this.base && `<tr><td>Base</td><td><span>${this.base}</span></td></tr>`) +
+      (this.construction && `<tr><td>Construction</td><td><span>${this.construction}</span></td></tr>`) +
+      (this.derivative && `<tr><td>Derivative</td><td><span>${this.derivative} (${this.suffix})</span></td></tr>`) +
+      (this.compound && `<tr><td>Compound</td><td><span>${this.compound} (${this.compoundConstruction})</span></td></tr>`) +
+      (this.antonyms && `<tr><td>Antonym</td><td><span>${this.antonyms}</span></td></tr>`) +
+      (this.synonyms && `<tr><td>Synonym</td><td><span>${this.synonyms}</span></td></tr>`) +
+      (this.variant && `<tr><td>Variant</td><td><span>${this.variant}</span></td></tr>`) +
+      (this.sanskrit && `<tr><td>Sanskrit</td><td><span>${this.sanskrit}</span></td></tr>`) +
+      (this.sanskritRoot && `<tr><td>Sanskrit Root</td><td><span>${this.sanskritRoot}</span></td></tr>`) +
+      (this.commentary && `<tr><td>Commentary</td><td><span>${this.commentary}</span></td></tr>`) +
+      (this.notes && `<tr><td>Notes</td><td><span>${this.notes}</span></td></tr>`) +
       `</tbody>
     </table>
     <br />` +
     (this.example1 && `<span>${this.example1}</span><br />`) +
-    (this.source1 && `<span style='color: orange'><i>${this.source1} ${this.sutta1}</i></span><br /><br />`) +
+    (this.source1 && `<span class="sutta-source"><i>${this.source1} ${this.sutta1}</i></span><br /><br />`) +
     (this.example2 && `<span>${this.example2}</span><br />`) +
-    (this.source2 && `<span style='color: orange'><i>${this.source2} ${this.sutta2}</i></span><br /><br />`) +
+    (this.source2 && `<span class="sutta-source"><i>${this.source2} ${this.sutta2}</i></span><br /><br />`) +
   `</div>`
     /* eslint-enable */
 

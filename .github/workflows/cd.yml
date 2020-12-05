@@ -39,7 +39,7 @@ jobs:
       - name: Zip CLI
         uses: montudor/action-zip@v0.1.1
         with:
-          args: zip -9 -r ./public/dpt-tools-cli.zip ./build/index-cli.js
+          args: zip -9 -j ./public/dpt-tools-cli.zip ./build/index-cli.js
 
       - name: Build
         run: yarn build
