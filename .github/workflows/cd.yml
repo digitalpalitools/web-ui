@@ -35,7 +35,6 @@ jobs:
 
       - name: Build CLI
         run: yarn cli:build
-          cp ./build/index-cli.js ./public
 
       - name: Zip CLI
         uses: montudor/action-zip@v0.1.1
