@@ -34,7 +34,9 @@ jobs:
         run: yarn test --colors --coverage
 
       - name: Build CLI
-        run: yarn cli:build
+        run: |
+          yarn cli:build
+          cp ./build/index-cli.js ./public
 
       - name: Build
         run: yarn build
