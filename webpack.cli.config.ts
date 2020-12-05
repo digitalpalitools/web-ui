@@ -1,7 +1,11 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import * as path from 'path'
 import * as webpack from 'webpack'
+import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin'
 
-const config: webpack.Configuration = {
+delete process.env.TS_NODE_PROJECT
+
+export const config: webpack.Configuration = {
   entry: './src/index-cli.ts',
   mode: 'production',
   target: 'node',
@@ -9,7 +13,14 @@ const config: webpack.Configuration = {
     rules: [
       {
         test: /\.ts$/,
-        use: ['ts-loader'],
+        use: [
+          {
+            loader: 'ts-loader',
+            options: {
+              configFile: path.resolve(__dirname, './tsconfig.cli.json'),
+            },
+          },
+        ],
       },
     ],
   },
@@ -17,16 +28,15 @@ const config: webpack.Configuration = {
     path: path.resolve(__dirname, 'build'),
     filename: 'index-cli.js',
   },
-  plugins: [
-    new webpack.ContextReplacementPlugin(/\/yargs\//, (data: any) => {
-      const d = data
-      delete d.dependencies[0].critical
-      return d
-    }),
-  ],
   resolve: {
     extensions: ['.ts', '.js'],
     mainFields: ['main'],
+    plugins: [
+      new TsconfigPathsPlugin({
+        baseUrl: path.resolve(__dirname, '.'),
+        configFile: path.resolve(__dirname, './tsconfig.cli.json'),
+      }),
+    ],
   },
 }
 

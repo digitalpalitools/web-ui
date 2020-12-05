@@ -5,14 +5,10 @@
   "author": "Digital Pāli Tools",
   "license": "UNLICENSED",
   "homepage": ".",
-  "main": "./build/src/index-cli.js",
-  "bin": {
-    "dpd-tools": "./build/src/index-cli.js"
-  },
   "scripts": {
     "cli:start": "nodemon",
     "cli:run": "TS_NODE_PROJECT=tsconfig.cli.json node --max-old-space-size=8192 -r ts-node/register ./src/index-cli.ts generate-files",
-    "cli:build": "TS_NODE_PROJECT=tsconfig.cli.json webpack --config webpack.cli.config.ts",
+    "cli:build": "rimraf ./build && TS_NODE_PROJECT=tsconfig.cli.json webpack --config webpack.cli.config.ts",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -38,7 +34,6 @@
     "react-scripts": "4.0.1",
     "styled-components": "^5.2.1",
     "web-vitals": "^0.2.4",
-    "webpack": "4.44.2",
     "winston": "^3.3.3",
     "workbox-background-sync": "^5.1.3",
     "workbox-broadcast-update": "^5.1.3",
@@ -94,7 +89,9 @@
     "ts-loader": "^8.0.11",
     "ts-node": "^9.1.0",
     "tsconfig-paths": "^3.9.0",
+    "tsconfig-paths-webpack-plugin": "^3.3.0",
     "typescript": "^4.1.2",
+    "webpack": "4.44.2",
     "webpack-cli": "^4.2.0",
     "worker-loader": "^3.0.5"
   },
