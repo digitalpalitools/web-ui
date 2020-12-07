@@ -3,24 +3,65 @@
 $rendBlackList = "centre", "nikaya", "book", "chapter", "subhead"
 $nodeBackList = "hi", "pb", "note"
 
-# Filter out unnecessary tags
-#
-$nodes = Select-Xml -Path $file -XPath "//p" | Where-Object {
-  $_.Node.rend -notin $rendBlackList
-} # TODO: Collect the rest for review
+$includeForWCPropName = "_includeForWC"
 
-$nodes | ForEach-Object {
-  $node = $_
-  $nodeBackList | ForEach-Object {
-    Select-Xml -Xml $node.Node -XPath $_
+function ExcludeForWC {
+  param ($node)
+
+  $node.SetAttribute($includeForWCPropName, $False)
+}
+
+function IsNodeExcluded {
+  param ($node)
+
+  $node.Attributes -and $node.Attributes[$includeForWCPropName] -ceq "False"
+}
+
+function GetAllExcludedText {
+  param ($nodesRaw)
+
+  $xmlString = "<body>$(($nodesRaw | ForEach-Object { $_.Node.OuterXml }) -join "`n")</body>"
+  Select-Xml -Xml ([xml]$xmlString) -XPath "//*[@$($includeForWCPropName)='False']" | ForEach-Object {
+    $_.Node.InnerText
+  } | Where-Object { $_ }
+}
+
+function GetAllIncludedText {
+  param ($nodesRaw)
+
+  $nodesRaw | Where-Object {
+    -not (IsNodeExcluded $_.Node)
   } | ForEach-Object {
-    $_.Node.ParentNode.RemoveChild($_.Node)
-  }
-} | Out-Null # TODO: Collect the rest of review
+    $_.Node.ChildNodes | Where-Object {
+      IsNodeExcluded $_
+    } | ForEach-Object {
+      $_.ParentNode.RemoveChild($_)
+    }
 
-# Get lower case of all node texts
+    $_
+  } | ForEach-Object {
+    $_.Node.InnerText.ToLower()
+  }
+}
+
+# Mark tags that need to be filtered out
 #
-$linesRaw = $nodes | ForEach-Object { $_.Node.InnerText.ToLower() }
+$nodeListRaw = Select-Xml -Path $file -XPath "//body/p" | ForEach-Object {
+  $node = $_
+  if ($_.Node.rend -in $rendBlackList) {
+    ExcludeForWC $node.Node
+  } else {
+    $nodeBackList | ForEach-Object {
+      Select-Xml -Xml $node.Node -XPath $_
+    } | ForEach-Object {
+      ExcludeForWC $_.Node
+    }
+  }
+
+  $node
+}
+
+$linesRaw = GetAllIncludedText $nodeListRaw
 
 # Remove punctuation
 #
@@ -29,3 +70,5 @@ $linesNoPunctuations = $linesRaw | ForEach-Object {
 } | ForEach-Object {
   $_ -replace "[.,?‘;’–-…]"
 }
+
+$linesNoPunctuations
