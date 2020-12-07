@@ -1,4 +1,6 @@
-﻿$file = "/mnt/d/src/dpt/cst/cscd/s0201m.mul0.xml"
+﻿Clear-Host
+
+$file = "d:/src/dpt/cst/cscd/s0201m.mul0.xml"
 
 $rendBlackList = "centre", "nikaya", "book", "chapter", "subhead"
 $nodeBackList = "hi", "pb", "note"
@@ -14,7 +16,7 @@ function ExcludeForWC {
 function IsNodeExcluded {
   param ($node)
 
-  $node.Attributes -and $node.Attributes[$includeForWCPropName] -ceq "False"
+  $node.Attributes -and $node.Attributes[$includeForWCPropName].Value -ceq "False"
 }
 
 function GetAllExcludedText {
@@ -27,48 +29,66 @@ function GetAllExcludedText {
 }
 
 function GetAllIncludedText {
-  param ($nodesRaw)
+  param (
+    [Parameter(ValueFromPipeline = $true)]
+    $node
+  )
 
-  $nodesRaw | Where-Object {
-    -not (IsNodeExcluded $_.Node)
-  } | ForEach-Object {
-    $_.Node.ChildNodes | Where-Object {
-      IsNodeExcluded $_
-    } | ForEach-Object {
-      $_.ParentNode.RemoveChild($_)
-    }
+  Begin {}
 
-    $_
-  } | ForEach-Object {
-    $_.Node.InnerText.ToLower()
-  }
-}
-
-# Mark tags that need to be filtered out
-#
-$nodeListRaw = Select-Xml -Path $file -XPath "//body/p" | ForEach-Object {
-  $node = $_
-  if ($_.Node.rend -in $rendBlackList) {
-    ExcludeForWC $node.Node
-  } else {
-    $nodeBackList | ForEach-Object {
-      Select-Xml -Xml $node.Node -XPath $_
-    } | ForEach-Object {
-      ExcludeForWC $_.Node
+  Process {
+    if (-not (IsNodeExcluded $node.Node)) {
+      $toRemove = $node.Node.ChildNodes | Where-Object { IsNodeExcluded $_ }
+      $toRemove | ForEach-Object { $_.ParentNode.RemoveChild($_) } | Out-Null
+      $node.Node.InnerXml.ToLower() # Keep it InnerXml so we catch any children that haven't been removed.
     }
   }
 
-  $node
+  End {}
 }
 
-$linesRaw = GetAllIncludedText $nodeListRaw
+function MarkNodesExcludedFromWC {
+  param(
+    [Parameter(ValueFromPipeline = $true)]
+    $node
+  )
 
-# Remove punctuation
-#
-$linesNoPunctuations = $linesRaw | ForEach-Object {
-  $_.Replace("…pe…", "")
-} | ForEach-Object {
-  $_ -replace "[.,?‘;’–-…]"
+  Begin {}
+
+  Process {
+    if ($_.Node.rend -in $rendBlackList) {
+      ExcludeForWC $node.Node
+    } else {
+      $nodeBackList | ForEach-Object {
+        Select-Xml -Xml $node.Node -XPath $_
+      } | ForEach-Object {
+        ExcludeForWC $_.Node
+      }
+    }
+
+    $node
+  }
+
+  End {}
 }
 
-$linesNoPunctuations
+function RemovePunctuation {
+  param(
+    [Parameter(ValueFromPipeline = $true)]
+    $text
+  )
+
+  Begin {}
+
+  Process {
+    $text.Replace("…pe…", "") -replace "[.,?‘;’–-…]"
+  }
+
+  End {}
+}
+
+$lines = `
+  Select-Xml -Path $file -XPath "//body/p" `
+  | MarkNodesExcludedFromWC `
+  | GetAllIncludedText `
+  | RemovePunctuation `
