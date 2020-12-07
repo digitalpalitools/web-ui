@@ -1,6 +1,9 @@
-﻿Clear-Host
-
-$file = "d:/src/dpt/cst/cscd/s0201m.mul0.xml"
+﻿param (
+  [Parameter(Mandatory)]
+  $srcDir,
+  [Parameter(Mandatory)]
+  $dstDir
+)
 
 $rendBlackList = "centre", "nikaya", "book", "chapter", "subhead"
 $nodeBackList = "hi", "pb", "note"
@@ -20,12 +23,22 @@ function IsNodeExcluded {
 }
 
 function GetAllExcludedText {
-  param ($nodesRaw)
+  param (
+    [Parameter(ValueFromPipeline = $true)]
+    $node
+  )
 
-  $xmlString = "<body>$(($nodesRaw | ForEach-Object { $_.Node.OuterXml }) -join "`n")</body>"
-  Select-Xml -Xml ([xml]$xmlString) -XPath "//*[@$($includeForWCPropName)='False']" | ForEach-Object {
-    $_.Node.InnerText
-  } | Where-Object { $_ }
+  Process {
+    if (IsNodeExcluded $node.Node) {
+      $node.Node.InnerText
+    } else {
+      $innerNodeTexts = Select-Xml -Xml ([xml]$node.Node.OuterXml) -XPath "//*[@$($includeForWCPropName)='False']" | ForEach-Object {
+        $_.Node.InnerText
+      }
+
+      $innerNodeTexts -join " "
+    }
+  }
 }
 
 function GetAllIncludedText {
@@ -34,17 +47,17 @@ function GetAllIncludedText {
     $node
   )
 
-  Begin {}
-
   Process {
     if (-not (IsNodeExcluded $node.Node)) {
-      $toRemove = $node.Node.ChildNodes | Where-Object { IsNodeExcluded $_ }
+      # NOTE: Cloning so as to avoid mutating the original node
+      $nodeClone = (Select-Xml -Xml ([xml]$_.Node.OuterXml) -XPath "*")[0]
+      $toRemove = $nodeClone.Node.ChildNodes | Where-Object { IsNodeExcluded $_ }
       $toRemove | ForEach-Object { $_.ParentNode.RemoveChild($_) } | Out-Null
-      $node.Node.InnerXml.ToLower() # Keep it InnerXml so we catch any children that haven't been removed.
+      $nodeClone.Node.InnerXml.ToLower() # Keep it InnerXml so we catch any children that haven't been removed.
+    } else {
+      ""
     }
   }
-
-  End {}
 }
 
 function MarkNodesExcludedFromWC {
@@ -52,8 +65,6 @@ function MarkNodesExcludedFromWC {
     [Parameter(ValueFromPipeline = $true)]
     $node
   )
-
-  Begin {}
 
   Process {
     if ($_.Node.rend -in $rendBlackList) {
@@ -68,8 +79,6 @@ function MarkNodesExcludedFromWC {
 
     $node
   }
-
-  End {}
 }
 
 function RemovePunctuation {
@@ -78,17 +87,57 @@ function RemovePunctuation {
     $text
   )
 
-  Begin {}
-
   Process {
     $text.Replace("…pe…", "") -replace "[.,?‘;’–-…]"
   }
-
-  End {}
 }
 
-$lines = `
-  Select-Xml -Path $file -XPath "//body/p" `
-  | MarkNodesExcludedFromWC `
-  | GetAllIncludedText `
-  | RemovePunctuation `
+function ProcessFile {
+  param(
+    $srcRoot,
+    $dstRoot,
+    [Parameter(ValueFromPipeline = $true)]
+    $file
+  )
+
+  Process {
+    Write-Host "Processing $($file.FullName)... `t" -NoNewline
+    $dstFilePath = $file.FullName.ToLower().Replace($srcRoot.ToLower(), $dstRoot)
+
+    $nodes = `
+      Select-Xml -Path $file.FullName -XPath "//body/p" `
+      | MarkNodesExcludedFromWC `
+
+    $includedFilePath = [io.path]::ChangeExtension($dstFilePath, "included.txt")
+    $includedLines =
+      $nodes `
+      | GetAllIncludedText `
+      | RemovePunctuation
+    $includedLines | Out-File -FilePath $includedFilePath -Encoding utf8
+
+    $excludedFilePath = [io.path]::ChangeExtension($dstFilePath, "excluded.txt")
+    $excludedLines =
+      $nodes `
+      | GetAllExcludedText
+    $excludedLines | Out-File -FilePath $excludedFilePath -Encoding utf8
+
+    if ($includedLines.Length -ne $excludedLines.Length) {
+      Write-Host "[Check failed!]" -ForegroundColor Red
+    } else {
+      Write-Host "[Checked]" -ForegroundColor Green
+    }
+  }
+}
+
+function ProcessDirectory {
+  param(
+    $srcDir,
+    $dstDir
+  )
+
+  Get-ChildItem -Filter "*.xml" (Join-Path $srcDir "cscd") | Where-Object {
+    -not $_.FullName.EndsWith(".toc.xml")
+  } | ProcessFile $srcDir $dstDir
+}
+
+ProcessDirectory $srcDir $dstDir
