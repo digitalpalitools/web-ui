@@ -1,8 +1,8 @@
 [![Continuous Deployment](https://github.com/digitalpalitools/dpd-tools/workflows/Continuous%20Deployment/badge.svg)](https://github.com/digitalpalitools/dpd-tools/actions?query=workflow%3A%22Continuous+Deployment%22)
 
-# Digital Pāli Dictionary Tools
+# Digital Pāli Tools
 
-A set of tools for Digital Pāli Dictionary. Deployed at [dpd-tools](https://apps.kitamstudios.com/dpd-tools).
+A set of Digital Pāli Tools. Deployed at [dpd-tools](https://apps.kitamstudios.com/dpd-tools).
 
 Create from the [dpd-tools](https://github.com/kitamstudios/dpd-tools) template. See [template README.md](https://github.com/kitamstudios/dpd-tools/blob/358acedc91c62b31910087d54ffa2623761506e0/README.md) for template features available out of the box.
 

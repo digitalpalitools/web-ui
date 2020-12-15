@@ -1,7 +1,7 @@
 {
-  "name": "Digital Pāli Dictionary Tools",
+  "name": "Digital Pāli Tools",
   "short_name": "DPD Tools",
-  "description": "A set of tools for Digital Pāli Dictionary.",
+  "description": "A set of Digital Pāli Tools.",
   "icons": [
     {
       "src": "./favicon-16x16.png",
@@ -56,9 +56,9 @@
   "background_color": "#ffffff",
   "shortcuts": [
     {
-      "name": "Digital Pāli Dictionary Tools",
+      "name": "Digital Pāli Tools",
       "short_name": "DPD Tools",
-      "description": "A set of tools for Digital Pāli Dictionary.",
+      "description": "A set of Digital Pāli Tools.",
       "url": ".",
       "icons": [{ "src": "./android-chrome-192x192.png", "sizes": "192x192" }]
     }

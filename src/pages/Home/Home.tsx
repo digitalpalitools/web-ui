@@ -1,56 +1,55 @@
 import * as React from 'react'
-/* eslint-disable import/no-webpack-loader-syntax */
-import Worker from 'worker-loader!./OdsProcessorWorker'
+import { RouteComponentProps } from 'react-router-dom'
+import * as M from '@material-ui/core'
 
-export type Page1Props = {
-  message: string
-}
+const useStyles = M.makeStyles((theme) => ({
+  cardGrid: {
+    paddingTop: theme.spacing(8),
+    paddingBottom: theme.spacing(8),
+  },
+  grid: {
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  card: {
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  cardContent: {
+    flexGrow: 1,
+  },
+}))
 
-const UploadButton = () => {
-  const [selectedFiles, setSelectedFiles] = React.useState<File>()
-  const [messagesFromWorker, setMessagesFromWorker] = React.useState([] as string[])
-  const odsProcessor = React.useMemo(() => new Worker(), [])
+const cards = [1]
 
-  const onFileSelected = (event: any) => {
-    setSelectedFiles(event.target.files[0])
-  }
+export const Home = (props: RouteComponentProps) => {
+  const classes = useStyles()
 
-  const onSendToWorker = () => {
-    setMessagesFromWorker([])
-    odsProcessor.postMessage({ command: 'create-vocab-csv', odsFile: selectedFiles })
-  }
-
-  odsProcessor.onmessage = (event) => {
-    setMessagesFromWorker([...messagesFromWorker, `${JSON.stringify(event.data)}`])
-  }
+  const navigateToWordFrequency = () => props.history.push('/word-frequency')
 
   return (
-    <div>
-      <label htmlFor="contained-button-file">
-        <input accept=".ods" id="contained-button-file" type="file" onChange={onFileSelected} />
-      </label>
-      <button type="button" onClick={onSendToWorker}>
-        send to worker
-      </button>
-      <div>
-        {messagesFromWorker.map((f, i) => (
-          // eslint-disable-next-line react/no-array-index-key
-          <p key={Date.now() + i}>{f}</p>
+    <M.Container className={classes.cardGrid} maxWidth="md">
+      <M.Grid className={classes.grid} container spacing={4}>
+        {cards.map((card) => (
+          <M.Grid item key={card} xs={12} sm={6} md={4}>
+            <M.Card className={classes.card} onClick={navigateToWordFrequency}>
+              <M.CardActionArea>
+                <M.CardContent className={classes.cardContent}>
+                  <M.Typography gutterBottom variant="h5" component="h2">
+                    Word frequency
+                  </M.Typography>
+                  <M.Typography>
+                    Examine hierarchial word frequency and compare inclusion and exclusion lists.
+                  </M.Typography>
+                </M.CardContent>
+              </M.CardActionArea>
+            </M.Card>
+          </M.Grid>
         ))}
-      </div>
-    </div>
+      </M.Grid>
+    </M.Container>
   )
 }
 
-export const Page1 = (props: Page1Props) => {
-  const { message } = props
-
-  return (
-    <div>
-      <p>This is page 1 - {message}</p>
-      <UploadButton />
-    </div>
-  )
-}
-
-export default Page1
+export default Home
