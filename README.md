@@ -1,10 +1,10 @@
-[![Continuous Deployment](https://github.com/digitalpalitools/dpd-tools/workflows/Continuous%20Deployment/badge.svg)](https://github.com/digitalpalitools/dpd-tools/actions?query=workflow%3A%22Continuous+Deployment%22)
+[![Continuous Deployment](https://github.com/digitalpalitools/dpt-tools/workflows/Continuous%20Deployment/badge.svg)](https://github.com/digitalpalitools/dpt-tools/actions?query=workflow%3A%22Continuous+Deployment%22)
 
 # Digital Pāli Tools
 
-A set of Digital Pāli Tools. Deployed at [dpd-tools](https://apps.kitamstudios.com/dpd-tools).
+A set of Digital Pāli Tools. Deployed at [dpt-tools](https://apps.kitamstudios.com/dpt-tools).
 
-Create from the [dpd-tools](https://github.com/kitamstudios/dpd-tools) template. See [template README.md](https://github.com/kitamstudios/dpd-tools/blob/358acedc91c62b31910087d54ffa2623761506e0/README.md) for template features available out of the box.
+Create from the [dpt-tools](https://github.com/kitamstudios/dpt-tools) template. See [template README.md](https://github.com/kitamstudios/dpt-tools/blob/358acedc91c62b31910087d54ffa2623761506e0/README.md) for template features available out of the box.
 
 # Instructions
 
@@ -21,13 +21,13 @@ Create from the [dpd-tools](https://github.com/kitamstudios/dpd-tools) template.
 > Do every time there is a new feature or bug fix
 
 1. In bash and run the following
-1. Go to the working folder (say /home/bdhrs/dpd-tools)
-1. ```wget https://apps.kitamstudios.com/dpd-tools/dpt-tools-cli.zip && unzip dpt-tools-cli.zip```
+1. Go to the working folder (say /home/bdhrs/dpt-tools)
+1. ```wget https://apps.kitamstudios.com/dpt-tools/dpt-tools-cli.zip && unzip dpt-tools-cli.zip```
 
 ## Regenerate DPD artefacts
 
 1. In bash and run the following
-1. ```node --max-old-space-size=8192 /home/bdhrs/dpd-tools/index-cli.js generate-files '/home/bdhrs/dpd-tools/Pāli English Dictionary.ods' PALI 40```
+1. ```node --max-old-space-size=8192 /home/bdhrs/dpt-tools/index-cli.js generate-files '/home/bdhrs/dpt-tools/Pāli English Dictionary.ods' PALI 40```
 
 ## Features
 

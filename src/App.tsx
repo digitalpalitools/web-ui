@@ -44,6 +44,7 @@ const AppContainer = styled(M.Container)`
   display: flex;
   flex-direction: column;
   padding: 0;
+  max-width: unset;
 `
 
 const App = () => (
