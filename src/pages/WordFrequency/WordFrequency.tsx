@@ -42,14 +42,14 @@ export const WordFrequency = () => {
       <SplitPaneWrapper>
         <SplitPane
           split="vertical"
-          defaultSize="20%"
+          defaultSize="30%"
           allowResize
           style={{ position: 'unset', left: 'unset', right: 'unset' }}
         >
-          <Pane>
-            <WFC.RecursiveTreeView />
+          <Pane className="pane1">
+            <WFC.TipitakaHierarchy />
           </Pane>
-          <Pane>RIGHTTT</Pane>
+          <Pane className="pane2">RIGHTTT</Pane>
         </SplitPane>
       </SplitPaneWrapper>
     </>

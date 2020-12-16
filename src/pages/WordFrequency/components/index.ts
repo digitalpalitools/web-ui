@@ -1,1 +1,1 @@
-export * from './RecursiveTreeView/RecursiveTreeView'
+export * from './TipitakaHierarchy/TipitakaHierarchy'
