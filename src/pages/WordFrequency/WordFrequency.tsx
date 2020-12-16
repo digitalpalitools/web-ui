@@ -1,3 +1,5 @@
+import { useState } from 'react'
+import { RouteComponentProps } from 'react-router-dom'
 import SplitPane, { Pane } from 'react-split-pane'
 import styled from 'styled-components'
 import * as WFC from './components'
@@ -35,7 +37,23 @@ const SplitPaneWrapper = styled.div`
   }
 `
 
-export const WordFrequency = () => {
+export interface WordFrequencyParams {
+  nodeId: string
+}
+
+export const WordFrequency = (props: RouteComponentProps<WordFrequencyParams>) => {
+  const {
+    match: {
+      params: { nodeId: defaultSelectedNodeId },
+    },
+  } = props
+  const [selectedNode, setSelectedNode] = useState(defaultSelectedNodeId)
+
+  const handleSelectedNodeChanged = (nid: string) => {
+    setSelectedNode(nid)
+    props.history.push(`/word-frequency/${nid}`)
+  }
+
   return (
     <>
       <Header />
@@ -47,9 +65,12 @@ export const WordFrequency = () => {
           style={{ position: 'unset', left: 'unset', right: 'unset' }}
         >
           <Pane className="pane1">
-            <WFC.TipitakaHierarchy />
+            <WFC.TipitakaHierarchy
+              defaultSelectedNodeId={defaultSelectedNodeId}
+              onSelectedNodeChanged={handleSelectedNodeChanged}
+            />
           </Pane>
-          <Pane className="pane2">RIGHTTT</Pane>
+          <Pane className="pane2">{selectedNode || 'Nothing selected yet'}</Pane>
         </SplitPane>
       </SplitPaneWrapper>
     </>

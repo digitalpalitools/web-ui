@@ -4,7 +4,7 @@
 
 A set of Digital Pāli Tools. Deployed at [dpt-tools](https://apps.kitamstudios.com/dpt-tools).
 
-Create from the [dpt-tools](https://github.com/kitamstudios/dpt-tools) template. See [template README.md](https://github.com/kitamstudios/dpt-tools/blob/358acedc91c62b31910087d54ffa2623761506e0/README.md) for template features available out of the box.
+Create from the [dpt-tools](https://github.com/kitamstudios/cra-template-kitamstudios) template. See [template README.md](https://github.com/kitamstudios/cra-template-kitamstudios/blob/358acedc91c62b31910087d54ffa2623761506e0/README.md) for template features available out of the box.
 
 # Instructions
 

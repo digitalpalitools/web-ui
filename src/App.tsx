@@ -18,8 +18,8 @@ const AppFooter = ({ version }: any) => {
   return (
     <CenteredDiv>
       <M.Typography variant="caption" color="textSecondary">
-        <M.Link color="inherit" href="https://www.kitamstudios.com/">
-          Kitam Studios
+        <M.Link color="inherit" href="https://github.com/digitalpalitools/">
+          Digital Pāli Tools
         </M.Link>
         {` | ${version}`}
       </M.Typography>
@@ -58,7 +58,7 @@ const App = () => (
               <Suspense fallback={<div>Loading...</div>}>
                 <Switch>
                   <Route exact path="/" component={HomePage} />
-                  <Route exact path="/word-frequency" component={WordFrequencyPage} />
+                  <Route path="/word-frequency/:nodeId" component={WordFrequencyPage} />
                   <Route component={() => <div>Not Found</div>} />
                 </Switch>
               </Suspense>
