@@ -63,16 +63,14 @@ export const TipitakaHierarchyNodeDetails = (props: TipitakaHierarchyNodeDetails
     <div className={classes.root}>
       <M.AppBar className={classes.appBar} position="static">
         <M.Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
-          {selectedNodeId?.startsWith('leaf |') && <M.Tab label="diff view" {...a11yProps(1)} />}
-          <M.Tab label="word frequency" {...a11yProps(0)} />
+          <M.Tab label="diff view" {...a11yProps(0)} />
+          <M.Tab label="word frequency" {...a11yProps(1)} />
         </M.Tabs>
       </M.AppBar>
-      {selectedNodeId?.startsWith('leaf |') && (
-        <TabPanel value={value} index={1}>
-          Diff view for {selectedNodeId}
-        </TabPanel>
-      )}
       <TabPanel value={value} index={0}>
+        Diff view for {selectedNodeId}
+      </TabPanel>
+      <TabPanel value={value} index={1}>
         Word frequency for {selectedNodeId}
       </TabPanel>
     </div>
