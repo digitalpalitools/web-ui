@@ -24,12 +24,14 @@ const useStyles = M.makeStyles({
 })
 
 export type TipitakaHierarchyProps = {
-  defaultSelectedNodeId: string
+  selectedNodeId?: string
   onSelectedNodeChanged: (nodeId: string) => void
 }
 
 export const TipitakaHierarchy = (props: TipitakaHierarchyProps) => {
-  const { defaultSelectedNodeId, onSelectedNodeChanged } = props
+  const { selectedNodeId, onSelectedNodeChanged } = props
+
+  const selectedNodeIdWithDefault = selectedNodeId || (tipitakaHierarchyData.children || [])[0].id
 
   const classes = useStyles()
 
@@ -50,10 +52,11 @@ export const TipitakaHierarchy = (props: TipitakaHierarchyProps) => {
   return (
     <>
       <MLab.TreeView
+        multiSelect={false}
         className={classes.root}
         defaultCollapseIcon={<MIcon.ExpandMore />}
         defaultExpandIcon={<MIcon.ChevronRight />}
-        defaultExpanded={[defaultSelectedNodeId]}
+        selected={selectedNodeIdWithDefault}
         onNodeSelect={handleNodeSelect}
       >
         {renderHierarchy(tipitakaHierarchyData.children || [])}

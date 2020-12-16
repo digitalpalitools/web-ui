@@ -38,20 +38,20 @@ const SplitPaneWrapper = styled.div`
 `
 
 export interface WordFrequencyParams {
-  nodeId: string
+  nodeId?: string
 }
 
 export const WordFrequency = (props: RouteComponentProps<WordFrequencyParams>) => {
   const {
     match: {
-      params: { nodeId: defaultSelectedNodeId },
+      params: { nodeId },
     },
   } = props
-  const [selectedNode, setSelectedNode] = useState(defaultSelectedNodeId)
+  const [selectedNodeId, setSelectedNodeId] = useState(nodeId)
 
-  const handleSelectedNodeChanged = (nid: string) => {
-    setSelectedNode(nid)
-    props.history.push(`/word-frequency/${nid}`)
+  const handleSelectedNodeChanged = (nId: string) => {
+    setSelectedNodeId(nId)
+    props.history.push(`/word-frequency/${encodeURIComponent(nId)}`)
   }
 
   return (
@@ -65,12 +65,11 @@ export const WordFrequency = (props: RouteComponentProps<WordFrequencyParams>) =
           style={{ position: 'unset', left: 'unset', right: 'unset' }}
         >
           <Pane className="pane1">
-            <WFC.TipitakaHierarchy
-              defaultSelectedNodeId={defaultSelectedNodeId}
-              onSelectedNodeChanged={handleSelectedNodeChanged}
-            />
+            <WFC.TipitakaHierarchy selectedNodeId={selectedNodeId} onSelectedNodeChanged={handleSelectedNodeChanged} />
           </Pane>
-          <Pane className="pane2">{selectedNode || 'Nothing selected yet'}</Pane>
+          <Pane className="pane2">
+            <WFC.TipitakaHierarchyNodeDetails selectedNodeId={selectedNodeId} />
+          </Pane>
         </SplitPane>
       </SplitPaneWrapper>
     </>

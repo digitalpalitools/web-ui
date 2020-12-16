@@ -58,7 +58,7 @@ const App = () => (
               <Suspense fallback={<div>Loading...</div>}>
                 <Switch>
                   <Route exact path="/" component={HomePage} />
-                  <Route path="/word-frequency/:nodeId" component={WordFrequencyPage} />
+                  <Route path="/word-frequency/:nodeId?" component={WordFrequencyPage} />
                   <Route component={() => <div>Not Found</div>} />
                 </Switch>
               </Suspense>

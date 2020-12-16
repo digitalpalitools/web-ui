@@ -16,6 +16,7 @@ function ConvertTo-TipitakaHierarchy {
       id = $Node.text
     }
 
+    $nodeType = "folder"
     if ($Node.src) {
       $hierarchy.id = $Node.src
       $childHierarchyFile = Join-Path $SrcDir $Node.src
@@ -27,6 +28,7 @@ function ConvertTo-TipitakaHierarchy {
     } elseif ($Node.action) {
       $hierarchy.id = $Node.action
       $hierarchy.source = $Node.action
+      $nodeType = "leaf"
     } elseif ($Node.tree -is [array]) {
       [array] $hierarchy.children =
         $Node.tree
@@ -39,7 +41,7 @@ function ConvertTo-TipitakaHierarchy {
       throw "Unknown node type: $($Node.Name)"
     }
 
-    $hierarchy.id = $hierarchy.id -ireplace "^(\.\/)"
+    $hierarchy.id = "{0} | {1}" -f $nodeType, ($hierarchy.id -ireplace "^(\.\/)").ToLowerInvariant()
 
     [PSCustomObject]$hierarchy
   }
