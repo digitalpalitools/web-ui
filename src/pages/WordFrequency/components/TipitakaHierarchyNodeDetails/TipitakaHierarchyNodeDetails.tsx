@@ -1,6 +1,6 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import * as M from '@material-ui/core'
 import { useState } from 'react'
+import { DiffView } from '../DiffView/DiffView'
 
 interface TabPanelProps {
   children: React.ReactNode
@@ -19,11 +19,7 @@ const TabPanel = (props: TabPanelProps) => {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <M.Box p={3}>
-          <M.Typography>{children}</M.Typography>
-        </M.Box>
-      )}
+      {value === index && <>{children}</>}
     </div>
   )
 }
@@ -59,22 +55,43 @@ export const TipitakaHierarchyNodeDetails = (props: TipitakaHierarchyNodeDetails
 
   const { selectedNodeId } = props
 
-  const tabView = (
+  if (!selectedNodeId) {
+    return <div>Nothing selected</div>
+  }
+
+  // TODO: Make deep links more userfriendly
+  const [nodeType, nodeRelativePath] = selectedNodeId.split('|').map((x) => x.trim())
+
+  // TODO: Make DRY
+  if (nodeType === 'folder') {
+    return (
+      <div className={classes.root}>
+        <M.AppBar className={classes.appBar} position="static">
+          <M.Tabs value={value} onChange={handleChange}>
+            <M.Tab label="word frequency" {...a11yProps(0)} />
+          </M.Tabs>
+        </M.AppBar>
+        <TabPanel value={value} index={0}>
+          Word frequency for {selectedNodeId}
+        </TabPanel>
+      </div>
+    )
+  }
+
+  return (
     <div className={classes.root}>
       <M.AppBar className={classes.appBar} position="static">
-        <M.Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
+        <M.Tabs value={value} onChange={handleChange}>
           <M.Tab label="diff view" {...a11yProps(0)} />
           <M.Tab label="word frequency" {...a11yProps(1)} />
         </M.Tabs>
       </M.AppBar>
       <TabPanel value={value} index={0}>
-        Diff view for {selectedNodeId}
+        <DiffView nodeRelativePath={nodeRelativePath} />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Word frequency for {selectedNodeId}
+        Word frequency for {nodeRelativePath} which is a {nodeType}
       </TabPanel>
     </div>
   )
-
-  return selectedNodeId ? tabView : <div>Nothing selected</div>
 }

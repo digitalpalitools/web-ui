@@ -60,7 +60,7 @@ export const WordFrequency = (props: RouteComponentProps<WordFrequencyParams>) =
       <SplitPaneWrapper>
         <SplitPane
           split="vertical"
-          defaultSize="30%"
+          defaultSize="20%"
           allowResize
           style={{ position: 'unset', left: 'unset', right: 'unset' }}
         >
