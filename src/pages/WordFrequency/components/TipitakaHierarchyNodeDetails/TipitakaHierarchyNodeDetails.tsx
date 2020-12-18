@@ -17,6 +17,7 @@ const TabPanel = (props: TabPanelProps) => {
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
+      style={{ display: 'flex', flexDirection: 'column', overflowY: 'auto' }}
       {...other}
     >
       {value === index && <>{children}</>}
@@ -31,8 +32,13 @@ const a11yProps = (index: any) => {
   }
 }
 
-const useStyles = M.makeStyles((theme: M.Theme) => ({
-  root: {},
+const useStyles = M.makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
+    flex: 1,
+    overflowY: 'auto',
+  },
   appBar: {
     backgroundColor: theme.palette.background.paper,
   },

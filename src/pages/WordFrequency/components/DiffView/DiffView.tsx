@@ -8,7 +8,13 @@ interface DiffViewLine {
   exclusions: string
 }
 
-const useStyles = M.makeStyles((theme: M.Theme) => ({
+const useStyles = M.makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+    flexDirection: 'row',
+    flex: 1,
+    overflowY: 'auto',
+  },
   table: {
     tableLayout: 'fixed',
   },
@@ -44,7 +50,7 @@ export const DiffView = (props: DiffViewProps) => {
   const classes = useStyles()
 
   const [rows, setRows] = useState([] as DiffViewLine[])
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -73,7 +79,7 @@ export const DiffView = (props: DiffViewProps) => {
   }, [nodeRelativePath])
 
   const table = (
-    <div>
+    <div className={classes.root}>
       <M.Table className={classes.table} aria-label="sxs compare table" id="somethingUnique">
         <colgroup>
           <col style={{ width: '3rem' }} />

@@ -15,11 +15,11 @@ const theme = createMuiTheme({
           margin: '0',
           padding: '0',
         },
+        'html > body *': {
+          // border: 'solid 1px red',
+        },
         '#root': {
           height: '100vh',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'stretch',
         },
       },
     },

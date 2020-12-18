@@ -10,6 +10,28 @@ const WordFrequencyPage = lazy(() => import('./pages/WordFrequency/WordFrequency
 
 const { REACT_APP_VERSION, REACT_APP_AI_INSTRUMENTATION_KEY } = process.env
 
+const AppContainer = styled(M.Container)`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  max-width: unset;
+`
+
+const AppBody = styled.section`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow-y: auto;
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow-y: auto;
+  }
+`
+
 const AppFooter = ({ version }: any) => {
   const CenteredDiv = styled.footer`
     align-self: center;
@@ -26,26 +48,6 @@ const AppFooter = ({ version }: any) => {
     </CenteredDiv>
   )
 }
-
-const AppBody = styled.section`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-
-  > div {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-  }
-`
-
-const AppContainer = styled(M.Container)`
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  padding: 0;
-  max-width: unset;
-`
 
 const App = () => (
   <M.StylesProvider injectFirst>

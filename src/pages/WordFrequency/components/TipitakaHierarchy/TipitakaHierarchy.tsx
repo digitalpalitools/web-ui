@@ -13,7 +13,12 @@ export interface TipitakaHierarchyNode {
 const tipitakaHierarchyData = TipitakaHierarchyData as TipitakaHierarchyNode
 
 const useStyles = M.makeStyles({
-  root: {},
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
+    flex: '0 0 25%',
+    overflowY: 'auto',
+  },
   label: {
     whiteSpace: 'nowrap',
     overflow: 'hidden',
@@ -48,10 +53,9 @@ export const TipitakaHierarchy = (props: TipitakaHierarchyProps) => {
   }
 
   return (
-    <>
+    <div className={classes.root}>
       <MLab.TreeView
         multiSelect={false}
-        className={classes.root}
         defaultCollapseIcon={<MIcon.ExpandMore />}
         defaultExpandIcon={<MIcon.ChevronRight />}
         selected={selectedNodeIdWithDefault}
@@ -59,6 +63,6 @@ export const TipitakaHierarchy = (props: TipitakaHierarchyProps) => {
       >
         {renderHierarchy(tipitakaHierarchyData.children || [])}
       </MLab.TreeView>
-    </>
+    </div>
   )
 }
