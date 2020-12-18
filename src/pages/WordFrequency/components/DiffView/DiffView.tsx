@@ -15,9 +15,10 @@ const useStyles = M.makeStyles((theme: M.Theme) => ({
   tableRow: {
     '& td, & th': {
       padding: '0.3rem',
-      lineHeight: '1rem',
+      lineHeight: '1.1rem',
       fontFamily: 'monospace',
-      fontSize: 'medium',
+      fontSize: 'large',
+      overflowWrap: 'break-word',
     },
     '& td:not(:last-child), & th:not(:last-child)': {
       borderRight: 'solid 1px',
@@ -30,7 +31,7 @@ export interface DiffViewProps {
   nodeRelativePath: string
 }
 
-const getLinesOfFile = async (nodeRelativePath: string, type = ''): Promise<string[]> => {
+const getLinesOfFile = async (nodeRelativePath: string, type: string): Promise<string[]> => {
   const basePath = 'https://raw.githubusercontent.com/digitalpalitools/wordFreq/master'
   const resp = await fetch(`${basePath}/${decodeURIComponent(nodeRelativePath)}${type}.txt`)
   const text = await resp.text()
@@ -50,7 +51,7 @@ export const DiffView = (props: DiffViewProps) => {
       setIsLoading(true)
 
       const downloads = [
-        getLinesOfFile(nodeRelativePath, ''),
+        getLinesOfFile(nodeRelativePath, '.original'),
         getLinesOfFile(nodeRelativePath, '.included'),
         getLinesOfFile(nodeRelativePath, '.excluded'),
       ]
@@ -73,7 +74,7 @@ export const DiffView = (props: DiffViewProps) => {
 
   const table = (
     <div>
-      <M.Table className={classes.table} size="small" aria-label="sxs compare table" id="somethingUnique">
+      <M.Table className={classes.table} aria-label="sxs compare table" id="somethingUnique">
         <colgroup>
           <col style={{ width: '3rem' }} />
           <col style={{ width: '33%' }} />
