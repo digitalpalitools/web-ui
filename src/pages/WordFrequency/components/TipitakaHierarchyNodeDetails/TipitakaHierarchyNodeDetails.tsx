@@ -32,10 +32,7 @@ const a11yProps = (index: any) => {
 }
 
 const useStyles = M.makeStyles((theme: M.Theme) => ({
-  root: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
-  },
+  root: {},
   appBar: {
     backgroundColor: theme.palette.background.paper,
   },

@@ -72,7 +72,7 @@ export const DiffView = (props: DiffViewProps) => {
   }, [nodeRelativePath])
 
   const table = (
-    <M.TableContainer component={M.Paper}>
+    <div>
       <M.Table className={classes.table} size="small" aria-label="sxs compare table" id="somethingUnique">
         <colgroup>
           <col style={{ width: '3rem' }} />
@@ -107,7 +107,7 @@ export const DiffView = (props: DiffViewProps) => {
           ))}
         </M.TableBody>
       </M.Table>
-    </M.TableContainer>
+    </div>
   )
 
   return isLoading ? <div>Loading...</div> : table

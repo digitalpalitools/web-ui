@@ -16,9 +16,7 @@ const useStyles = M.makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
   },
-  cardContent: {
-    flexGrow: 1,
-  },
+  cardContent: {},
 }))
 
 const cards = [1]

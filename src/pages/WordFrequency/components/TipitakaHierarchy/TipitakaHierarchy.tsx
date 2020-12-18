@@ -13,9 +13,7 @@ export interface TipitakaHierarchyNode {
 const tipitakaHierarchyData = TipitakaHierarchyData as TipitakaHierarchyNode
 
 const useStyles = M.makeStyles({
-  root: {
-    flexGrow: 1,
-  },
+  root: {},
   label: {
     whiteSpace: 'nowrap',
     overflow: 'hidden',
