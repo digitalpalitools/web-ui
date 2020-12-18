@@ -8,6 +8,8 @@ interface DiffViewLine {
   exclusions: string
 }
 
+const CACHE: { [key: string]: DiffViewLine[] } = {}
+
 const useStyles = M.makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -56,22 +58,28 @@ export const DiffView = (props: DiffViewProps) => {
     const fetchData = async () => {
       setIsLoading(true)
 
-      const downloads = [
-        getLinesOfFile(nodeRelativePath, '.original'),
-        getLinesOfFile(nodeRelativePath, '.included'),
-        getLinesOfFile(nodeRelativePath, '.excluded'),
-      ]
+      if (CACHE[nodeRelativePath] === undefined) {
+        const downloads = [
+          getLinesOfFile(nodeRelativePath, '.original'),
+          getLinesOfFile(nodeRelativePath, '.included'),
+          getLinesOfFile(nodeRelativePath, '.excluded'),
+        ]
 
-      const [org, incls, excls] = await Promise.all(downloads)
+        const [org, incls, excls] = await Promise.all(downloads)
 
-      const rs = Array.from({ length: org.length }, (_v, k) => k).map((i) => ({
-        line: i,
-        inclusions: incls[i],
-        original: org[i],
-        exclusions: excls[i],
-      }))
+        const rs = Array.from({ length: org.length }, (_v, k) => k).map((i) => ({
+          line: i,
+          inclusions: incls[i],
+          original: org[i],
+          exclusions: excls[i],
+        }))
 
-      setRows(rs)
+        CACHE[nodeRelativePath] = rs
+      } else {
+        console.log('Found key in cache', nodeRelativePath)
+      }
+
+      setRows(CACHE[nodeRelativePath])
       setIsLoading(false)
     }
 
