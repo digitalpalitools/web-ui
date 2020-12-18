@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState, useEffect } from 'react'
 import * as M from '@material-ui/core'
 
 interface DiffViewLine {
@@ -10,12 +10,14 @@ interface DiffViewLine {
 
 const useStyles = M.makeStyles((theme: M.Theme) => ({
   table: {
-    minWidth: 650,
+    tableLayout: 'fixed',
   },
   tableRow: {
     '& td, & th': {
-      padding: '0.25rem',
-      lineHeight: '1.1rem',
+      padding: '0.3rem',
+      lineHeight: '1rem',
+      fontFamily: 'monospace',
+      fontSize: 'medium',
     },
     '& td:not(:last-child), & th:not(:last-child)': {
       borderRight: 'solid 1px',
@@ -28,9 +30,16 @@ export interface DiffViewProps {
   nodeRelativePath: string
 }
 
+const getLinesOfFile = async (nodeRelativePath: string, type = ''): Promise<string[]> => {
+  const basePath = 'https://raw.githubusercontent.com/digitalpalitools/wordFreq/master'
+  const resp = await fetch(`${basePath}/${decodeURIComponent(nodeRelativePath)}${type}.txt`)
+  const text = await resp.text()
+  return text.split('\n')
+}
+
 export const DiffView = (props: DiffViewProps) => {
   const { nodeRelativePath } = props
-  // const rows = useMemo(() => createRows(nodeRelativePath), [nodeRelativePath])
+
   const classes = useStyles()
 
   const [rows, setRows] = useState([] as DiffViewLine[])
@@ -39,37 +48,21 @@ export const DiffView = (props: DiffViewProps) => {
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true)
-      // TODO: Do all in parallel.
 
-      const org = await fetch(
-        `https://raw.githubusercontent.com/digitalpalitools/wordFreq/master/${decodeURIComponent(
-          nodeRelativePath,
-        )}.txt`,
-      ).then((x) => x.text())
-      const orgTextLines = org.split('\n')
+      const downloads = [
+        getLinesOfFile(nodeRelativePath, ''),
+        getLinesOfFile(nodeRelativePath, '.included'),
+        getLinesOfFile(nodeRelativePath, '.excluded'),
+      ]
 
-      const incl = await fetch(
-        `https://raw.githubusercontent.com/digitalpalitools/wordFreq/master/${decodeURIComponent(
-          nodeRelativePath,
-        )}.included.txt`,
-      ).then((x) => x.text())
-      const inclTextLines = incl.split('\n')
+      const [org, incls, excls] = await Promise.all(downloads)
 
-      const excl = await fetch(
-        `https://raw.githubusercontent.com/digitalpalitools/wordFreq/master/${decodeURIComponent(
-          nodeRelativePath,
-        )}.excluded.txt`,
-      ).then((x) => x.text())
-      const exclTextLines = excl.split('\n')
-
-      const rs = Array.from({ length: orgTextLines.length }, (_v, k) => k).map((i) => ({
+      const rs = Array.from({ length: org.length }, (_v, k) => k).map((i) => ({
         line: i,
-        inclusions: inclTextLines[i],
-        original: orgTextLines[i],
-        exclusions: exclTextLines[i],
+        inclusions: incls[i],
+        original: org[i],
+        exclusions: excls[i],
       }))
-
-      // const rs = orgText.split('\n').map((l, i) => ({ line: i, original: l } as DiffViewLine))
 
       setRows(rs)
       setIsLoading(false)
@@ -82,23 +75,29 @@ export const DiffView = (props: DiffViewProps) => {
     <M.TableContainer component={M.Paper}>
       <M.Table className={classes.table} size="small" aria-label="sxs compare table" id="somethingUnique">
         <colgroup>
-          <col width="1%" />
-          <col width="33%" />
-          <col width="33%" />
-          <col width="33%" />
+          <col style={{ width: '3rem' }} />
+          <col style={{ width: '33%' }} />
+          <col style={{ width: '33%' }} />
+          <col style={{ width: '33%' }} />
         </colgroup>
         <M.TableHead>
           <M.TableRow className={classes.tableRow}>
-            <M.TableCell />
-            <M.TableCell align="left">Inclusions</M.TableCell>
-            <M.TableCell align="left">Original</M.TableCell>
-            <M.TableCell align="left">Exclusions</M.TableCell>
+            <M.TableCell align="right" />
+            <M.TableCell align="left">
+              <strong>Inclusions</strong>
+            </M.TableCell>
+            <M.TableCell align="left">
+              <strong>Original</strong>
+            </M.TableCell>
+            <M.TableCell align="left">
+              <strong>Exclusions</strong>
+            </M.TableCell>
           </M.TableRow>
         </M.TableHead>
         <M.TableBody>
           {rows.map((row) => (
             <M.TableRow hover key={row.line} className={classes.tableRow}>
-              <M.TableCell component="th" scope="row">
+              <M.TableCell component="th" scope="row" align="center">
                 {row.line}
               </M.TableCell>
               <M.TableCell align="left">{row.inclusions}</M.TableCell>
