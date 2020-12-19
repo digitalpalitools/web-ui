@@ -50,10 +50,10 @@ export type TipitakaHierarchyNodeDetailsProps = {
 
 export const TipitakaHierarchyNodeDetails = (props: TipitakaHierarchyNodeDetailsProps) => {
   const classes = useStyles()
-  const [value, setValue] = useState(0)
+  const [activeTab, setActiveTab] = useState(0)
 
   const handleChange = (_event: any, newValue: number) => {
-    setValue(newValue)
+    setActiveTab(newValue)
   }
 
   const { selectedNodeId } = props
@@ -62,19 +62,21 @@ export const TipitakaHierarchyNodeDetails = (props: TipitakaHierarchyNodeDetails
     return <div>Nothing selected</div>
   }
 
-  // TODO: Make deep links more userfriendly
-  const [nodeType, nodeRelativePath] = selectedNodeId.split('|').map((x) => x.trim())
-
+  const isContainer = /toc\d*\.xml$/i.test(selectedNodeId) || !/\.xml$/i.test(selectedNodeId)
   // TODO: Make DRY
-  if (nodeType === 'folder') {
+  if (isContainer) {
+    if (activeTab === 1) {
+      setActiveTab(0)
+    }
+
     return (
       <div className={classes.root}>
         <M.AppBar className={classes.appBar} position="static">
-          <M.Tabs value={value} onChange={handleChange}>
+          <M.Tabs value={activeTab} onChange={handleChange}>
             <M.Tab label="word frequency" {...a11yProps(0)} />
           </M.Tabs>
         </M.AppBar>
-        <TabPanel value={value} index={0}>
+        <TabPanel value={activeTab} index={0}>
           Word frequency for {selectedNodeId}
         </TabPanel>
       </div>
@@ -84,16 +86,16 @@ export const TipitakaHierarchyNodeDetails = (props: TipitakaHierarchyNodeDetails
   return (
     <div className={classes.root}>
       <M.AppBar className={classes.appBar} position="static">
-        <M.Tabs value={value} onChange={handleChange}>
+        <M.Tabs value={activeTab} onChange={handleChange}>
           <M.Tab label="diff view" {...a11yProps(0)} />
           <M.Tab label="word frequency" {...a11yProps(1)} />
         </M.Tabs>
       </M.AppBar>
-      <TabPanel value={value} index={0}>
-        <DiffView nodeRelativePath={nodeRelativePath} />
+      <TabPanel value={activeTab} index={0}>
+        <DiffView nodeRelativePath={selectedNodeId} />
       </TabPanel>
-      <TabPanel value={value} index={1}>
-        Word frequency for {nodeRelativePath} which is a {nodeType}
+      <TabPanel value={activeTab} index={1}>
+        Word frequency for {selectedNodeId} which is a {isContainer ? 'Container' : 'Leaf'}
       </TabPanel>
     </div>
   )

@@ -40,7 +40,7 @@ export interface DiffViewProps {
 }
 
 const getLinesOfFile = async (nodeRelativePath: string, type: string): Promise<string[]> => {
-  const basePath = 'https://raw.githubusercontent.com/digitalpalitools/wordFreq/master'
+  const basePath = 'https://raw.githubusercontent.com/digitalpalitools/wordFreq/master/cscd'
   const resp = await fetch(`${basePath}/${decodeURIComponent(nodeRelativePath)}${type}.txt`)
   const text = await resp.text()
   return text.split('\n')
