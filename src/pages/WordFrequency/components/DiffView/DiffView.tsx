@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react'
 import * as M from '@material-ui/core'
 
-interface DiffViewLine {
+interface DiffViewRecord {
   line: number
   inclusions: string
   original: string
   exclusions: string
 }
 
-const CACHE: { [key: string]: DiffViewLine[] } = {}
+const CACHE: { [key: string]: DiffViewRecord[] } = {}
 
 const useStyles = M.makeStyles((theme) => ({
   root: {
@@ -35,15 +35,15 @@ const useStyles = M.makeStyles((theme) => ({
   },
 }))
 
-export interface DiffViewProps {
-  nodeRelativePath: string
-}
-
 const getLinesOfFile = async (nodeRelativePath: string, type: string): Promise<string[]> => {
   const basePath = 'https://raw.githubusercontent.com/digitalpalitools/wordFreq/master/cscd'
-  const resp = await fetch(`${basePath}/${decodeURIComponent(nodeRelativePath)}${type}.txt`)
+  const resp = await fetch(`${basePath}/${decodeURIComponent(nodeRelativePath)}.${type}.txt`)
   const text = await resp.text()
   return text.split('\n')
+}
+
+export interface DiffViewProps {
+  nodeRelativePath: string
 }
 
 export const DiffView = (props: DiffViewProps) => {
@@ -51,7 +51,7 @@ export const DiffView = (props: DiffViewProps) => {
 
   const classes = useStyles()
 
-  const [rows, setRows] = useState([] as DiffViewLine[])
+  const [rows, setRows] = useState([] as DiffViewRecord[])
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
@@ -60,9 +60,9 @@ export const DiffView = (props: DiffViewProps) => {
 
       if (CACHE[nodeRelativePath] === undefined) {
         const downloads = [
-          getLinesOfFile(nodeRelativePath, '.original'),
-          getLinesOfFile(nodeRelativePath, '.included'),
-          getLinesOfFile(nodeRelativePath, '.excluded'),
+          getLinesOfFile(nodeRelativePath, 'original'),
+          getLinesOfFile(nodeRelativePath, 'included'),
+          getLinesOfFile(nodeRelativePath, 'excluded'),
         ]
 
         const [org, incls, excls] = await Promise.all(downloads)
@@ -76,7 +76,7 @@ export const DiffView = (props: DiffViewProps) => {
 
         CACHE[nodeRelativePath] = rs
       } else {
-        console.log('Found key in cache', nodeRelativePath)
+        console.log('Diff data found key in cache', nodeRelativePath)
       }
 
       setRows(CACHE[nodeRelativePath])
@@ -88,7 +88,7 @@ export const DiffView = (props: DiffViewProps) => {
 
   const table = (
     <div className={classes.root}>
-      <M.Table className={classes.table} aria-label="sxs compare table" id="somethingUnique">
+      <M.Table className={classes.table} aria-label="sxs compare table">
         <colgroup>
           <col style={{ width: '3rem' }} />
           <col style={{ width: '33%' }} />

@@ -2,76 +2,112 @@ param (
   $SrcDir = (Join-Path $PSScriptRoot "../../cst")
 )
 
+$rootId = "__root__"
+
 function ConvertTo-TipitakaHierarchy {
   param(
     $SrcRoot,
+    $ParentId,
     [Parameter(ValueFromPipeline = $true)]
     [Xml.XmlNode]
     $Node
   )
 
   Process {
-    $hierarchy = @{
-      name = if ($Node.text) { $Node.text } else { "?" }
-      id = $Node.text
+    [PSCustomObject] $entry = @{
+      parent = $ParentId
+      name = if ($Node.text) { $Node.text } else { $rootId }
+      source = ""
     }
 
-    $nodeType = "folder"
+    $entry.id = $entry.name
+
+    $childEntries = @()
+
     if ($Node.src) {
-      $hierarchy.id = $Node.src
+      $entry.id = $Node.src
       $childHierarchyFile = Join-Path $SrcDir $Node.src
       $childHierarchyNode = [xml](Get-Content $childHierarchyFile)
-      [array] $hierarchy.children =
+      [array] $childEntries =
         $childHierarchyNode.tree.ChildNodes
         | Where-Object { $_.Name -ne "#comment" }
-        | ConvertTo-TipitakaHierarchy $SrcRoot
+        | ConvertTo-TipitakaHierarchy $SrcRoot $entry.id
     } elseif ($Node.action) {
-      $hierarchy.id = $Node.action
-      $hierarchy.source = $Node.action
-      $nodeType = "leaf"
+      $entry.id = $Node.action
+      $entry.source = $Node.action
     } elseif ($Node.tree -is [array]) {
-      [array] $hierarchy.children =
+      [array] $childEntries =
         $Node.tree
-        | ConvertTo-TipitakaHierarchy $SrcRoot
+        | ConvertTo-TipitakaHierarchy $SrcRoot $entry.id
     } elseif ($Node.tree -isnot [array]) {
-      [array] $hierarchy.children =
+      [array] $childEntries =
         $Node.tree.tree
-        | ConvertTo-TipitakaHierarchy $SrcRoot
+        | ConvertTo-TipitakaHierarchy $SrcRoot $entry.id
     } else {
       throw "Unknown node type: $($Node.Name)"
     }
 
-    $hierarchy.id = "{0} | {1}" -f $nodeType, ($hierarchy.id -ireplace "^(\.\/)").ToLowerInvariant()
-
-    [PSCustomObject]$hierarchy
+    @($entry) + $childEntries
   }
+}
+
+function NormalizeId {
+  param(
+    [Parameter(ValueFromPipeline = $true)]
+    $Id
+  )
+
+  $newId = ($Id -ireplace "^(\.\/)?(cscd\/)").ToLowerInvariant()
+
+  if ($newId -imatch "^toc(\d)*\.xml") {
+    $newId = "../$newId"
+  }
+
+  $newId
 }
 
 $tocFile = Join-Path $SrcDir "tipitaka_toc.xml"
 Write-Host "Generating Hierarchy with $tocFile"
-$toc = [xml](Get-Content $tocFile)
+[xml] $toc = Get-Content $tocFile
 
-$hierarchy = $toc | ConvertTo-TipitakaHierarchy $SrcRoot
+$entries = $toc | ConvertTo-TipitakaHierarchy $SrcRoot "tipitaka_toc.xml"
+$entries = $entries | ForEach-Object {
+  $_.id = $_.id | NormalizeId
+  $_.source = $_.source | NormalizeId
+  $_.parent = $_.parent | NormalizeId
 
-$outFile = Join-Path $PSScriptRoot "..\src\pages\WordFrequency\components\TipitakaHierarchy\tipitakahierarchy.json"
-$hierarchy | ConvertTo-Json -Depth 15 >$outFile
+  if ($_.parent -eq "?") {
+    $_.parent = $rootId
+  }
+
+  $_
+}
+
+$outFile = Join-Path $PSScriptRoot "..\src\pages\WordFrequency\services\TipitakaHierarchyService\tipitakahierarchy.json"
+$entries | ConvertTo-Json -Depth 15 >$outFile
 
 # Self tests
 #
 $expectedNodeCount = 2955
-
 Write-Host "... Check that expected count is $expectedNodeCount " -NoNewline
-$allIds = Get-Content $outFile | Where-Object { $_ -imatch '"id": "' } | ForEach-Object { $_.Trim() }
-if ($allIds.Count -eq $expectedNodeCount) {
+if ($entries.Length -eq $expectedNodeCount) {
   Write-Host -ForegroundColor Green "[PASS]"
 } else {
-  Write-Host -ForegroundColor Red "[FAIL: Actual count is $($allIds.Count)]"
+  Write-Host -ForegroundColor Red "[FAIL: Actual count is $($entries.Count)]"
 }
 
 Write-Host "... Check that ids are unique " -NoNewline
-$groups = $allIds | Group-Object
-if ($allIds.Count -eq $groups.Count) {
+$groups = $entries | Group-Object -Property id
+if ($entries.Length -eq $groups.Count) {
   Write-Host -ForegroundColor Green "[PASS]"
 } else {
-  Write-Host -ForegroundColor Red "[FAIL: One or more ids not unque! ($($allIds.Count) vs $($groups.Count))]"
+  Write-Host -ForegroundColor Red "[FAIL: One or more ids not unque! ($($entries.Count) vs $($groups.Count))]"
+}
+
+Write-Host "... Check that just 1 ID with $rootId " -NoNewline
+$roots = $entries | Where-Object { $_.id -eq $rootId }
+if ($roots.Length -eq 1) {
+  Write-Host -ForegroundColor Green "[PASS]"
+} else {
+  Write-Host -ForegroundColor Red "[FAIL: More than 1 $root! ($($roots.Length))]"
 }

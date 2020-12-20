@@ -1,6 +1,7 @@
 import * as M from '@material-ui/core'
 import { useState } from 'react'
 import { DiffView } from '../DiffView/DiffView'
+import { WordFrequencyView } from '../WordFrequencyView/WordFrequencyView'
 
 interface TabPanelProps {
   children: React.ReactNode
@@ -77,7 +78,7 @@ export const TipitakaHierarchyNodeDetails = (props: TipitakaHierarchyNodeDetails
           </M.Tabs>
         </M.AppBar>
         <TabPanel value={activeTab} index={0}>
-          Word frequency for {selectedNodeId}
+          <WordFrequencyView nodeId={selectedNodeId} />
         </TabPanel>
       </div>
     )
@@ -87,15 +88,15 @@ export const TipitakaHierarchyNodeDetails = (props: TipitakaHierarchyNodeDetails
     <div className={classes.root}>
       <M.AppBar className={classes.appBar} position="static">
         <M.Tabs value={activeTab} onChange={handleChange}>
-          <M.Tab label="diff view" {...a11yProps(0)} />
-          <M.Tab label="word frequency" {...a11yProps(1)} />
+          <M.Tab label="word frequency" {...a11yProps(0)} />
+          <M.Tab label="diff view" {...a11yProps(1)} />
         </M.Tabs>
       </M.AppBar>
       <TabPanel value={activeTab} index={0}>
-        <DiffView nodeRelativePath={selectedNodeId} />
+        <WordFrequencyView nodeId={selectedNodeId} />
       </TabPanel>
       <TabPanel value={activeTab} index={1}>
-        Word frequency for {selectedNodeId} which is a {isContainer ? 'Container' : 'Leaf'}
+        <DiffView nodeRelativePath={selectedNodeId} />
       </TabPanel>
     </div>
   )

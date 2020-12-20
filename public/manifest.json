@@ -56,10 +56,10 @@
   "background_color": "#ffffff",
   "shortcuts": [
     {
-      "name": "Digital Pāli Tools",
-      "short_name": "DPD Tools",
-      "description": "A set of Digital Pāli Tools.",
-      "url": ".",
+      "name": "Digital Pāli Tools - Word Frequency",
+      "short_name": "DPT Word Frequency",
+      "description": "Tipitaka Word Frequency tool of Digital Pāli Tools.",
+      "url": "#/word-frequency/",
       "icons": [{ "src": "./android-chrome-192x192.png", "sizes": "192x192" }]
     }
   ]
