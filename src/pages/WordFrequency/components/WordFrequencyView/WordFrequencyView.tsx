@@ -1,38 +1,14 @@
 import { useEffect, useState } from 'react'
-import * as M from '@material-ui/core'
+import * as C from '../../../../components'
 
 interface WordFrequencyViewRecord {
   id: number
   word: string
   frequency: number
+  length: number
 }
 
 const CACHE: { [key: string]: WordFrequencyViewRecord[] } = {}
-
-const useStyles = M.makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-    flexDirection: 'row',
-    flex: 1,
-    overflowY: 'auto',
-  },
-  table: {
-    tableLayout: 'fixed',
-  },
-  tableRow: {
-    '& td, & th': {
-      padding: '0.3rem',
-      lineHeight: '1.1rem',
-      fontFamily: 'monospace',
-      fontSize: 'large',
-      overflowWrap: 'break-word',
-    },
-    '& td:not(:last-child), & th:not(:last-child)': {
-      borderRight: 'solid 1px',
-      borderRightColor: theme.palette.secondary.light,
-    },
-  },
-}))
 
 const loadWFData = async (nodeId: string): Promise<WordFrequencyViewRecord[] | string> => {
   const basePath = 'https://raw.githubusercontent.com/digitalpalitools/wordFreq/master/cscd'
@@ -49,11 +25,74 @@ const loadWFData = async (nodeId: string): Promise<WordFrequencyViewRecord[] | s
           id: i,
           word: parts[0],
           frequency: parseInt(parts[1], 10),
+          length: parts[0].length,
         }
       })
   }
 
   return `Error in loading ${csvUrl}: Details: ${resp.statusText}`
+}
+
+const columnDefinitions: C.KsTableColumnDefinition[] = [
+  {
+    id: 0,
+    field: 'word',
+    displayName: 'Word',
+    sortable: true,
+    width: 'auto',
+  },
+  {
+    id: 1,
+    field: 'frequency',
+    displayName: 'Frequency',
+    sortable: true,
+    width: 'auto',
+  },
+  {
+    id: 2,
+    field: 'length',
+    displayName: 'Length',
+    sortable: true,
+    align: 'left',
+  },
+]
+
+const sortData = (sortBy: string, sortOrder: C.KsTableSortOrder, data: any[]) => {
+  let compareFn: (a: any, b: any) => number = (a, b) => a - b
+
+  switch (sortBy) {
+    case 'word':
+      compareFn = (r1: any, r2: any) => {
+        let ret = r1.word.localeCompare(r2.word)
+        if (sortOrder === 'desc') {
+          ret *= -1
+        } else if (sortOrder === undefined) {
+          ret = 0
+        }
+        return ret
+      }
+      break
+
+    case 'frequency':
+    case 'length':
+      compareFn = (r1: any, r2: any) => {
+        if (r1[sortBy] < r2[sortBy]) {
+          return sortOrder === 'asc' ? -1 : 1
+        }
+
+        if (r1[sortBy] > r2[sortBy]) {
+          return sortOrder === 'asc' ? 1 : -1
+        }
+
+        return 0
+      }
+      break
+
+    default:
+      break
+  }
+
+  return data.sort(compareFn)
 }
 
 export interface WordFrequencyViewParams {
@@ -63,11 +102,11 @@ export interface WordFrequencyViewParams {
 export const WordFrequencyView = (props: WordFrequencyViewParams) => {
   const { nodeId } = props
 
-  const classes = useStyles()
-
   const [rows, setRows] = useState([] as WordFrequencyViewRecord[])
   const [isLoading, setIsLoading] = useState(true)
   const [loadingError, setLoadingError] = useState('')
+  const [sortBy, setSortBy] = useState('frequency')
+  const [sortOrder, setSortOrder] = useState('desc' as C.KsTableSortOrder)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -94,33 +133,31 @@ export const WordFrequencyView = (props: WordFrequencyViewParams) => {
     fetchData()
   }, [nodeId])
 
+  const requestSort = (pSortBy: string) => {
+    let sortByX = sortBy
+    let sortOrderX = sortOrder
+
+    if (pSortBy === sortBy) {
+      sortOrderX = sortOrderX === 'asc' ? 'desc' : 'asc'
+    } else {
+      sortByX = pSortBy
+      sortOrderX = 'asc'
+    }
+    const sortedItems = sortData(sortByX, sortOrderX, rows)
+
+    setSortOrder(sortOrderX)
+    setSortBy(sortByX)
+    setRows(sortedItems)
+  }
+
   const table = (
-    <div className={classes.root}>
-      <M.Table className={classes.table} aria-label="diff view table">
-        <colgroup>
-          <col style={{ width: '50%' }} />
-          <col style={{ width: '50%' }} />
-        </colgroup>
-        <M.TableHead>
-          <M.TableRow className={classes.tableRow}>
-            <M.TableCell align="left">
-              <strong>Word</strong>
-            </M.TableCell>
-            <M.TableCell align="left">
-              <strong>Frequency</strong>
-            </M.TableCell>
-          </M.TableRow>
-        </M.TableHead>
-        <M.TableBody>
-          {rows.map((row) => (
-            <M.TableRow hover key={row.id} className={classes.tableRow}>
-              <M.TableCell align="left">{row.word}</M.TableCell>
-              <M.TableCell align="left">{row.frequency}</M.TableCell>
-            </M.TableRow>
-          ))}
-        </M.TableBody>
-      </M.Table>
-    </div>
+    <C.KsTable
+      columnDefinitions={columnDefinitions}
+      rows={rows}
+      sortOrder={sortOrder}
+      sortBy={sortBy}
+      requestSort={requestSort}
+    />
   )
 
   if (isLoading) {
