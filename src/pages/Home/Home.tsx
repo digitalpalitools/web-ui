@@ -19,32 +19,41 @@ const useStyles = M.makeStyles((theme) => ({
   cardContent: {},
 }))
 
-const cards = [1]
-
 export const Home = (props: RouteComponentProps) => {
   const classes = useStyles()
 
   const navigateToWordFrequency = () => props.history.push('/word-frequency')
+  const navigateToPaliSort = () => props.history.push('/pali-sort')
 
   return (
     <M.Container className={classes.cardGrid} maxWidth="md">
       <M.Grid className={classes.grid} container spacing={4}>
-        {cards.map((card) => (
-          <M.Grid item key={card} xs={12} sm={6} md={4}>
-            <M.Card className={classes.card} onClick={navigateToWordFrequency}>
-              <M.CardActionArea>
-                <M.CardContent className={classes.cardContent}>
-                  <M.Typography gutterBottom variant="h5" component="h2">
-                    Word frequency
-                  </M.Typography>
-                  <M.Typography>
-                    Examine hierarchial word frequency and compare inclusion and exclusion lists.
-                  </M.Typography>
-                </M.CardContent>
-              </M.CardActionArea>
-            </M.Card>
-          </M.Grid>
-        ))}
+        <M.Grid item key={0} xs={12} sm={6} md={4}>
+          <M.Card className={classes.card} onClick={navigateToWordFrequency}>
+            <M.CardActionArea>
+              <M.CardContent className={classes.cardContent}>
+                <M.Typography gutterBottom variant="h5" component="h2">
+                  Word frequency
+                </M.Typography>
+                <M.Typography>
+                  Examine hierarchial word frequency and compare inclusion and exclusion lists.
+                </M.Typography>
+              </M.CardContent>
+            </M.CardActionArea>
+          </M.Card>
+        </M.Grid>
+        <M.Grid item key={1} xs={12} sm={6} md={4}>
+          <M.Card className={classes.card} onClick={navigateToPaliSort}>
+            <M.CardActionArea>
+              <M.CardContent className={classes.cardContent}>
+                <M.Typography gutterBottom variant="h5" component="h2">
+                  Pāli Sort
+                </M.Typography>
+                <M.Typography>Sort a list of pāli words.</M.Typography>
+              </M.CardContent>
+            </M.CardActionArea>
+          </M.Card>
+        </M.Grid>
       </M.Grid>
     </M.Container>
   )

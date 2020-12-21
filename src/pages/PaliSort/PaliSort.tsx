@@ -2,6 +2,8 @@ import { useState } from 'react'
 import * as M from '@material-ui/core'
 import * as Icons from '@material-ui/icons'
 
+declare const window: any
+
 const useStyles = M.makeStyles((theme) => ({
   inputArea: {
     display: 'flex',
@@ -31,7 +33,15 @@ export const PaliSort = () => {
     setSortedText(
       inputText
         .split('\n')
+        .map((l): string => {
+          const sin = window.DPR_translitCore_mod.convertX2SI(l, window.DPR_translitCore_mod.ScriptIds.RO)
+          return window.DPR_translitCore_mod.convertSI2X(sin, window.DPR_translitCore_mod.ScriptIds.HI)
+        })
         .sort((s1, s2) => s1.localeCompare(s2))
+        .map((l): string => {
+          const sin = window.DPR_translitCore_mod.convertX2SI(l, window.DPR_translitCore_mod.ScriptIds.HI)
+          return window.DPR_translitCore_mod.convertSI2X(sin, window.DPR_translitCore_mod.ScriptIds.RO)
+        })
         .join('\n'),
     )
   }
