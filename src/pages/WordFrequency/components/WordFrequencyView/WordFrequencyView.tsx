@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
+import * as M from '@material-ui/core'
 import * as C from '../../../../components'
+import * as S from '../../services'
 
 interface WordFrequencyViewRecord {
   id: number
@@ -8,7 +10,13 @@ interface WordFrequencyViewRecord {
   length: number
 }
 
-const CACHE: { [key: string]: WordFrequencyViewRecord[] } = {}
+interface WordFrequencyViewCache {
+  words: WordFrequencyViewRecord[]
+  name: string
+  maxLength: number
+}
+
+const CACHE: { [key: string]: WordFrequencyViewCache } = {}
 
 const loadWFData = async (nodeId: string): Promise<WordFrequencyViewRecord[] | string> => {
   const basePath = 'https://raw.githubusercontent.com/digitalpalitools/wordFreq/master/cscd'
@@ -95,38 +103,58 @@ const sortData = (sortBy: string, sortOrder: C.KsTableSortOrder, data: any[]) =>
   return data.sort(compareFn)
 }
 
+const useStyles = M.makeStyles({
+  header: {
+    paddingTop: '1rem',
+    paddingBottom: '1rem',
+  },
+})
+
 export interface WordFrequencyViewParams {
   nodeId: string
 }
 
 export const WordFrequencyView = (props: WordFrequencyViewParams) => {
   const { nodeId } = props
+  const classes = useStyles()
 
   const [rows, setRows] = useState([] as WordFrequencyViewRecord[])
   const [isLoading, setIsLoading] = useState(true)
   const [loadingError, setLoadingError] = useState('')
   const [sortBy, setSortBy] = useState('frequency')
   const [sortOrder, setSortOrder] = useState('desc' as C.KsTableSortOrder)
+  const [maxWordLength, setMaxWordLength] = useState(0)
+  const [nodeName, setNodeName] = useState('')
 
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true)
       setLoadingError('')
 
-      if (!CACHE[nodeId] || CACHE[nodeId].length === 0) {
+      if (!CACHE[nodeId] || CACHE[nodeId].words.length === 0) {
         const recs = await loadWFData(nodeId)
 
         if (typeof recs === 'string') {
           setLoadingError(recs)
-          CACHE[nodeId] = []
+          CACHE[nodeId] = {
+            words: [],
+            maxLength: 0,
+            name: '',
+          }
         } else {
-          CACHE[nodeId] = recs
+          CACHE[nodeId] = {
+            words: recs,
+            maxLength: Math.max(...recs.map((r) => r.length)),
+            name: S.getNodeFromId(nodeId).name,
+          }
         }
       } else {
         console.log('CSV data found key in cache', nodeId)
       }
 
-      setRows(CACHE[nodeId])
+      setRows(CACHE[nodeId].words)
+      setMaxWordLength(CACHE[nodeId].maxLength)
+      setNodeName(CACHE[nodeId].name)
       setIsLoading(false)
     }
 
@@ -151,13 +179,19 @@ export const WordFrequencyView = (props: WordFrequencyViewParams) => {
   }
 
   const table = (
-    <C.KsTable
-      columnDefinitions={columnDefinitions}
-      rows={rows}
-      sortOrder={sortOrder}
-      sortBy={sortBy}
-      requestSort={requestSort}
-    />
+    <>
+      <M.Paper className={classes.header}>
+        <strong>{nodeName}</strong>
+        {`: ${rows.length} words, ${maxWordLength} max length`}
+      </M.Paper>
+      <C.KsTable
+        columnDefinitions={columnDefinitions}
+        rows={rows}
+        sortOrder={sortOrder}
+        sortBy={sortBy}
+        requestSort={requestSort}
+      />
+    </>
   )
 
   if (isLoading) {

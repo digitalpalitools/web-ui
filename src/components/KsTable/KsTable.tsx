@@ -2,7 +2,6 @@ import * as M from '@material-ui/core'
 
 export type KsTableSortOrder = 'asc' | 'desc' | undefined
 
-// TODO: row cannot be any, it must have at least id field
 export interface KsTableRow {
   id: number
 }

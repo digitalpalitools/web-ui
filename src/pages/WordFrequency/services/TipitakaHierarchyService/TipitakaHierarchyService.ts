@@ -28,3 +28,6 @@ export const getChildren = (id: string): TipitakaHierarchyNode[] => {
 }
 
 export const getRootNodes = (): TipitakaHierarchyNode[] => getChildren('__root__')
+
+export const getNodeFromId = (id: string) =>
+  tipitakaHierarchyEntries.find((e) => e.id === id) || ({} as TipitakaHierarchyEntry)
