@@ -7,6 +7,7 @@ import theme from './Theme'
 
 const HomePage = lazy(() => import('./pages/Home/Home'))
 const WordFrequencyPage = lazy(() => import('./pages/WordFrequency/WordFrequency'))
+const PaliSortPage = lazy(() => import('./pages/PaliSort/PaliSort'))
 
 const { REACT_APP_VERSION, REACT_APP_AI_INSTRUMENTATION_KEY } = process.env
 
@@ -60,6 +61,7 @@ const App = () => (
               <Suspense fallback={<div>Loading...</div>}>
                 <Switch>
                   <Route exact path="/" component={HomePage} />
+                  <Route exact path="/pali-sort" component={PaliSortPage} />
                   <Route path="/word-frequency/:nodeId?" component={WordFrequencyPage} />
                   <Route component={() => <div>Not Found</div>} />
                 </Switch>
