@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import * as M from '@material-ui/core'
 import styled from 'styled-components'
+import * as RDS from 'react-drag-sizing'
 import * as WFC from './components'
 
 const Header = styled.div`
@@ -15,10 +16,13 @@ const useStyles = M.makeStyles((theme) => ({
     flex: 1,
     overflowY: 'auto',
   },
-  splitter: {
-    width: '0.25rem',
+  resizeContainerClassName: {
+    minWidth: '0',
+    width: '12rem',
+  },
+  resizeHandlerClassName: {
+    width: '0.5rem',
     backgroundColor: theme.palette.background.paper,
-    cursor: 'col-resize',
   },
 }))
 
@@ -45,8 +49,14 @@ export const WordFrequency = (props: RouteComponentProps<WordFrequencyParams>) =
     <>
       <Header />
       <div className={classes.root}>
-        <WFC.TipitakaHierarchy selectedNodeId={selectedNodeId} onSelectedNodeChanged={handleSelectedNodeChanged} />
-        <div className={classes.splitter} />
+        <RDS.DragSizing
+          border="right"
+          className={classes.resizeContainerClassName}
+          handlerClassName={classes.resizeHandlerClassName}
+          handlerStyle={{ width: '0.5rem' }}
+        >
+          <WFC.TipitakaHierarchy selectedNodeId={selectedNodeId} onSelectedNodeChanged={handleSelectedNodeChanged} />
+        </RDS.DragSizing>
         <WFC.TipitakaHierarchyNodeDetails selectedNodeId={selectedNodeId} />
       </div>
     </>
