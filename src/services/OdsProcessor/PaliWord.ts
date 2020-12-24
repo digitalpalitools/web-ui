@@ -224,7 +224,7 @@ export class PaliWord {
   }
 
   createTocSummary(): string {
-    return `<li><a href="#${this.tocId()}">${this.pali1}</a>: ${this.pos}, ${this.inEnglish}</li>`
+    return `<li><a href="#${this.tocId()}">${this.pali1}</a>: ${this.pos}. ${this.inEnglish}</li>`
   }
 
   createWordData(): string {
