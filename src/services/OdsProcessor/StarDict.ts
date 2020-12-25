@@ -27,7 +27,7 @@ const htmlTemplate = `
 table.word-info-table tr {
   vertical-align: top;
 }
-span.sutta-source {
+table.word-info-table tr td:nth-child(1), span.sutta-source {
   color: orange;
 }
 </style>
@@ -42,11 +42,11 @@ const padTrailingNumbers = (s: string) => s.replace(/\d+/g, (m) => '00'.substr(m
 const createHtmlForWordGroup = (ws: PaliWord[]): string => {
   const sws = ws.sort((w1, w2) => padTrailingNumbers(w1.pali1).localeCompare(padTrailingNumbers(w2.pali1)))
 
-  const toc = ws.length < 2 ? '' : sws.map((w) => w.createTocSummary()).join('\n')
+  const toc = ws.length < 2 ? '' : `${sws.map((w) => w.createTocSummary()).join('\n')}<br/>`
 
   const html = sws.map((w) => w.createWordData()).join('')
 
-  return htmlTemplate.replace('{{__CONTENTS__}}', `${toc}<br/>${html}`)
+  return htmlTemplate.replace('{{__CONTENTS__}}', `${toc}${html}`)
 }
 
 const createDict = (wordGroups: PaliWordGroup, reporter: Reporter): [IdxWord[], Buffer] => {
