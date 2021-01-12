@@ -2,9 +2,9 @@
 
 # Digital Pāli Tools
 
-A set of Digital Pāli Tools. Deployed at [dpt-tools](https://apps.kitamstudios.com/dpt-tools).
+A set of Digital Pāli Tools. Deployed at [apps](https://d.pali.tools/apps).
 
-Create from the [dpt-tools](https://github.com/kitamstudios/cra-template-kitamstudios) template. See [template README.md](https://github.com/kitamstudios/cra-template-kitamstudios/blob/358acedc91c62b31910087d54ffa2623761506e0/README.md) for template features available out of the box.
+Create from the [cra-template-kitamstudios](https://github.com/kitamstudios/cra-template-kitamstudios) template. See [template README.md](https://github.com/kitamstudios/cra-template-kitamstudios/blob/358acedc91c62b31910087d54ffa2623761506e0/README.md) for template features available out of the box.
 
 # Instructions
 
@@ -22,7 +22,7 @@ Create from the [dpt-tools](https://github.com/kitamstudios/cra-template-kitamst
 
 1. In bash and run the following
 1. Go to the working folder (say /home/bdhrs/dpt-tools)
-1. ```wget https://apps.kitamstudios.com/dpt-tools/dpt-tools-cli.zip && unzip dpt-tools-cli.zip```
+1. ```wget https://apps.kitamstudios.com/apps/dpt-tools-cli.zip && unzip dpt-tools-cli.zip```
 
 ## Regenerate DPD artefacts
 

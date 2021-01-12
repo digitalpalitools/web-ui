@@ -24,6 +24,7 @@ export const Home = (props: RouteComponentProps) => {
 
   const navigateToWordFrequency = () => props.history.push('/word-frequency')
   const navigateToPaliSort = () => props.history.push('/pali-sort')
+  const navigateToCount = () => props.history.push('/count')
 
   return (
     <M.Container className={classes.cardGrid} maxWidth="md">
@@ -50,6 +51,18 @@ export const Home = (props: RouteComponentProps) => {
                   Pāli Sort
                 </M.Typography>
                 <M.Typography>Sort a list of pāli words.</M.Typography>
+              </M.CardContent>
+            </M.CardActionArea>
+          </M.Card>
+        </M.Grid>
+        <M.Grid item key={2} xs={12} sm={6} md={4}>
+          <M.Card className={classes.card} onClick={navigateToCount}>
+            <M.CardActionArea>
+              <M.CardContent className={classes.cardContent}>
+                <M.Typography gutterBottom variant="h5" component="h2">
+                  Count
+                </M.Typography>
+                <M.Typography>Count the length of pāli words.</M.Typography>
               </M.CardContent>
             </M.CardActionArea>
           </M.Card>

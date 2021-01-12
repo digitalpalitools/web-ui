@@ -44,7 +44,7 @@ jobs:
       - name: Build
         run: yarn build
         env:
-          REACT_APP_RELATIVE_ROOT: /dpt-tools # NOTE: Ensure no trailing '/'
+          REACT_APP_RELATIVE_ROOT: /apps # NOTE: Ensure no trailing '/'
           REACT_APP_VERSION: ${{steps.createbuildversion.outputs.buildversion}}
           REACT_APP_AI_INSTRUMENTATION_KEY: ${{ secrets.AZURE_CREDENTIALS_KSAPPLICATIONS_AI_KEY }}
 
@@ -53,7 +53,7 @@ jobs:
         with:
           pathtosettingsfile: './build/manifest.json'
           keyname1: 'scope'
-          valuetoset: '/dpt-tools/'
+          valuetoset: '/apps/'
 
       - name: Azure Login
         uses: azure/login@v1
@@ -65,7 +65,7 @@ jobs:
         with:
           azcliversion: 2.0.72
           inlineScript: |
-              az storage blob upload-batch --account-name ksapplications -d '$web\dpt-tools' -s ./build
+              az storage blob upload-batch --account-name ksapplications -d '$web\apps' -s ./build
 
       - name: Azure Logout
         run: |

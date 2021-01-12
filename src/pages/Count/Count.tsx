@@ -25,7 +25,7 @@ const useStyles = M.makeStyles((theme) => ({
   },
 }))
 
-export const PaliSort = () => {
+export const Count = () => {
   const classes = useStyles()
   const [inputText, setInputText] = useState('khantī paramaṃ tapo titikkhā'.replaceAll(' ', '\n'))
   const [sortedText, setSortedText] = useState('')
@@ -34,7 +34,7 @@ export const PaliSort = () => {
     setSortedText(
       inputText
         .split('\n')
-        .sort((s1, s2) => wasm_bindgen.string_compare(s1, s2))
+        .map((s1) => `${wasm_bindgen.string_length(s1)}`)
         .join('\n'),
     )
   }
@@ -54,4 +54,4 @@ export const PaliSort = () => {
   )
 }
 
-export default PaliSort
+export default Count

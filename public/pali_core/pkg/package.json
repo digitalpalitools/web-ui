@@ -1,0 +1,14 @@
+{
+  "name": "@digitalpalitools/pali_core",
+  "collaborators": [
+    "Digital Pāli Tools <digitalpalitools@gmail.com>"
+  ],
+  "version": "0.1.0",
+  "files": [
+    "pali_core_bg.wasm",
+    "pali_core.js",
+    "pali_core.d.ts"
+  ],
+  "browser": "pali_core.js",
+  "types": "pali_core.d.ts"
+}

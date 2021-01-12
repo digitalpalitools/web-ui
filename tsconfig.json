@@ -36,5 +36,6 @@
   "include": [
     "*.ts",
     "src/**/*",
+    "public/pali_core/pkg/*",
   ]
 }
