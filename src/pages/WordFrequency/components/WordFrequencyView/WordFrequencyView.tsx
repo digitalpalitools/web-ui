@@ -3,6 +3,9 @@ import * as M from '@material-ui/core'
 import * as C from '../../../../components'
 import * as S from '../../services'
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
+declare const wasm_bindgen: any
+
 interface WordFrequencyViewRecord {
   id: number
   word: string
@@ -33,7 +36,7 @@ const loadWFData = async (nodeId: string): Promise<WordFrequencyViewRecord[] | s
           id: i,
           word: parts[0],
           frequency: parseInt(parts[1], 10),
-          length: parts[0].length,
+          length: wasm_bindgen.string_length(parts[0]),
         }
       })
   }
@@ -71,7 +74,7 @@ const sortData = (sortBy: string, sortOrder: C.KsTableSortOrder, data: any[]) =>
   switch (sortBy) {
     case 'word':
       compareFn = (r1: any, r2: any) => {
-        let ret = r1.word.localeCompare(r2.word)
+        let ret = wasm_bindgen.string_compare(r1.word, r2.word)
         if (sortOrder === 'desc') {
           ret *= -1
         } else if (sortOrder === undefined) {

@@ -27,7 +27,13 @@ const useStyles = M.makeStyles((theme) => ({
 
 export const Count = () => {
   const classes = useStyles()
-  const [inputText, setInputText] = useState('khantī paramaṃ tapo titikkhā'.replaceAll(' ', '\n'))
+  const [inputText, setInputText] = useState(
+    // eslint-disable-next-line max-len
+    'khantī paramaṃ tapo titikkhā a ā i ī u ū e o k kh g gh ṅ c ch j jh ñ ṭ ṭh ḍ ḍh ṇ t th d dh n p ph b bh m y r l v s h ḷ ṃ'.replaceAll(
+      ' ',
+      '\n',
+    ),
+  )
   const [sortedText, setSortedText] = useState('')
 
   const sortInputs = () => {
