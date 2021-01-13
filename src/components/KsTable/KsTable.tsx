@@ -86,7 +86,9 @@ export const KsTable = (props: KsTableProps) => {
           {rows.map((item: any) => (
             <M.TableRow hover key={item.id} className={classes.tableRow}>
               {columnDefinitions.map((colDef) => (
-                <M.TableCell key={colDef.id}>{item[colDef.field]}</M.TableCell>
+                <M.TableCell key={colDef.id} align={colDef.align}>
+                  {item[colDef.field]}
+                </M.TableCell>
               ))}
             </M.TableRow>
           ))}
