@@ -65,6 +65,7 @@ const App = () => (
                   <Route exact path="/" component={HomePage} />
                   <Route exact path="/pali-sort" component={PaliSortPage} />
                   <Route exact path="/count" component={CountPage} />
+                  <Route exact path="/converter" component={ComingSoonPage} />
                   <Route path="/word-frequency/:nodeId?" component={WordFrequencyPage} />
                   <Route exact path="/inflect" component={ComingSoonPage} />
                   <Route exact path="/match" component={ComingSoonPage} />

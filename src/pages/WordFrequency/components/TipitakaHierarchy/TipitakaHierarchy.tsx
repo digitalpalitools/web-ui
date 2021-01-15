@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import * as M from '@material-ui/core'
 import * as MLab from '@material-ui/lab'
 import * as MIcon from '@material-ui/icons'
@@ -24,11 +25,25 @@ export type TipitakaHierarchyProps = {
 
 export const TipitakaHierarchy = (props: TipitakaHierarchyProps) => {
   const { selectedNodeId, onSelectedNodeChanged } = props
+  const [selected, setSelected] = useState<string[]>([])
 
-  const rootNodes = S.getRootNodes()
+  const rootNodes = S.getChildren(S.RootNodeId)
   const selectedNodeIdWithDefault = selectedNodeId || rootNodes[0].id
+  console.log(selectedNodeIdWithDefault)
 
   const classes = useStyles()
+
+  const handleNodeCheckboxChanged = (nodeId: string) => (e: any) => {
+    const { checked } = e.currentTarget
+
+    const x = S.getAllChildIds(nodeId)
+    const nodeIds = [nodeId, ...x]
+    const newSelected = checked ? [...selected, ...nodeIds] : selected.filter((id) => !nodeIds.includes(id))
+
+    setSelected(newSelected)
+  }
+
+  const handleNodeCheckboxClicked = (e: any) => e.stopPropagation()
 
   const renderHierarchy = (nodes: S.TipitakaHierarchyNode[]) => {
     if (nodes.length === 0) {
@@ -40,7 +55,25 @@ export const TipitakaHierarchy = (props: TipitakaHierarchyProps) => {
         {nodes.length === 0
           ? null
           : nodes.map((node) => (
-              <MLab.TreeItem classes={{ label: classes.label }} key={node.id} nodeId={node.id} label={node.name}>
+              <MLab.TreeItem
+                classes={{ label: classes.label }}
+                key={node.id}
+                nodeId={node.id}
+                label={
+                  <M.FormControlLabel
+                    control={
+                      <M.Checkbox
+                        size="small"
+                        checked={selected.some((item) => item === node.id)}
+                        onChange={handleNodeCheckboxChanged(node.id)}
+                        onClick={handleNodeCheckboxClicked}
+                      />
+                    }
+                    label={<>{node.name}</>}
+                    key={node.id}
+                  />
+                }
+              >
                 {renderHierarchy(S.getChildren(node.id))}
               </MLab.TreeItem>
             ))}
@@ -48,9 +81,13 @@ export const TipitakaHierarchy = (props: TipitakaHierarchyProps) => {
     )
   }
 
-  const handleNodeSelect = (_event: any, nodeId: string) => {
+  const handleNodeSelect = (_e: any, nodeId: string) => {
     onSelectedNodeChanged(nodeId)
   }
+
+  // TODO:
+  // - Deep link expand
+  // - Scroll bar is messed up
 
   return (
     <div className={classes.root}>
@@ -58,7 +95,7 @@ export const TipitakaHierarchy = (props: TipitakaHierarchyProps) => {
         multiSelect={false}
         defaultCollapseIcon={<MIcon.ExpandMore />}
         defaultExpandIcon={<MIcon.ChevronRight />}
-        selected={selectedNodeIdWithDefault}
+        defaultExpanded={[rootNodes[0].id]}
         onNodeSelect={handleNodeSelect}
       >
         {renderHierarchy(rootNodes)}

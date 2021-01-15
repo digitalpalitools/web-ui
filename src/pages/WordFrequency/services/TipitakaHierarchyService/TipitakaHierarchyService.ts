@@ -1,33 +1,48 @@
+import * as C from '../../../../common'
 import TipitakaHierarchyData from './tipitakahierarchy.json'
 
 export interface TipitakaHierarchyEntry {
   id: string
   parent: string
   name: string
-  source: string
 }
 
 export interface TipitakaHierarchyNode {
   id: string
   name: string
-  source: string
   children: TipitakaHierarchyNode[]
 }
 
 const tipitakaHierarchyEntries = TipitakaHierarchyData as TipitakaHierarchyEntry[]
 
-export const getChildren = (id: string): TipitakaHierarchyNode[] => {
+export const RootNodeId = '__root__'
+
+type NodeIdToChildrenMap = (id: string) => TipitakaHierarchyNode[]
+
+const getChildrenCore: NodeIdToChildrenMap = (id) => {
   return tipitakaHierarchyEntries
     .filter((e) => e.parent === id)
     .map((e) => ({
       id: e.id,
       name: e.name,
-      source: e.source,
       children: [],
     }))
 }
 
-export const getRootNodes = (): TipitakaHierarchyNode[] => getChildren('__root__')
+export const getChildren: NodeIdToChildrenMap = C.memoizer(getChildrenCore)
 
-export const getNodeFromId = (id: string) =>
+type NodeIdToNodeMap = (id: string) => TipitakaHierarchyEntry
+
+const getNodeFromIdCore: NodeIdToNodeMap = (id) =>
   tipitakaHierarchyEntries.find((e) => e.id === id) || ({} as TipitakaHierarchyEntry)
+
+export const getNodeFromId: NodeIdToNodeMap = C.memoizer(getNodeFromIdCore)
+
+type NodeIdToChildIdsMap = (id: string) => string[]
+
+const getAllChildIdsCore: NodeIdToChildIdsMap = (id) => {
+  // eslint-disable-next-line @typescript-eslint/no-use-before-define
+  return [id, ...getChildren(id).flatMap((n) => getAllChildIds(n.id))]
+}
+
+export const getAllChildIds: NodeIdToChildIdsMap = C.memoizer(getAllChildIdsCore)

@@ -17,7 +17,6 @@ function ConvertTo-TipitakaHierarchy {
     [PSCustomObject] $entry = @{
       parent = $ParentId
       name = if ($Node.text) { $Node.text } else { $rootId }
-      source = ""
     }
 
     $entry.id = $entry.name
@@ -34,7 +33,6 @@ function ConvertTo-TipitakaHierarchy {
         | ConvertTo-TipitakaHierarchy $SrcRoot $entry.id
     } elseif ($Node.action) {
       $entry.id = $Node.action
-      $entry.source = $Node.action
     } elseif ($Node.tree -is [array]) {
       [array] $childEntries =
         $Node.tree
@@ -73,7 +71,6 @@ Write-Host "Generating Hierarchy with $tocFile"
 $entries = $toc | ConvertTo-TipitakaHierarchy $SrcRoot "tipitaka_toc.xml"
 $entries = $entries | ForEach-Object {
   $_.id = $_.id | NormalizeId
-  $_.source = $_.source | NormalizeId
   $_.parent = $_.parent | NormalizeId
 
   if ($_.parent -eq "?") {
