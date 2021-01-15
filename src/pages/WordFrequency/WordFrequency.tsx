@@ -4,6 +4,7 @@ import * as M from '@material-ui/core'
 import styled from 'styled-components'
 import * as RDS from 'react-drag-sizing'
 import * as WFC from './components'
+import * as S from './services'
 
 const Header = styled.div`
   height: auto;
@@ -18,11 +19,13 @@ const useStyles = M.makeStyles((theme) => ({
   },
   resizeContainerClassName: {
     minWidth: '0',
-    width: '12rem',
+    width: '33%',
+    overflowX: 'hidden',
+    overflowY: 'auto',
   },
   resizeHandlerClassName: {
     width: '0.5rem',
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: theme.palette.divider,
   },
 }))
 
@@ -34,11 +37,12 @@ export const WordFrequency = (props: RouteComponentProps<WordFrequencyParams>) =
   const classes = useStyles()
 
   const {
-    match: {
-      params: { nodeId },
-    },
+    match: { params },
   } = props
+
+  const nodeId = decodeURIComponent(params.nodeId || S.getChildren(S.RootNodeId)[0].id)
   const [selectedNodeId, setSelectedNodeId] = useState(nodeId)
+  const [initialNodeId] = useState(nodeId)
 
   const handleSelectedNodeChanged = (nId: string) => {
     setSelectedNodeId(nId)
@@ -53,9 +57,13 @@ export const WordFrequency = (props: RouteComponentProps<WordFrequencyParams>) =
           border="right"
           className={classes.resizeContainerClassName}
           handlerClassName={classes.resizeHandlerClassName}
-          handlerStyle={{ width: '0.5rem' }}
+          handlerStyle={{ width: '1rem' }}
         >
-          <WFC.TipitakaHierarchy selectedNodeId={selectedNodeId} onSelectedNodeChanged={handleSelectedNodeChanged} />
+          <WFC.TipitakaHierarchy
+            initialNodeId={initialNodeId}
+            selectedNodeId={selectedNodeId}
+            onSelectedNodeChanged={handleSelectedNodeChanged}
+          />
         </RDS.DragSizing>
         <WFC.TipitakaHierarchyNodeDetails selectedNodeId={selectedNodeId} />
       </div>

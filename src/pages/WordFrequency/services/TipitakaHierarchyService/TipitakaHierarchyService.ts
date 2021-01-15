@@ -46,3 +46,16 @@ const getAllChildIdsCore: NodeIdToChildIdsMap = (id) => {
 }
 
 export const getAllChildIds: NodeIdToChildIdsMap = C.memoizer(getAllChildIdsCore)
+
+type NodeIdToParentChainIdMap = (id: string) => string[]
+
+const getParentChainIdsCore: NodeIdToParentChainIdMap = (id) => {
+  if (id === RootNodeId) {
+    return []
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-use-before-define
+  return [id, ...getParentChainIds(getNodeFromId(id).parent)]
+}
+
+export const getParentChainIds: NodeIdToParentChainIdMap = C.memoizer(getParentChainIdsCore)

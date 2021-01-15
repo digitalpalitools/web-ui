@@ -2,6 +2,7 @@ import { useState } from 'react'
 import * as M from '@material-ui/core'
 import * as MLab from '@material-ui/lab'
 import * as MIcon from '@material-ui/icons'
+import * as FS from 'file-saver'
 import * as S from '../../services'
 
 const useStyles = M.makeStyles({
@@ -11,6 +12,10 @@ const useStyles = M.makeStyles({
     flex: '0 0 25%',
     overflowY: 'auto',
   },
+  header: {
+    paddingTop: '0rem',
+    paddingBottom: '0rem',
+  },
   label: {
     whiteSpace: 'nowrap',
     overflow: 'hidden',
@@ -19,28 +24,28 @@ const useStyles = M.makeStyles({
 })
 
 export type TipitakaHierarchyProps = {
+  initialNodeId?: string
   selectedNodeId?: string
   onSelectedNodeChanged: (nodeId: string) => void
 }
 
 export const TipitakaHierarchy = (props: TipitakaHierarchyProps) => {
-  const { selectedNodeId, onSelectedNodeChanged } = props
-  const [selected, setSelected] = useState<string[]>([])
+  const { initialNodeId, onSelectedNodeChanged } = props
+  const [selectedNodeIds, setSelectedNodeIds] = useState<string[]>([])
 
   const rootNodes = S.getChildren(S.RootNodeId)
-  const selectedNodeIdWithDefault = selectedNodeId || rootNodes[0].id
-  console.log(selectedNodeIdWithDefault)
 
   const classes = useStyles()
 
   const handleNodeCheckboxChanged = (nodeId: string) => (e: any) => {
     const { checked } = e.currentTarget
 
-    const x = S.getAllChildIds(nodeId)
-    const nodeIds = [nodeId, ...x]
-    const newSelected = checked ? [...selected, ...nodeIds] : selected.filter((id) => !nodeIds.includes(id))
+    const nodeIds = S.getAllChildIds(nodeId)
+    const newSelected = checked
+      ? [...selectedNodeIds, ...nodeIds]
+      : selectedNodeIds.filter((id) => !nodeIds.includes(id))
 
-    setSelected(newSelected)
+    setSelectedNodeIds(newSelected)
   }
 
   const handleNodeCheckboxClicked = (e: any) => e.stopPropagation()
@@ -64,7 +69,7 @@ export const TipitakaHierarchy = (props: TipitakaHierarchyProps) => {
                     control={
                       <M.Checkbox
                         size="small"
-                        checked={selected.some((item) => item === node.id)}
+                        checked={selectedNodeIds.some((item) => item === node.id)}
                         onChange={handleNodeCheckboxChanged(node.id)}
                         onClick={handleNodeCheckboxClicked}
                       />
@@ -85,21 +90,36 @@ export const TipitakaHierarchy = (props: TipitakaHierarchyProps) => {
     onSelectedNodeChanged(nodeId)
   }
 
-  // TODO:
-  // - Deep link expand
-  // - Scroll bar is messed up
+  const downloadSelectedNodes = () => {
+    const blob = new Blob([selectedNodeIds.join('\n')], { type: 'text/plain;charset=utf-8' })
+    FS.saveAs(blob, 'selected nodes.txt', { autoBom: true })
+  }
 
   return (
-    <div className={classes.root}>
-      <MLab.TreeView
-        multiSelect={false}
-        defaultCollapseIcon={<MIcon.ExpandMore />}
-        defaultExpandIcon={<MIcon.ChevronRight />}
-        defaultExpanded={[rootNodes[0].id]}
-        onNodeSelect={handleNodeSelect}
-      >
-        {renderHierarchy(rootNodes)}
-      </MLab.TreeView>
-    </div>
+    <>
+      <div className={classes.root}>
+        <M.Paper className={classes.header}>
+          <M.Tooltip title="Download selected nodes" aria-label="download selected nodes">
+            <M.IconButton
+              aria-label="download selected nodes"
+              disabled={selectedNodeIds.length === 0}
+              onClick={downloadSelectedNodes}
+            >
+              <MIcon.CloudDownload />
+            </M.IconButton>
+          </M.Tooltip>
+        </M.Paper>
+        <MLab.TreeView
+          multiSelect={false}
+          defaultCollapseIcon={<MIcon.ExpandMore />}
+          defaultExpandIcon={<MIcon.ChevronRight />}
+          defaultSelected={initialNodeId || rootNodes[0].id}
+          defaultExpanded={S.getParentChainIds(initialNodeId || rootNodes[0].id)}
+          onNodeSelect={handleNodeSelect}
+        >
+          {renderHierarchy(rootNodes)}
+        </MLab.TreeView>
+      </div>
+    </>
   )
 }

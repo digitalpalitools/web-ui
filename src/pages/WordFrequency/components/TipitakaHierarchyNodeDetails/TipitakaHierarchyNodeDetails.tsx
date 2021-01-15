@@ -39,7 +39,6 @@ const useStyles = M.makeStyles((theme) => ({
     flexDirection: 'column',
     flex: 1,
     overflowY: 'auto',
-    marginLeft: '0.5rem',
   },
   appBar: {
     backgroundColor: theme.palette.background.paper,
