@@ -41,9 +41,8 @@ export const TipitakaHierarchy = (props: TipitakaHierarchyProps) => {
     const { checked } = e.currentTarget
 
     const nodeIds = S.getAllChildIds(nodeId)
-    const newSelected = checked
-      ? [...selectedNodeIds, ...nodeIds]
-      : selectedNodeIds.filter((id) => !nodeIds.includes(id))
+    const oldSelectedNodeIds = selectedNodeIds.filter((id) => !nodeIds.includes(id))
+    const newSelected = checked ? [...oldSelectedNodeIds, ...nodeIds] : oldSelectedNodeIds
 
     setSelectedNodeIds(newSelected)
   }
