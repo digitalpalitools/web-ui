@@ -1421,7 +1421,7 @@
 
 "@kitamstudios/common-ui@https://github.com/kitamstudios/common-ui":
   version "1.0.0"
-  resolved "https://github.com/kitamstudios/common-ui#0cdcda1e8765c7a50330d7f15e9ae3a2187828a2"
+  resolved "https://github.com/kitamstudios/common-ui#05887c79be5492776bc444162ef325fff30a52ec"
 
 "@material-ui/core@^4.11.1":
   version "4.11.2"

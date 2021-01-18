@@ -2,6 +2,7 @@ import * as M from '@material-ui/core'
 import React, { Suspense, lazy } from 'react'
 import { HashRouter as Router, Route, Switch } from 'react-router-dom'
 import styled from 'styled-components'
+import * as KSCUI from '@kitamstudios/common-ui'
 import TelemetryProvider from './services/Telemetry/TelemetryProvider'
 import theme from './Theme'
 
@@ -79,6 +80,7 @@ const App = () => (
             </TelemetryProvider>
           </Router>
         </AppBody>
+        <KSCUI.C.UpdateAppAlert langId="en" autoHideDuration={60_000} />
         <AppFooter version={REACT_APP_VERSION} />
       </AppContainer>
     </M.ThemeProvider>
