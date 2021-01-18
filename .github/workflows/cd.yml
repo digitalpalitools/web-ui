@@ -55,6 +55,9 @@ jobs:
           keyname1: 'scope'
           valuetoset: '/apps/'
 
+      - name: Generate app.ver
+        run: echo ${{steps.createbuildversion.outputs.buildversion}} >./build/app.ver
+
       - name: Azure Login
         uses: azure/login@v1
         with:
@@ -66,6 +69,11 @@ jobs:
           azcliversion: 2.0.72
           inlineScript: |
               az storage blob upload-batch --account-name ksapplications -d '$web\apps' -s ./build
+
+      - name: Set cache-control
+        run: |
+              az storage blob upload --account-name ksapplications --container-name '$web' --name 'apps/service-worker.js' --file ./build/service-worker.js --content-cache-control 'no-store max-age=0'
+              az storage blob upload --account-name ksapplications --container-name '$web' --name 'apps/app.ver' --file ./build/app.ver --content-cache-control 'no-store max-age=0'
 
       - name: Azure Logout
         run: |

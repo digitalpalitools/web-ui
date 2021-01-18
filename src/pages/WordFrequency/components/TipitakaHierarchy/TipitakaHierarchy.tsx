@@ -91,7 +91,8 @@ export const TipitakaHierarchy = (props: TipitakaHierarchyProps) => {
   }
 
   const downloadSelectedNodes = () => {
-    const blob = new Blob([selectedNodeIds.join('\n')], { type: 'text/plain;charset=utf-8' })
+    const selectedLeafNodeIds = selectedNodeIds.filter((nid) => S.getChildren(nid).length === 0)
+    const blob = new Blob([selectedLeafNodeIds.sort().join('\n')], { type: 'text/plain;charset=utf-8' })
     FS.saveAs(blob, 'selected nodes.txt', { autoBom: true })
   }
 
@@ -100,13 +101,15 @@ export const TipitakaHierarchy = (props: TipitakaHierarchyProps) => {
       <div className={classes.root}>
         <M.Paper className={classes.header}>
           <M.Tooltip title="Download selected nodes" aria-label="download selected nodes">
-            <M.IconButton
-              aria-label="download selected nodes"
-              disabled={selectedNodeIds.length === 0}
-              onClick={downloadSelectedNodes}
-            >
-              <MIcon.CloudDownload />
-            </M.IconButton>
+            <span>
+              <M.IconButton
+                aria-label="download selected nodes"
+                disabled={selectedNodeIds.length === 0}
+                onClick={downloadSelectedNodes}
+              >
+                <MIcon.CloudDownload />
+              </M.IconButton>
+            </span>
           </M.Tooltip>
         </M.Paper>
         <MLab.TreeView
