@@ -1419,6 +1419,10 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
+"@kitamstudios/common-ui@https://github.com/kitamstudios/common-ui":
+  version "1.0.0"
+  resolved "https://github.com/kitamstudios/common-ui#0cdcda1e8765c7a50330d7f15e9ae3a2187828a2"
+
 "@material-ui/core@^4.11.1":
   version "4.11.2"
   resolved "https://registry.yarnpkg.com/@material-ui/core/-/core-4.11.2.tgz#f8276dfa40d88304e6ceb98962af73803d27d42d"

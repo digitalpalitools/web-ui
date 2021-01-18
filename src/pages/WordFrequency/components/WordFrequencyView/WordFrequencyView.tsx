@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import * as M from '@material-ui/core'
-import * as C from '../../../../components'
+import * as KSCUI from '@kitamstudios/common-ui'
 import * as S from '../../services'
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -44,7 +44,7 @@ const loadWFData = async (nodeId: string): Promise<WordFrequencyViewRecord[] | s
   return `Error in loading ${csvUrl}: Details: ${resp.statusText}`
 }
 
-const columnDefinitions: C.KsTableColumnDefinition[] = [
+const columnDefinitions: KSCUI.C.KsTableColumnDefinition[] = [
   {
     id: 0,
     field: 'word',
@@ -68,7 +68,7 @@ const columnDefinitions: C.KsTableColumnDefinition[] = [
   },
 ]
 
-const sortData = (sortBy: string, sortOrder: C.KsTableSortOrder, data: any[]) => {
+const sortData = (sortBy: string, sortOrder: KSCUI.C.KsTableSortOrder, data: any[]) => {
   let compareFn: (a: any, b: any) => number = (a, b) => a - b
 
   switch (sortBy) {
@@ -125,7 +125,7 @@ export const WordFrequencyView = (props: WordFrequencyViewParams) => {
   const [isLoading, setIsLoading] = useState(true)
   const [loadingError, setLoadingError] = useState('')
   const [sortBy, setSortBy] = useState('frequency')
-  const [sortOrder, setSortOrder] = useState('desc' as C.KsTableSortOrder)
+  const [sortOrder, setSortOrder] = useState('desc' as KSCUI.C.KsTableSortOrder)
   const [maxWordLength, setMaxWordLength] = useState(0)
   const [nodeName, setNodeName] = useState('')
 
@@ -187,7 +187,7 @@ export const WordFrequencyView = (props: WordFrequencyViewParams) => {
         <strong>{nodeName}</strong>
         {`: ${rows.length} words, ${maxWordLength} max length`}
       </M.Paper>
-      <C.KsTable
+      <KSCUI.C.KsTable
         columnDefinitions={columnDefinitions}
         rows={rows}
         sortOrder={sortOrder}

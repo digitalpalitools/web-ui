@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import * as C from '../../../../components'
+import * as KSCUI from '@kitamstudios/common-ui'
 
 interface DiffViewRecord {
   id: number
@@ -61,7 +61,7 @@ export const DiffView = (props: DiffViewProps) => {
     fetchData()
   }, [nodeRelativePath])
 
-  const columnDefinitions: C.KsTableColumnDefinition[] = [
+  const columnDefinitions: KSCUI.C.KsTableColumnDefinition[] = [
     {
       id: 0,
       field: 'line',
@@ -96,7 +96,7 @@ export const DiffView = (props: DiffViewProps) => {
     },
   ]
 
-  const table = <C.KsTable columnDefinitions={columnDefinitions} rows={rows} sortBy="line" />
+  const table = <KSCUI.C.KsTable columnDefinitions={columnDefinitions} rows={rows} sortBy="line" />
 
   return isLoading ? <div>Loading...</div> : table
 }
