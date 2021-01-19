@@ -2,9 +2,11 @@ import * as fsApi from 'fs'
 import util from 'util'
 import * as luxon from 'luxon'
 import path from 'path'
+import { createBRBPaliWord } from '../services/OdsProcessor/PaliWordBRB'
+import { createDMBPaliWord } from '../services/OdsProcessor/PaliWordDMB'
 import logger from './Logger'
 import * as Ods from '../services/OdsProcessor'
-import { PaliWord, PaliWordBase, Reporter } from '../services/OdsProcessor'
+import { PaliWordBase, Reporter } from '../services/OdsProcessor'
 
 const fs = {
   appendFile: util.promisify(fsApi.appendFile),
@@ -19,6 +21,7 @@ export interface CommandArgs {
   odsFile: string
   sheetName: string
   columnCount: number
+  odsType: string
 }
 
 const generateStarDict = async (allWords: PaliWordBase[], dirName: string, reporter: Reporter) => {
@@ -33,7 +36,10 @@ const generateStarDict = async (allWords: PaliWordBase[], dirName: string, repor
 
 export const runCommand = async (args: CommandArgs) => {
   logger.info('------------------------------')
-  logger.info(`Executing with odsFile=${args.odsFile} sheetName=${args.sheetName} columnCount=${args.columnCount}`)
+  logger.info(
+    // eslint-disable-next-line max-len
+    `Executing with odsFile=${args.odsFile} sheetName=${args.sheetName} columnCount=${args.columnCount} odsType=${args.odsType}`,
+  )
   logger.info('------------------------------')
 
   const reporter: Ods.Reporter = {
@@ -41,9 +47,9 @@ export const runCommand = async (args: CommandArgs) => {
     Error: (x) => logger.error(x),
   }
 
+  const pwFactory = args.odsType === 'dmb' ? createDMBPaliWord : createBRBPaliWord
   const odsData = await fs.readFile(args.odsFile)
-  const pwFn = (x: string[]) => new PaliWord(x)
-  const allWords = await Ods.readAllPaliWords(odsData, args.sheetName, args.columnCount, reporter, pwFn)
+  const allWords = await Ods.readAllPaliWords(odsData, args.sheetName, args.columnCount, reporter, pwFactory)
 
   await generateStarDict(allWords, path.dirname(args.odsFile), reporter)
 
