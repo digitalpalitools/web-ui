@@ -4,7 +4,7 @@ import * as luxon from 'luxon'
 import path from 'path'
 import logger from './Logger'
 import * as Ods from '../services/OdsProcessor'
-import { PaliWord, Reporter } from '../services/OdsProcessor'
+import { PaliWord, PaliWordBase, Reporter } from '../services/OdsProcessor'
 
 const fs = {
   appendFile: util.promisify(fsApi.appendFile),
@@ -21,7 +21,7 @@ export interface CommandArgs {
   columnCount: number
 }
 
-const generateStarDict = async (allWords: PaliWord[], dirName: string, reporter: Reporter) => {
+const generateStarDict = async (allWords: PaliWordBase[], dirName: string, reporter: Reporter) => {
   const dictName = 'dpd'
   const dictoutPath = path.join(dirName, dictName)
   await fs.mkdir(dictoutPath, { recursive: true })
@@ -42,7 +42,8 @@ export const runCommand = async (args: CommandArgs) => {
   }
 
   const odsData = await fs.readFile(args.odsFile)
-  const allWords = await Ods.readAllPaliWords(odsData, args.sheetName, args.columnCount, reporter)
+  const pwFn = (x: string[]) => new PaliWord(x)
+  const allWords = await Ods.readAllPaliWords(odsData, args.sheetName, args.columnCount, reporter, pwFn)
 
   await generateStarDict(allWords, path.dirname(args.odsFile), reporter)
 

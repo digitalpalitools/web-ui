@@ -1,9 +1,9 @@
 import * as luxon from 'luxon'
 import { Buffer } from 'buffer/'
-import { PaliWord } from './PaliWord'
+import { PaliWordBase } from './PaliWord'
 import { Reporter } from './Common'
 
-type PaliWordGroup = { [id: string]: PaliWord[] }
+type PaliWordGroup = { [id: string]: PaliWordBase[] }
 
 interface IdxWord {
   str: string
@@ -37,10 +37,8 @@ table.word-info-table tr td:nth-child(1), span.sutta-source {
 </body>
 </html>`
 
-const padTrailingNumbers = (s: string) => s.replace(/\d+/g, (m) => '00'.substr(m.length - 1) + m)
-
-const createHtmlForWordGroup = (ws: PaliWord[]): string => {
-  const sws = ws.sort((w1, w2) => padTrailingNumbers(w1.pali1).localeCompare(padTrailingNumbers(w2.pali1)))
+const createHtmlForWordGroup = (ws: PaliWordBase[]): string => {
+  const sws = ws.sort((w1, w2) => w1.sortKey().localeCompare(w2.sortKey()))
 
   const toc = ws.length < 2 ? '' : `${sws.map((w) => w.createTocSummary()).join('\n')}<br/>`
 
@@ -150,9 +148,9 @@ const copyIcon = async (reporter: Reporter): Promise<Buffer> => {
   return Buffer.from(b64Icon, 'base64')
 }
 
-const readWordGroups = (allWords: PaliWord[], reporter: Reporter): PaliWordGroup => {
+const readWordGroups = (allWords: PaliWordBase[], reporter: Reporter): PaliWordGroup => {
   const words = allWords.reduce((acc, e) => {
-    const gid = e.groupId
+    const gid = e.groupId()
     acc[gid] = acc[gid] || []
     acc[gid].push(e)
     return acc
@@ -166,7 +164,7 @@ const readWordGroups = (allWords: PaliWord[], reporter: Reporter): PaliWordGroup
 export type DigitalPaliDictionary = { [k: string]: Buffer }
 
 export const generate = async (
-  allWords: PaliWord[],
+  allWords: PaliWordBase[],
   timeStamp: luxon.DateTime,
   reporter: Reporter,
 ): Promise<DigitalPaliDictionary> => {

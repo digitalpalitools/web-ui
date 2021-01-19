@@ -1,6 +1,6 @@
 import JSZip from 'jszip'
 import { DOMParser } from 'xmldom'
-import { PaliWord } from './PaliWord'
+import { PaliWordBase, PaliWordFactory } from './PaliWord'
 import { Reporter } from './Common'
 
 type OdsParserInput = Blob | Uint8Array
@@ -116,7 +116,8 @@ export const readAllPaliWords = async (
   sheetName: string,
   columnCount: number,
   reporter: Reporter,
-): Promise<PaliWord[]> => {
+  pwFactory: PaliWordFactory,
+): Promise<PaliWordBase[]> => {
   reporter.Info(`OdsProcessor: processODS: Starting processing.`)
   let start = Date.now()
   const contentsXml = await parseContentsXML(file, reporter)
@@ -150,5 +151,5 @@ export const readAllPaliWords = async (
     `OdsProcessor: processODS: Created in memory csv with ${inMemCsv.length} rows. (${(end - start) / 1000.0} s)`,
   )
 
-  return inMemCsv.map((r) => new PaliWord(r)).filter((w) => w.inEnglish)
+  return inMemCsv.map(pwFactory).filter((w) => w.includeInDictionary())
 }
