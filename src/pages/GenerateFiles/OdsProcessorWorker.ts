@@ -16,7 +16,7 @@ self.onmessage = async (event) => {
 
   switch (data.command) {
     case 'create-vocab-csv':
-      await Ods.readAllPaliWords(data.odsFile, sheetName, columnCount, reporter)
+      await Ods.readAllPaliWords(data.odsFile, sheetName, columnCount, reporter, () => ({} as Ods.PaliWordBase))
       break
 
     case 'create-root-csv':
