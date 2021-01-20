@@ -10,7 +10,7 @@ const { argv } = yargs(process.argv.slice(2))
         .default('ods-file', '/mnt/d/delme/dicts/Pali_English_Dictionary_10_rows.ods')
         .default('sheet-name', 'PALI-X')
         .default('column-count', 40)
-        .default('ods-type', 'brb'),
+        .default('ods-type', 'dpd'),
     handler: (args) =>
       GF.runCommand({
         odsFile: args['ods-file'],

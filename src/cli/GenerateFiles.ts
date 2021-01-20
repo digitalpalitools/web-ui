@@ -2,11 +2,10 @@ import * as fsApi from 'fs'
 import util from 'util'
 import * as luxon from 'luxon'
 import path from 'path'
-import { createBRBPaliWord } from '../services/OdsProcessor/PaliWordBRB'
-import { createDMBPaliWord } from '../services/OdsProcessor/PaliWordDMB'
 import logger from './Logger'
 import * as Ods from '../services/OdsProcessor'
-import { PaliWordBase, Reporter } from '../services/OdsProcessor'
+import { dmbOds } from './OdsTypes/DmbOds'
+import { dpdOds } from './OdsTypes/DpdOds'
 
 const fs = {
   appendFile: util.promisify(fsApi.appendFile),
@@ -24,12 +23,17 @@ export interface CommandArgs {
   odsType: string
 }
 
-const generateStarDict = async (allWords: PaliWordBase[], dirName: string, reporter: Reporter) => {
-  const dictName = 'dpd'
+const generateStarDict = async (
+  odsType: Ods.OdsType,
+  allWords: Ods.PaliWordBase[],
+  dirName: string,
+  reporter: Ods.Reporter,
+) => {
+  const dictName = odsType.shortName
   const dictoutPath = path.join(dirName, dictName)
   await fs.mkdir(dictoutPath, { recursive: true })
 
-  const dict = await Ods.generateStarDict(allWords.slice(1), luxon.DateTime.local(), reporter)
+  const dict = await Ods.generateStarDict(odsType, allWords.slice(1), luxon.DateTime.local(), reporter)
   const tasks = Object.keys(dict).map((k) => fs.writeFile(path.join(dictoutPath, `${dictName}.${k}`), dict[k]))
   await Promise.allSettled(tasks)
 }
@@ -47,11 +51,17 @@ export const runCommand = async (args: CommandArgs) => {
     Error: (x) => logger.error(x),
   }
 
-  const pwFactory = args.odsType === 'dmb' ? createDMBPaliWord : createBRBPaliWord
+  const odsType = args.odsType === 'dmbd' ? dmbOds : dpdOds
   const odsData = await fs.readFile(args.odsFile)
-  const allWords = await Ods.readAllPaliWords(odsData, args.sheetName, args.columnCount, reporter, pwFactory)
+  const allWords = await Ods.readAllPaliWords(
+    odsData,
+    args.sheetName,
+    args.columnCount,
+    reporter,
+    odsType.paliWordFactory,
+  )
 
-  await generateStarDict(allWords, path.dirname(args.odsFile), reporter)
+  await generateStarDict(odsType, allWords, path.dirname(args.odsFile), reporter)
 
   const vocabCsv = Ods.generateVocabCsv(allWords, reporter)
   fs.writeFile(args.odsFile.replace(/.ods$/i, '-vocab.csv'), vocabCsv)
