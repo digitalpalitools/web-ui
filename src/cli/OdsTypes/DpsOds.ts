@@ -28,7 +28,7 @@ Chapter
 Test
 */
 
-const shortName = 'dmbd'
+const shortName = 'dps'
 
 class PaliWord implements Ods.PaliWordBase {
   readonly record: string[]
@@ -157,9 +157,7 @@ class PaliWord implements Ods.PaliWordBase {
     <h4 id="${this.tocId()}">${this.pali}</h4>
     <table class="word-info-table-${shortName}">
       <tbody>` +
-      (this.pos && `<tr><td>POS</td><td><span>${this.pos}</span></td></tr>`) +
-      (this.derivedFrom && `<tr><td>Derived From</td><td><span>${this.derivedFrom}</span></td></tr>`) +
-      (this.grammar && `<tr><td>Grammar</td><td><span>${this.grammar}` + (this.verb && `, ${this.verb}`) + (this.neg && `, ${this.neg}`) + (this.trans && `, ${this.trans}`) + (this.case && ` (${this.case})`) + `</span></td></tr>`) +
+      (this.grammar && `<tr><td>Grammar</td><td><span>${this.pos}, ${this.grammar}` + (this.derivedFrom && `, from ${this.derivedFrom}`) + (this.verb && `, ${this.verb}`) + (this.neg && `, ${this.neg}`) + (this.trans && `, ${this.trans}`) + (this.case && ` (${this.case})`) + `</span></td></tr>`) +
       (this.inEnglish && `<tr><td>English</td><td><span><strong>${this.inEnglish}</strong></span></td></tr>`) +
       (this.inRussian && `<tr><td>Russian</td><td><span><strong>${this.inRussian}</strong></span></td></tr>`) +
       (this.paliRoot && `<tr><td>Pāli Root</td><td><span>${this.paliRoot}</span></td></tr>`) +
@@ -167,22 +165,22 @@ class PaliWord implements Ods.PaliWordBase {
       (this.construction && `<tr><td>Construction</td><td><span>${this.construction}</span></td></tr>`) +
       (this.sanskrit && `<tr><td>Sanskrit</td><td><span>${this.sanskrit}</span></td></tr>`) +
       (this.sanskritRoot && `<tr><td>Sanskrit Root</td><td><span>${this.sanskritRoot}</span></td></tr>`) +
-      (this.chapter && `<tr><td>Chapter</td><td><span>${this.chapter}</span></td></tr>`) +
+      (this.comments && `<tr><td>Commentary</td><td><span>${this.comments}</span></td></tr>`) +
       `</tbody>
-    </table>
-    <br />` +
-    (this.sentence1 && `<span>${this.sentence1}</span><br />`) +
-    (this.source1 && `<span class="sutta-source-${shortName}"><i>${this.source1} ${this.sutta1}</i></span><br /><br />`) +
-    (this.sentence2 && `<span>${this.sentence2}</span><br />`) +
-    (this.source2 && `<span class="sutta-source-${shortName}"><i>${this.source2} ${this.sutta2}</i></span><br /><br />`) +
-    (this.chapter && `<span>Chapter:&nbsp;${this.chapter}</span><br /><br />`) +
+    </table>`
+    +
+    (this.sentence1 && `<br /><span>${this.sentence1}</span><br />`) +
+    (this.source1 && `<span class="sutta-source-${shortName}"><i>${this.source1} ${this.sutta1}</i></span><br />`) +
+    (this.sentence2 && `<br /><span>${this.sentence2}</span><br />`) +
+    (this.source2 && `<span class="sutta-source-${shortName}"><i>${this.source2} ${this.sutta2}</i></span><br />`) +
+    (this.chapter && `<span class="sutta-source-${shortName}"><i>${this.chapter}</i></span><br /><br />`) +
   `</div>`
     /* eslint-enable */
 
     return html
   }
 
-  tocId = () => `${this.pali.replace(/\s/g, '')}`
+  tocId = () => `${this.pali.replace(/\s/g, '')}-${shortName}}`
 
   includeInDictionary = () => !!this.inEnglish && !!this.inRussian
 
@@ -193,14 +191,14 @@ class PaliWord implements Ods.PaliWordBase {
 
 const createPaliWord: Ods.PaliWordFactory = (x) => new PaliWord(x)
 
-export const dmbOds: Ods.OdsType = {
-  name: 'Devamitta Pāli Dictionary',
+export const dpsOds: Ods.OdsType = {
+  name: 'Devamitta Pāli Study',
   shortName,
   author: 'Devamitta Bhikkhu',
   description: 'A detailed Pāli language word lookup',
   accentColor: 'green',
   icon:
     // eslint-disable-next-line max-len
-    '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',
+    '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',
   paliWordFactory: createPaliWord,
 }

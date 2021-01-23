@@ -4,7 +4,7 @@ import * as luxon from 'luxon'
 import path from 'path'
 import logger from './Logger'
 import * as Ods from '../services/OdsProcessor'
-import { dmbOds } from './OdsTypes/DmbOds'
+import { dpsOds } from './OdsTypes/DpsOds'
 import { dpdOds } from './OdsTypes/DpdOds'
 
 const fs = {
@@ -51,7 +51,7 @@ export const runCommand = async (args: CommandArgs) => {
     Error: (x) => logger.error(x),
   }
 
-  const odsType = args.odsType === 'dmbd' ? dmbOds : dpdOds
+  const odsType = args.odsType === 'dps' ? dpsOds : dpdOds
   const odsData = await fs.readFile(args.odsFile)
   const allWords = await Ods.readAllPaliWords(
     odsData,

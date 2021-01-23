@@ -260,7 +260,7 @@ class PaliWord implements Ods.PaliWordBase {
     return html
   }
 
-  tocId = () => `${this.pali1.replace(/\s/g, '')}`
+  tocId = () => `${this.pali1.replace(/\s/g, '')}-${shortName}}`
 
   includeInDictionary = () => !!this.inEnglish
 
