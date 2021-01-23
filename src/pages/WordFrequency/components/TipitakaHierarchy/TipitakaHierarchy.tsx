@@ -16,10 +16,19 @@ const useStyles = M.makeStyles({
     paddingTop: '0rem',
     paddingBottom: '0rem',
   },
-  label: {
+  treeItemLabel: {
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
+    padding: 0,
+  },
+  treeItemContent: {
+    display: 'flex',
+    alignItems: 'center',
+    padding: '0',
+  },
+  treeItemCheckbox: {
+    padding: '0.3rem',
   },
 })
 
@@ -60,22 +69,20 @@ export const TipitakaHierarchy = (props: TipitakaHierarchyProps) => {
           ? null
           : nodes.map((node) => (
               <MLab.TreeItem
-                classes={{ label: classes.label }}
+                classes={{ label: classes.treeItemLabel }}
                 key={node.id}
                 nodeId={node.id}
                 label={
-                  <M.FormControlLabel
-                    control={
-                      <M.Checkbox
-                        size="small"
-                        checked={selectedNodeIds.some((item) => item === node.id)}
-                        onChange={handleNodeCheckboxChanged(node.id)}
-                        onClick={handleNodeCheckboxClicked}
-                      />
-                    }
-                    label={<>{node.name}</>}
-                    key={node.id}
-                  />
+                  <div className={classes.treeItemContent}>
+                    <M.Checkbox
+                      size="small"
+                      checked={selectedNodeIds.some((item) => item === node.id)}
+                      onChange={handleNodeCheckboxChanged(node.id)}
+                      onClick={handleNodeCheckboxClicked}
+                      className={classes.treeItemCheckbox}
+                    />
+                    <span>{node.name}</span>
+                  </div>
                 }
               >
                 {renderHierarchy(S.getChildren(node.id))}
@@ -90,9 +97,13 @@ export const TipitakaHierarchy = (props: TipitakaHierarchyProps) => {
   }
 
   const downloadSelectedNodes = () => {
-    const selectedLeafNodeIds = selectedNodeIds.filter((nid) => S.getChildren(nid).length === 0)
-    const blob = new Blob([selectedLeafNodeIds.sort().join('\n')], { type: 'text/plain;charset=utf-8' })
-    FS.saveAs(blob, 'selected nodes.txt', { autoBom: true })
+    const selectedNodes = selectedNodeIds
+      .filter((nid) => S.getChildren(nid).length === 0)
+      .map((nid) => `${nid},${S.getNodeFromId(nid).name}`)
+      .sort()
+      .join('\n')
+    const blob = new Blob([selectedNodes], { type: 'text/plain;charset=utf-8' })
+    FS.saveAs(blob, 'selected_nodes.txt', { autoBom: true })
   }
 
   return (
