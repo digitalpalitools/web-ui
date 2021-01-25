@@ -1,47 +1,17 @@
-[![Continuous Deployment](https://github.com/digitalpalitools/dpt-tools/workflows/Continuous%20Deployment/badge.svg)](https://github.com/digitalpalitools/dpt-tools/actions?query=workflow%3A%22Continuous+Deployment%22)
+[![Continuous Deployment](https://github.com/digitalpalitools/web-ui/workflows/Continuous%20Deployment/badge.svg)](https://github.com/digitalpalitools/web-ui/actions?query=workflow)  [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
 # Digital Pāli Tools
 
-A set of Digital Pāli Tools. Deployed at [apps](https://d.pali.tools/apps).
+A set of Digital Pāli Tools. Deployed at [apps](https://d.pali.tools/apps). Refer to the [DPT vision document](http://bit.ly/dptvision) for the individual apps.
 
-Create from the [cra-template-kitamstudios](https://github.com/kitamstudios/cra-template-kitamstudios) template. See [template README.md](https://github.com/kitamstudios/cra-template-kitamstudios/blob/358acedc91c62b31910087d54ffa2623761506e0/README.md) for template features available out of the box.
+## Scripts
 
-# Instructions
+* `yarn start` - launch the app under localhost for development.
+* `yarn build` - generate optimized production build.
+* `yarn test`  - run tests under watcher.
+* `yarn lint`  - lint the codebase.
 
-## Install utilities
+## TODO
 
-> Do only once on a given machine
-
-1. In bash and run the following
-1. ```sudo apt-get install nodejs zip wget```
-1. ```node -v # should show v14.15.1 or something similar```
-
-## Download latest
-
-> Do every time there is a new feature or bug fix
-
-1. In bash and run the following
-1. Go to the working folder (say /home/bdhrs/dpt-tools)
-1. ```wget https://apps.kitamstudios.com/apps/dpt-tools-cli.zip && unzip dpt-tools-cli.zip```
-
-## Regenerate DPD artefacts
-
-1. In bash and run the following
-1. ```node --max-old-space-size=8192 /home/bdhrs/dpt-tools/index-cli.js generate-files '/home/bdhrs/dpt-tools/Pāli English Dictionary.ods' PALI 40```
-
-## Features
-
-- 3 workflows
-  - [v] ODS -> vocab.csv => **Outcome** The CSV is identical to goldendict cvs + with all the rows having empty "Meaning IN CONTEXT" (column 11) removed
-  - [v] ODS -> roots.cvs => **Outcome** The CSV is identical goldendict cvs + with all the rows having empty "Meaning IN CONTEXT" (column 11) removed **AND** any row with empty "Pāli Root" (column 15) removed
-  - [v] ODS -> stardict => **Outcome** The dpd.zip that is consumable by goldendict (there may be future enhancements here, but none right now)
-- [v] Must be doable offline
-
-### TODO
-
-- PWA
-  - [ ] Update available check
-- Telemetry
-  - [ ] BUG: TypeError: Cannot read property 'trackMetric' of null
-  - [ ] Add AppInsightsErrorBoundary
-  - [ ] Track feature metrics
+- Remove styled-components in favor of Material-UI styled-components.
+- Implement the app update available logic using service worker API.
