@@ -83,7 +83,7 @@ jobs:
         if: always()
         env:
           JOB_STATUS: ${{ job.status }}
-          WEBHOOK_URL: ${{ secrets.DISCORD_DPT_WF_WEBHOOK_URL }}
+          WEBHOOK_URL: ${{ secrets.DISCORD_DPT_DEPLOYMENT_NOTIFICATIONS_WEBHOOK_URL }}
           HOOK_OS_NAME: ${{ runner.os }}
           WORKFLOW_NAME: ${{ github.workflow }}
         run: |
