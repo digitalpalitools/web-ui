@@ -41,6 +41,7 @@ const useStyles = M.makeStyles((theme) => ({
     overflowY: 'auto',
   },
   appBar: {
+    color: theme.palette.text.primary,
     backgroundColor: theme.palette.background.paper,
   },
 }))

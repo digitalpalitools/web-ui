@@ -71,7 +71,7 @@ const App = () => {
       <M.ThemeProvider theme={theme === 'light' ? T.lightTheme : T.darkTheme}>
         <M.CssBaseline />
         <AppContainer>
-          <C.AppHeader theme={theme} toggleTheme={handleToggleTheme} />
+          <C.AppHeader version={REACT_APP_VERSION} theme={theme} toggleTheme={handleToggleTheme} />
           <AppBody>
             <Router>
               <TelemetryProvider instrumentationKey={REACT_APP_AI_INSTRUMENTATION_KEY || '0xBAADF00D'}>

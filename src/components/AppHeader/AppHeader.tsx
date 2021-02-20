@@ -22,16 +22,30 @@ const useStyles = M.makeStyles((theme: M.Theme) =>
     changeThemeButton: {
       border: 0,
     },
+    feedbackButton: {
+      fontSize: 'smaller',
+      color: 'white',
+      backgroundColor: 'green',
+    },
   }),
 )
 
 export interface AppHeaderProps {
+  version: string | undefined
   theme: T.ThemeType
   toggleTheme: () => void
 }
 
-export const AppHeader = ({ theme, toggleTheme }: AppHeaderProps) => {
+export const AppHeader = ({ version, theme, toggleTheme }: AppHeaderProps) => {
   const classes = useStyles()
+
+  const handleFeedbackOnClick = () =>
+    window.open(
+      `https://docs.google.com/forms/d/e/1FAIpQLSe_sDP4Y9scxKqYsCr9dJz1GpYLePcBIluuqd0_pdu1tll2dw/viewform?entry.267696921=${encodeURIComponent(
+        window.location.href,
+      )}&entry.1433863141=${version}`,
+      '_blank',
+    )
 
   return (
     <M.AppBar position="static" className={classes.appBar}>
@@ -44,6 +58,9 @@ export const AppHeader = ({ theme, toggleTheme }: AppHeaderProps) => {
           </M.Tooltip>
         </M.Box>
         <M.Box>
+          <M.Button className={classes.feedbackButton} onClick={handleFeedbackOnClick}>
+            Give feedback!
+          </M.Button>
           {theme === 'light' && (
             <M.Tooltip title="Toggle light/dark theme">
               <M.IconButton onClick={toggleTheme}>
