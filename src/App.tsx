@@ -4,8 +4,9 @@ import { HashRouter as Router, Route, Switch } from 'react-router-dom'
 import styled from 'styled-components'
 import * as KSCUI from '@kitamstudios/common-ui'
 import TelemetryProvider from './services/Telemetry/TelemetryProvider'
-import theme from './Theme'
+import * as T from './themes'
 import * as C from './components'
+import * as H from './hooks'
 
 const HomePage = lazy(() => import('./pages/Home/Home'))
 const WordFrequencyPage = lazy(() => import('./pages/WordFrequency/WordFrequency'))
@@ -37,11 +38,11 @@ const AppBody = styled.section`
   }
 `
 
-const AppFooter = ({ version }: any) => {
-  const CenteredDiv = styled.footer`
-    align-self: center;
-  `
+const CenteredDiv = styled.footer`
+  align-self: center;
+`
 
+const AppFooter = ({ version }: any) => {
   return (
     <CenteredDiv>
       <M.Typography variant="caption" color="textSecondary">
@@ -54,39 +55,51 @@ const AppFooter = ({ version }: any) => {
   )
 }
 
-const App = () => (
-  <M.StylesProvider injectFirst>
-    <M.ThemeProvider theme={theme}>
-      <M.CssBaseline />
-      <AppContainer>
-        <C.AppHeader />
-        <AppBody>
-          <Router>
-            <TelemetryProvider instrumentationKey={REACT_APP_AI_INSTRUMENTATION_KEY || '0xBAADF00D'}>
-              <Suspense fallback={<div>Loading...</div>}>
-                <Switch>
-                  <Route exact path="/" component={HomePage} />
-                  <Route exact path="/pali-sort" component={PaliSortPage} />
-                  <Route exact path="/count" component={CountPage} />
-                  <Route exact path="/converter" component={ComingSoonPage} />
-                  <Route path="/word-frequency/:nodeId?" component={WordFrequencyPage} />
-                  <Route exact path="/inflect" component={ComingSoonPage} />
-                  <Route exact path="/match" component={ComingSoonPage} />
-                  <Route exact path="/sandhi" component={ComingSoonPage} />
-                  <Route exact path="/variant" component={ComingSoonPage} />
-                  <Route exact path="/dict" component={ComingSoonPage} />
-                  <Route exact path="/algo" component={ComingSoonPage} />
-                  <Route component={() => <div>Not Found</div>} />
-                </Switch>
-              </Suspense>
-            </TelemetryProvider>
-          </Router>
-        </AppBody>
-        <KSCUI.C.UpdateAppAlert langId="en" autoHideDuration={60_000} />
-        <AppFooter version={REACT_APP_VERSION} />
-      </AppContainer>
-    </M.ThemeProvider>
-  </M.StylesProvider>
-)
+const App = () => {
+  const [theme, setTheme] = H.useLocalStorageState<T.ThemeType>('dark', 'currentTheme')
+
+  const handleToggleTheme = () => {
+    if (theme === 'light') {
+      setTheme('dark')
+    } else {
+      setTheme('light')
+    }
+  }
+
+  return (
+    <M.StylesProvider injectFirst>
+      <M.ThemeProvider theme={theme === 'light' ? T.lightTheme : T.darkTheme}>
+        <M.CssBaseline />
+        <AppContainer>
+          <C.AppHeader theme={theme} toggleTheme={handleToggleTheme} />
+          <AppBody>
+            <Router>
+              <TelemetryProvider instrumentationKey={REACT_APP_AI_INSTRUMENTATION_KEY || '0xBAADF00D'}>
+                <Suspense fallback={<div>Loading...</div>}>
+                  <Switch>
+                    <Route exact path="/" component={HomePage} />
+                    <Route exact path="/pali-sort" component={PaliSortPage} />
+                    <Route exact path="/count" component={CountPage} />
+                    <Route exact path="/converter" component={ComingSoonPage} />
+                    <Route path="/word-frequency/:nodeId?" component={WordFrequencyPage} />
+                    <Route exact path="/inflect" component={ComingSoonPage} />
+                    <Route exact path="/match" component={ComingSoonPage} />
+                    <Route exact path="/sandhi" component={ComingSoonPage} />
+                    <Route exact path="/variant" component={ComingSoonPage} />
+                    <Route exact path="/dict" component={ComingSoonPage} />
+                    <Route exact path="/algo" component={ComingSoonPage} />
+                    <Route component={() => <div>Not Found</div>} />
+                  </Switch>
+                </Suspense>
+              </TelemetryProvider>
+            </Router>
+          </AppBody>
+          <KSCUI.C.UpdateAppAlert langId="en" autoHideDuration={60_000} />
+          <AppFooter version={REACT_APP_VERSION} />
+        </AppContainer>
+      </M.ThemeProvider>
+    </M.StylesProvider>
+  )
+}
 
 export default App
