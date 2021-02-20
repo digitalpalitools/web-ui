@@ -59,7 +59,7 @@ export const AppHeader = ({ version, theme, toggleTheme }: AppHeaderProps) => {
         </M.Box>
         <M.Box>
           <M.Button className={classes.feedbackButton} onClick={handleFeedbackOnClick}>
-            Give feedback!
+            Give feedback
           </M.Button>
           {theme === 'light' && (
             <M.Tooltip title="Toggle light/dark theme">

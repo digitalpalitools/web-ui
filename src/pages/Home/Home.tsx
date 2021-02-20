@@ -19,54 +19,51 @@ const useStyles = M.makeStyles((theme) => ({
   cardContent: {},
 }))
 
+const createCardData = (props: any): any[] => [
+  {
+    fn: () => props.history.push('/word-frequency'),
+    title: 'Word frequency',
+    details: 'Examine hierarchial word frequency and compare inclusion and exclusion lists.',
+  },
+  {
+    fn: () => props.history.push('/pali-sort'),
+    title: 'Pāli Sort',
+    details: 'Sort a list of pāli words.',
+  },
+  {
+    fn: () => props.history.push('/count'),
+    title: 'Count',
+    details: 'Count the length of pāli words.',
+  },
+  {
+    fn: () => props.history.push('/converter'),
+    title: 'Converter',
+    details: 'Convert pāli between various scripts.',
+  },
+]
+
 export const Home = (props: RouteComponentProps) => {
   const classes = useStyles()
 
-  const navigateToWordFrequency = () => props.history.push('/word-frequency')
-  const navigateToPaliSort = () => props.history.push('/pali-sort')
-  const navigateToCount = () => props.history.push('/count')
+  const cardData = createCardData(props)
 
   return (
     <M.Container className={classes.cardGrid} maxWidth="md">
       <M.Grid className={classes.grid} container spacing={4}>
-        <M.Grid item key={0} xs={12} sm={6} md={4}>
-          <M.Card className={classes.card} onClick={navigateToWordFrequency}>
-            <M.CardActionArea>
-              <M.CardContent className={classes.cardContent}>
-                <M.Typography gutterBottom variant="h5" component="h2">
-                  Word frequency
-                </M.Typography>
-                <M.Typography>
-                  Examine hierarchial word frequency and compare inclusion and exclusion lists.
-                </M.Typography>
-              </M.CardContent>
-            </M.CardActionArea>
-          </M.Card>
-        </M.Grid>
-        <M.Grid item key={1} xs={12} sm={6} md={4}>
-          <M.Card className={classes.card} onClick={navigateToPaliSort}>
-            <M.CardActionArea>
-              <M.CardContent className={classes.cardContent}>
-                <M.Typography gutterBottom variant="h5" component="h2">
-                  Pāli Sort
-                </M.Typography>
-                <M.Typography>Sort a list of pāli words.</M.Typography>
-              </M.CardContent>
-            </M.CardActionArea>
-          </M.Card>
-        </M.Grid>
-        <M.Grid item key={2} xs={12} sm={6} md={4}>
-          <M.Card className={classes.card} onClick={navigateToCount}>
-            <M.CardActionArea>
-              <M.CardContent className={classes.cardContent}>
-                <M.Typography gutterBottom variant="h5" component="h2">
-                  Count
-                </M.Typography>
-                <M.Typography>Count the length of pāli words.</M.Typography>
-              </M.CardContent>
-            </M.CardActionArea>
-          </M.Card>
-        </M.Grid>
+        {cardData.map((c: any) => (
+          <M.Grid item key={c.title} xs={12} sm={6} md={4}>
+            <M.Card className={classes.card} onClick={c.fn}>
+              <M.CardActionArea>
+                <M.CardContent className={classes.cardContent}>
+                  <M.Typography gutterBottom variant="h5" component="h2">
+                    {c.title}
+                  </M.Typography>
+                  <M.Typography>{c.details}</M.Typography>
+                </M.CardContent>
+              </M.CardActionArea>
+            </M.Card>
+          </M.Grid>
+        ))}
       </M.Grid>
     </M.Container>
   )
