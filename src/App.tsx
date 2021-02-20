@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import * as KSCUI from '@kitamstudios/common-ui'
 import TelemetryProvider from './services/Telemetry/TelemetryProvider'
 import theme from './Theme'
+import * as C from './components'
 
 const HomePage = lazy(() => import('./pages/Home/Home'))
 const WordFrequencyPage = lazy(() => import('./pages/WordFrequency/WordFrequency'))
@@ -58,6 +59,7 @@ const App = () => (
     <M.ThemeProvider theme={theme}>
       <M.CssBaseline />
       <AppContainer>
+        <C.AppHeader />
         <AppBody>
           <Router>
             <TelemetryProvider instrumentationKey={REACT_APP_AI_INSTRUMENTATION_KEY || '0xBAADF00D'}>
