@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import * as M from '@material-ui/core'
 import * as Icons from '@material-ui/icons'
+import PSC from '@pathnirvanafoundation/pali-script-converter'
 
 const useStyles = M.makeStyles((theme) => ({
   inputArea: {
@@ -34,7 +35,7 @@ export const Converter = () => {
     setConvertedText(
       inputText
         .split('\n')
-        .map((s1) => `${s1}`)
+        .map((s1) => PSC.TextProcessor.convert(PSC.TextProcessor.convertFromMixed(s1), PSC.Script.HI))
         .join('\n'),
     )
   }

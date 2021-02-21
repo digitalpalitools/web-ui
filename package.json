@@ -24,6 +24,7 @@
     "@material-ui/styles": "^4.11.2",
     "@microsoft/applicationinsights-react-js": "^3.0.5",
     "@microsoft/applicationinsights-web": "^2.5.10",
+    "@pathnirvanafoundation/pali-script-converter": "https://github.com/Path-Nirvana-Foundation/pali-script-converter",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",

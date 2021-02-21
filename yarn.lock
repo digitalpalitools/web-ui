@@ -1622,6 +1622,10 @@
   dependencies:
     mkdirp "^1.0.4"
 
+"@pathnirvanafoundation/pali-script-converter@https://github.com/Path-Nirvana-Foundation/pali-script-converter":
+  version "1.0.0"
+  resolved "https://github.com/Path-Nirvana-Foundation/pali-script-converter#967298a598265fc28b411f5dee915aa8a3479fc4"
+
 "@pmmmwh/react-refresh-webpack-plugin@0.4.2":
   version "0.4.2"
   resolved "https://registry.yarnpkg.com/@pmmmwh/react-refresh-webpack-plugin/-/react-refresh-webpack-plugin-0.4.2.tgz#1f9741e0bde9790a0e13272082ed7272a083620d"
