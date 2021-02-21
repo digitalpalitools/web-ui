@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import * as M from '@material-ui/core'
-import * as Icons from '@material-ui/icons'
 import PSC from '@pathnirvanafoundation/pali-script-converter'
 
 const useStyles = M.makeStyles((theme) => ({
@@ -18,10 +17,16 @@ const useStyles = M.makeStyles((theme) => ({
     color: theme.palette.text.primary,
     margin: '1rem',
   },
-  convertButton: {
+  scriptSelector: {
     alignSelf: 'center',
   },
 }))
+
+const getScriptsInfo = () =>
+  [...PSC.paliScriptInfo.keys()].map((k) => ({
+    id: k,
+    name: PSC.paliScriptInfo.get(k)?.[1],
+  }))
 
 export const Converter = () => {
   const classes = useStyles()
@@ -31,11 +36,11 @@ export const Converter = () => {
   )
   const [convertedText, setConvertedText] = useState('')
 
-  const convertInputs = () => {
+  const convertInputs = (e: any) => {
     setConvertedText(
       inputText
         .split('\n')
-        .map((s1) => PSC.TextProcessor.convert(PSC.TextProcessor.convertFromMixed(s1), PSC.Script.HI))
+        .map((s1) => PSC.TextProcessor.convert(PSC.TextProcessor.convertFromMixed(s1), e.target.value))
         .join('\n'),
     )
   }
@@ -47,9 +52,13 @@ export const Converter = () => {
   return (
     <div className={classes.inputArea}>
       <textarea className={classes.inputs} value={inputText} onChange={handleChangedInputText} />
-      <button type="button" className={classes.convertButton} onClick={convertInputs}>
-        <Icons.ChevronRight />
-      </button>
+      <select className={classes.scriptSelector} onChange={convertInputs} size={5}>
+        {getScriptsInfo().map((si) => (
+          <option key={si.id} value={si.id}>
+            {si.name}
+          </option>
+        ))}
+      </select>
       <textarea className={classes.inputs} readOnly value={convertedText} />
     </div>
   )
