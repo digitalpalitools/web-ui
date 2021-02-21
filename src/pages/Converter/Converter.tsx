@@ -18,6 +18,7 @@ const useStyles = M.makeStyles((theme) => ({
     margin: '1rem',
   },
   scriptSelector: {
+    border: 'solid 1px',
     alignSelf: 'center',
   },
 }))
@@ -52,13 +53,13 @@ export const Converter = () => {
   return (
     <div className={classes.inputArea}>
       <textarea className={classes.inputs} value={inputText} onChange={handleChangedInputText} />
-      <select className={classes.scriptSelector} onChange={convertInputs} size={5}>
+      <M.Select native className={classes.scriptSelector} onChange={convertInputs} multiple>
         {getScriptsInfo().map((si) => (
           <option key={si.id} value={si.id}>
             {si.name}
           </option>
         ))}
-      </select>
+      </M.Select>
       <textarea className={classes.inputs} readOnly value={convertedText} />
     </div>
   )
