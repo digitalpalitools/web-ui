@@ -3,6 +3,8 @@ import React, { Suspense, lazy } from 'react'
 import { HashRouter as Router, Route, Switch } from 'react-router-dom'
 import styled from 'styled-components'
 import * as KSCUI from '@kitamstudios/common-ui'
+import PSC from '@pathnirvanafoundation/pali-script-converter'
+import { useTranslation } from 'react-i18next'
 import TelemetryProvider from './services/Telemetry/TelemetryProvider'
 import * as T from './themes'
 import * as C from './components'
@@ -56,8 +58,14 @@ const AppFooter = ({ version }: any) => {
   )
 }
 
+const getLocaleForScript = (s: string) => (PSC.PaliScriptInfo.get(s)?.[3] as any).locale
+
 const App = () => {
   const [theme, setTheme] = H.useLocalStorageState<T.ThemeType>('dark', 'currentTheme')
+
+  const [script, setScript] = H.useLocalStorageState<string>(PSC.Script.RO, 'currentScript')
+
+  const { i18n } = useTranslation()
 
   const handleToggleTheme = () => {
     if (theme === 'light') {
@@ -67,12 +75,23 @@ const App = () => {
     }
   }
 
+  const handleChangeScript = (s: string) => {
+    i18n.changeLanguage(getLocaleForScript(s))
+    setScript(s)
+  }
+
   return (
     <M.StylesProvider injectFirst>
       <M.ThemeProvider theme={theme === 'light' ? T.lightTheme : T.darkTheme}>
         <M.CssBaseline />
         <AppContainer>
-          <C.AppHeader version={REACT_APP_VERSION} theme={theme} toggleTheme={handleToggleTheme} />
+          <C.AppHeader
+            version={REACT_APP_VERSION}
+            theme={theme}
+            toggleTheme={handleToggleTheme}
+            script={script}
+            changeScript={handleChangeScript}
+          />
           <AppBody>
             <Router>
               <TelemetryProvider instrumentationKey={REACT_APP_AI_INSTRUMENTATION_KEY || '0xBAADF00D'}>

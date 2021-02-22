@@ -24,9 +24,9 @@ const useStyles = M.makeStyles((theme) => ({
 }))
 
 const getScriptsInfo = () =>
-  [...PSC.paliScriptInfo.keys()].map((k) => ({
+  [...PSC.PaliScriptInfo.keys()].map((k) => ({
     id: k,
-    name: PSC.paliScriptInfo.get(k)?.[1],
+    name: PSC.PaliScriptInfo.get(k)?.[1],
   }))
 
 export const Converter = () => {

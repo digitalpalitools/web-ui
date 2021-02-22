@@ -1,6 +1,9 @@
+import { useState } from 'react'
 import * as M from '@material-ui/core'
 import * as MIcon from '@material-ui/icons'
 import * as T from 'src/themes'
+import { useTranslation } from 'react-i18next'
+import PSC from '@pathnirvanafoundation/pali-script-converter'
 
 const useStyles = M.makeStyles((theme: M.Theme) =>
   M.createStyles({
@@ -22,10 +25,15 @@ const useStyles = M.makeStyles((theme: M.Theme) =>
     changeThemeButton: {
       border: 0,
     },
+    selectLocaleButton: {
+      minWidth: theme.spacing(14),
+      marginRight: theme.spacing(0),
+    },
     feedbackButton: {
       fontSize: 'smaller',
       color: 'white',
       backgroundColor: 'green',
+      marginRight: theme.spacing(1),
     },
   }),
 )
@@ -34,9 +42,15 @@ export interface AppHeaderProps {
   version: string | undefined
   theme: T.ThemeType
   toggleTheme: () => void
+  script: string
+  changeScript: (s: string) => void
 }
 
-export const AppHeader = ({ version, theme, toggleTheme }: AppHeaderProps) => {
+const getLocaleNameForScript = (s: string) => (PSC.PaliScriptInfo.get(s)?.[3] as any).localeName
+
+export const AppHeader = ({ version, theme, toggleTheme, script, changeScript }: AppHeaderProps) => {
+  const { t } = useTranslation()
+
   const classes = useStyles()
 
   const handleFeedbackOnClick = () =>
@@ -46,6 +60,21 @@ export const AppHeader = ({ version, theme, toggleTheme }: AppHeaderProps) => {
       )}&entry.1433863141=${version}`,
       '_blank',
     )
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget)
+  }
+
+  const handleCloseLocaleMenu = () => {
+    setAnchorEl(null)
+  }
+
+  const handleClickLocaleMenuItem = (s: string) => () => {
+    handleCloseLocaleMenu()
+    changeScript(s)
+  }
 
   return (
     <M.AppBar position="static" className={classes.appBar}>
@@ -58,9 +87,24 @@ export const AppHeader = ({ version, theme, toggleTheme }: AppHeaderProps) => {
           </M.Tooltip>
         </M.Box>
         <M.Box>
-          <M.Button className={classes.feedbackButton} onClick={handleFeedbackOnClick}>
-            Give feedback
-          </M.Button>
+          <>
+            <M.Button className={classes.selectLocaleButton} onClick={handleClick}>
+              {getLocaleNameForScript(script)} <MIcon.ArrowDropDown />
+            </M.Button>
+            <M.Menu
+              id="simple-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleCloseLocaleMenu}
+            >
+              {[...PSC.PaliScriptInfo.keys()].map((s) => (
+                <M.MenuItem key={s} onClick={handleClickLocaleMenuItem(s)}>
+                  {getLocaleNameForScript(s)}
+                </M.MenuItem>
+              ))}
+            </M.Menu>
+          </>
           {theme === 'light' && (
             <M.Tooltip title="Toggle light/dark theme">
               <M.IconButton onClick={toggleTheme}>
@@ -75,6 +119,9 @@ export const AppHeader = ({ version, theme, toggleTheme }: AppHeaderProps) => {
               </M.IconButton>
             </M.Tooltip>
           )}
+          <M.Button className={classes.feedbackButton} onClick={handleFeedbackOnClick}>
+            {t`appHeader.giveFeedback`}
+          </M.Button>
         </M.Box>
       </M.Toolbar>
     </M.AppBar>
