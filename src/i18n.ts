@@ -18,6 +18,9 @@ i18n
   .use(initReactI18next)
   .init({
     fallbackLng: fallbackLocale,
+    backend: {
+      loadPath: `${process.env.REACT_APP_RELATIVE_ROOT}/locales/{{lng}}/{{ns}}.json`,
+    },
     debug: process.env.NODE_ENV === 'development',
     supportedLngs: getSupportedLocales(),
     interpolation: {
