@@ -58,8 +58,6 @@ const AppFooter = ({ version }: any) => {
   )
 }
 
-const getLocaleForScript = (s: string) => (PSC.PaliScriptInfo.get(s)?.[3] as any).locale
-
 const App = () => {
   const [theme, setTheme] = H.useLocalStorageState<T.ThemeType>('dark', 'currentTheme')
   const [, setCurrentScript] = H.useLocalStorageState<string>(PSC.Script.RO, 'currentScript')
@@ -76,7 +74,7 @@ const App = () => {
   }
 
   const handleChangeScript = (s: string) => {
-    i18n.changeLanguage(getLocaleForScript(s))
+    i18n.changeLanguage(PSC.getLocaleForScript(s))
     setCurrentScript(s)
     window.location.reload()
   }

@@ -20,8 +20,7 @@ interface WordFrequencyViewCache {
   maxLength: number
 }
 
-const convert = (input: string, script: string) =>
-  PSC.TextProcessor.convert(PSC.TextProcessor.convertFrom(input, PSC.Script.RO), script)
+const transliterateFromRoman = (input: string, script: string) => PSC.convert(input, PSC.Script.RO, script)
 
 const CACHE: { [key: string]: WordFrequencyViewCache } = {}
 
@@ -138,9 +137,9 @@ export const WordFrequencyView = (props: WordFrequencyViewParams) => {
   const makeAndSetDisplayRows = (recs: WordFrequencyViewRecord[], s: string) => {
     const rs = recs.map((r) => ({
       id: r.id,
-      word: convert(r.word, s),
-      frequency: convert(r.frequency.toString(), s),
-      length: convert(r.length.toString(), s),
+      word: transliterateFromRoman(r.word, s),
+      frequency: transliterateFromRoman(r.frequency.toString(), s),
+      length: transliterateFromRoman(r.length.toString(), s),
     }))
     setDisplayRows(rs)
   }
@@ -202,8 +201,9 @@ export const WordFrequencyView = (props: WordFrequencyViewParams) => {
   const table = (
     <>
       <M.Paper className={classes.header}>
-        <strong>{convert(nodeName, script)}</strong>
-        {`: ${convert(rows.length.toString(), script)} words, ${convert(maxWordLength.toString(), script)} max length`}
+        <strong>{transliterateFromRoman(nodeName, script)}</strong>
+        {`: ${transliterateFromRoman(rows.length.toString(), script)} words`}
+        {`, ${transliterateFromRoman(maxWordLength.toString(), script)} max length`}
       </M.Paper>
       <KSCUI.C.KsTable
         columnDefinitions={columnDefinitions}

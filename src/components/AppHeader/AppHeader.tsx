@@ -45,8 +45,6 @@ export interface AppHeaderProps {
   changeScript: (s: string) => void
 }
 
-const getLocaleNameForScript = (s: string) => (PSC.PaliScriptInfo.get(s)?.[3] as any).localeName
-
 export const AppHeader = ({ version, theme, toggleTheme, changeScript }: AppHeaderProps) => {
   const classes = useStyles()
 
@@ -91,7 +89,7 @@ export const AppHeader = ({ version, theme, toggleTheme, changeScript }: AppHead
         <M.Box>
           <>
             <M.Button className={classes.selectLocaleButton} onClick={handleClick}>
-              {getLocaleNameForScript(script)} <MIcon.ArrowDropDown />
+              {PSC.getLocaleNameForScript(script)} <MIcon.ArrowDropDown />
             </M.Button>
             <M.Menu
               id="simple-menu"
@@ -102,7 +100,7 @@ export const AppHeader = ({ version, theme, toggleTheme, changeScript }: AppHead
             >
               {[...PSC.PaliScriptInfo.keys()].map((s) => (
                 <M.MenuItem key={s} onClick={handleClickLocaleMenuItem(s)}>
-                  {getLocaleNameForScript(s)}
+                  {PSC.getLocaleNameForScript(s)}
                 </M.MenuItem>
               ))}
             </M.Menu>

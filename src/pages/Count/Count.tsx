@@ -41,12 +41,7 @@ export const Count = () => {
     setSortedText(
       inputText
         .split('\n')
-        .map(
-          (s1) =>
-            `${wasm_bindgen.string_length(
-              PSC.TextProcessor.convert(PSC.TextProcessor.convertFromMixed(s1), PSC.Script.RO).toLowerCase(),
-            )}`,
-        )
+        .map((s1) => `${wasm_bindgen.string_length(PSC.convertAny(s1, PSC.Script.RO).toLowerCase())}`)
         .join('\n'),
     )
   }

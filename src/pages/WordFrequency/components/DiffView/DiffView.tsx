@@ -19,8 +19,7 @@ const getLinesOfFile = async (nodeRelativePath: string, type: string): Promise<s
   return text.split('\n')
 }
 
-const convert = (input: string, script: string) =>
-  PSC.TextProcessor.convert(PSC.TextProcessor.convertFrom(input, PSC.Script.RO), script)
+const transliterateFromRoman = (input: string, script: string) => PSC.convert(input, PSC.Script.RO, script)
 
 export interface DiffViewProps {
   script: string
@@ -48,10 +47,10 @@ export const DiffView = (props: DiffViewProps) => {
 
         const rs = Array.from({ length: org.length }, (_v, k) => k).map((i) => ({
           id: i,
-          line: convert(i.toString(), script),
-          inclusions: convert(incls[i], script),
-          original: convert(org[i], script),
-          exclusions: convert(excls[i], script),
+          line: transliterateFromRoman(i.toString(), script),
+          inclusions: transliterateFromRoman(incls[i], script),
+          original: transliterateFromRoman(org[i], script),
+          exclusions: transliterateFromRoman(excls[i], script),
         }))
 
         CACHE[nodeRelativePath] = rs

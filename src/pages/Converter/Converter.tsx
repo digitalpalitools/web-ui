@@ -26,7 +26,7 @@ const useStyles = M.makeStyles((theme) => ({
 const getScriptsInfo = () =>
   [...PSC.PaliScriptInfo.keys()].map((k) => ({
     id: k,
-    name: PSC.PaliScriptInfo.get(k)?.[1],
+    name: PSC.getLocaleNameForScript(k),
   }))
 
 export const Converter = () => {
@@ -41,7 +41,7 @@ export const Converter = () => {
     setConvertedText(
       inputText
         .split('\n')
-        .map((s1) => PSC.TextProcessor.convert(PSC.TextProcessor.convertFromMixed(s1), e.target.value))
+        .map((s1) => PSC.convertAny(s1, e.target.value))
         .join('\n'),
     )
   }

@@ -40,8 +40,7 @@ export type TipitakaHierarchyProps = {
   onSelectedNodeChanged: (nodeId: string) => void
 }
 
-const convert = (input: string, script: string) =>
-  PSC.TextProcessor.convert(PSC.TextProcessor.convertFrom(input, PSC.Script.RO), script)
+const transliterateFromRoman = (input: string, script: string) => PSC.convert(input, PSC.Script.RO, script)
 
 export const TipitakaHierarchy = (props: TipitakaHierarchyProps) => {
   const { script, initialNodeId, onSelectedNodeChanged } = props
@@ -86,7 +85,7 @@ export const TipitakaHierarchy = (props: TipitakaHierarchyProps) => {
                       onClick={handleNodeCheckboxClicked}
                       className={classes.treeItemCheckbox}
                     />
-                    <span>{convert(node.name, script)}</span>
+                    <span>{transliterateFromRoman(node.name, script)}</span>
                   </div>
                 }
               >

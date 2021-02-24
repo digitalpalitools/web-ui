@@ -43,8 +43,8 @@ export const PaliSort = () => {
         .split('\n')
         .sort((s1, s2) =>
           wasm_bindgen.string_compare(
-            PSC.TextProcessor.convert(PSC.TextProcessor.convertFromMixed(s1), PSC.Script.RO).toLowerCase(),
-            PSC.TextProcessor.convert(PSC.TextProcessor.convertFromMixed(s2), PSC.Script.RO).toLowerCase(),
+            PSC.convertAny(s1, PSC.Script.RO).toLowerCase(),
+            PSC.convertAny(s2, PSC.Script.RO).toLowerCase(),
           ),
         )
         .join('\n'),
