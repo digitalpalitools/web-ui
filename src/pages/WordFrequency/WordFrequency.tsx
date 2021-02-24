@@ -2,8 +2,10 @@ import { useState } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import * as M from '@material-ui/core'
 import * as RDS from 'react-drag-sizing'
+import PSC from '@pathnirvanafoundation/pali-script-converter'
 import * as WFC from './components'
 import * as S from './services'
+import * as H from '../../hooks'
 
 const useStyles = M.makeStyles((theme) => ({
   root: {
@@ -29,6 +31,8 @@ export interface WordFrequencyParams {
 }
 
 export const WordFrequency = (props: RouteComponentProps<WordFrequencyParams>) => {
+  const [script] = H.useLocalStorageState<string>(PSC.Script.RO, 'currentScript')
+
   const classes = useStyles()
 
   const {
@@ -53,12 +57,13 @@ export const WordFrequency = (props: RouteComponentProps<WordFrequencyParams>) =
         handlerStyle={{ width: '1rem' }}
       >
         <WFC.TipitakaHierarchy
+          script={script}
           initialNodeId={initialNodeId}
           selectedNodeId={selectedNodeId}
           onSelectedNodeChanged={handleSelectedNodeChanged}
         />
       </RDS.DragSizing>
-      <WFC.TipitakaHierarchyNodeDetails selectedNodeId={selectedNodeId} />
+      <WFC.TipitakaHierarchyNodeDetails script={script} selectedNodeId={selectedNodeId} />
     </div>
   )
 }

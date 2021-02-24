@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import PSC from '@pathnirvanafoundation/pali-script-converter'
 import * as KSCUI from '@kitamstudios/common-ui'
 
 interface DiffViewRecord {
@@ -18,12 +19,16 @@ const getLinesOfFile = async (nodeRelativePath: string, type: string): Promise<s
   return text.split('\n')
 }
 
+const convert = (input: string, script: string) =>
+  PSC.TextProcessor.convert(PSC.TextProcessor.convertFrom(input, PSC.Script.RO), script)
+
 export interface DiffViewProps {
+  script: string
   nodeRelativePath: string
 }
 
 export const DiffView = (props: DiffViewProps) => {
-  const { nodeRelativePath } = props
+  const { script, nodeRelativePath } = props
 
   const [rows, setRows] = useState([] as DiffViewRecord[])
   const [isLoading, setIsLoading] = useState(true)
@@ -43,10 +48,10 @@ export const DiffView = (props: DiffViewProps) => {
 
         const rs = Array.from({ length: org.length }, (_v, k) => k).map((i) => ({
           id: i,
-          line: i,
-          inclusions: incls[i],
-          original: org[i],
-          exclusions: excls[i],
+          line: convert(i.toString(), script),
+          inclusions: convert(incls[i], script),
+          original: convert(org[i], script),
+          exclusions: convert(excls[i], script),
         }))
 
         CACHE[nodeRelativePath] = rs
@@ -59,7 +64,7 @@ export const DiffView = (props: DiffViewProps) => {
     }
 
     fetchData()
-  }, [nodeRelativePath])
+  }, [nodeRelativePath, script])
 
   const columnDefinitions: KSCUI.C.KsTableColumnDefinition[] = [
     {

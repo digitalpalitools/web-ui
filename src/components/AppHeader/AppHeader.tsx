@@ -4,6 +4,7 @@ import * as MIcon from '@material-ui/icons'
 import * as T from 'src/themes'
 import { useTranslation } from 'react-i18next'
 import PSC from '@pathnirvanafoundation/pali-script-converter'
+import * as H from '../../hooks'
 
 const useStyles = M.makeStyles((theme: M.Theme) =>
   M.createStyles({
@@ -26,7 +27,6 @@ const useStyles = M.makeStyles((theme: M.Theme) =>
       border: 0,
     },
     selectLocaleButton: {
-      minWidth: theme.spacing(14),
       marginRight: theme.spacing(0),
     },
     feedbackButton: {
@@ -42,16 +42,17 @@ export interface AppHeaderProps {
   version: string | undefined
   theme: T.ThemeType
   toggleTheme: () => void
-  script: string
   changeScript: (s: string) => void
 }
 
 const getLocaleNameForScript = (s: string) => (PSC.PaliScriptInfo.get(s)?.[3] as any).localeName
 
-export const AppHeader = ({ version, theme, toggleTheme, script, changeScript }: AppHeaderProps) => {
-  const { t } = useTranslation()
-
+export const AppHeader = ({ version, theme, toggleTheme, changeScript }: AppHeaderProps) => {
   const classes = useStyles()
+
+  const [script, setScript] = H.useLocalStorageState<string>(PSC.Script.RO, 'currentScript')
+
+  const { t } = useTranslation()
 
   const handleFeedbackOnClick = () =>
     window.open(
@@ -73,6 +74,7 @@ export const AppHeader = ({ version, theme, toggleTheme, script, changeScript }:
 
   const handleClickLocaleMenuItem = (s: string) => () => {
     handleCloseLocaleMenu()
+    setScript(s)
     changeScript(s)
   }
 

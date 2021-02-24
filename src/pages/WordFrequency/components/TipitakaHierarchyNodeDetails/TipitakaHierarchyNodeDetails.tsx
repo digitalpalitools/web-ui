@@ -47,6 +47,7 @@ const useStyles = M.makeStyles((theme) => ({
 }))
 
 export type TipitakaHierarchyNodeDetailsProps = {
+  script: string
   selectedNodeId?: string
 }
 
@@ -58,7 +59,7 @@ export const TipitakaHierarchyNodeDetails = (props: TipitakaHierarchyNodeDetails
     setActiveTab(newValue)
   }
 
-  const { selectedNodeId } = props
+  const { script, selectedNodeId } = props
 
   if (!selectedNodeId) {
     return <div className={classes.root}>Nothing selected</div>
@@ -79,7 +80,7 @@ export const TipitakaHierarchyNodeDetails = (props: TipitakaHierarchyNodeDetails
           </M.Tabs>
         </M.AppBar>
         <TabPanel value={activeTab} index={0}>
-          <WordFrequencyView nodeId={selectedNodeId} />
+          <WordFrequencyView script={script} nodeId={selectedNodeId} />
         </TabPanel>
       </div>
     )
@@ -94,10 +95,10 @@ export const TipitakaHierarchyNodeDetails = (props: TipitakaHierarchyNodeDetails
         </M.Tabs>
       </M.AppBar>
       <TabPanel value={activeTab} index={0}>
-        <WordFrequencyView nodeId={selectedNodeId} />
+        <WordFrequencyView script={script} nodeId={selectedNodeId} />
       </TabPanel>
       <TabPanel value={activeTab} index={1}>
-        <DiffView nodeRelativePath={selectedNodeId} />
+        <DiffView script={script} nodeRelativePath={selectedNodeId} />
       </TabPanel>
     </div>
   )

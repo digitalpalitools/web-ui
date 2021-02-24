@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import * as M from '@material-ui/core'
+import PSC from '@pathnirvanafoundation/pali-script-converter'
 import * as KSCUI from '@kitamstudios/common-ui'
 import * as S from '../../services'
 
@@ -18,6 +19,9 @@ interface WordFrequencyViewCache {
   name: string
   maxLength: number
 }
+
+const convert = (input: string, script: string) =>
+  PSC.TextProcessor.convert(PSC.TextProcessor.convertFrom(input, PSC.Script.RO), script)
 
 const CACHE: { [key: string]: WordFrequencyViewCache } = {}
 
@@ -114,20 +118,32 @@ const useStyles = M.makeStyles({
 })
 
 export interface WordFrequencyViewParams {
+  script: string
   nodeId: string
 }
 
 export const WordFrequencyView = (props: WordFrequencyViewParams) => {
-  const { nodeId } = props
+  const { nodeId, script } = props
   const classes = useStyles()
 
   const [rows, setRows] = useState([] as WordFrequencyViewRecord[])
+  const [displayRows, setDisplayRows] = useState([] as WordFrequencyViewRecord[])
   const [isLoading, setIsLoading] = useState(true)
   const [loadingError, setLoadingError] = useState('')
   const [sortBy, setSortBy] = useState('frequency')
   const [sortOrder, setSortOrder] = useState('desc' as KSCUI.C.KsTableSortOrder)
   const [maxWordLength, setMaxWordLength] = useState(0)
   const [nodeName, setNodeName] = useState('')
+
+  const makeAndSetDisplayRows = (recs: WordFrequencyViewRecord[], s: string) => {
+    const rs = recs.map((r) => ({
+      id: r.id,
+      word: convert(r.word, s),
+      frequency: convert(r.frequency.toString(), s),
+      length: convert(r.length.toString(), s),
+    }))
+    setDisplayRows(rs)
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -156,13 +172,14 @@ export const WordFrequencyView = (props: WordFrequencyViewParams) => {
       }
 
       setRows(CACHE[nodeId].words)
+      makeAndSetDisplayRows(CACHE[nodeId].words, script)
       setMaxWordLength(CACHE[nodeId].maxLength)
       setNodeName(CACHE[nodeId].name)
       setIsLoading(false)
     }
 
     fetchData()
-  }, [nodeId])
+  }, [nodeId, script])
 
   const requestSort = (pSortBy: string) => {
     let sortByX = sortBy
@@ -179,17 +196,18 @@ export const WordFrequencyView = (props: WordFrequencyViewParams) => {
     setSortOrder(sortOrderX)
     setSortBy(sortByX)
     setRows(sortedItems)
+    makeAndSetDisplayRows(sortedItems, script)
   }
 
   const table = (
     <>
       <M.Paper className={classes.header}>
-        <strong>{nodeName}</strong>
-        {`: ${rows.length} words, ${maxWordLength} max length`}
+        <strong>{convert(nodeName, script)}</strong>
+        {`: ${convert(rows.length.toString(), script)} words, ${convert(maxWordLength.toString(), script)} max length`}
       </M.Paper>
       <KSCUI.C.KsTable
         columnDefinitions={columnDefinitions}
-        rows={rows}
+        rows={displayRows}
         sortOrder={sortOrder}
         sortBy={sortBy}
         requestSort={requestSort}

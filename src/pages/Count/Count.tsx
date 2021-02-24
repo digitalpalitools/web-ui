@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import * as M from '@material-ui/core'
 import * as Icons from '@material-ui/icons'
+import PSC from '@pathnirvanafoundation/pali-script-converter'
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 declare const wasm_bindgen: any
@@ -40,7 +41,12 @@ export const Count = () => {
     setSortedText(
       inputText
         .split('\n')
-        .map((s1) => `${wasm_bindgen.string_length(s1)}`)
+        .map(
+          (s1) =>
+            `${wasm_bindgen.string_length(
+              PSC.TextProcessor.convert(PSC.TextProcessor.convertFromMixed(s1), PSC.Script.RO).toLowerCase(),
+            )}`,
+        )
         .join('\n'),
     )
   }

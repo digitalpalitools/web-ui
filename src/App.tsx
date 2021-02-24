@@ -62,8 +62,7 @@ const getLocaleForScript = (s: string) => (PSC.PaliScriptInfo.get(s)?.[3] as any
 
 const App = () => {
   const [theme, setTheme] = H.useLocalStorageState<T.ThemeType>('dark', 'currentTheme')
-
-  const [script, setScript] = H.useLocalStorageState<string>(PSC.Script.RO, 'currentScript')
+  const [, setCurrentScript] = H.useLocalStorageState<string>(PSC.Script.RO, 'currentScript')
 
   const { i18n } = useTranslation()
 
@@ -73,11 +72,13 @@ const App = () => {
     } else {
       setTheme('light')
     }
+    window.location.reload()
   }
 
   const handleChangeScript = (s: string) => {
     i18n.changeLanguage(getLocaleForScript(s))
-    setScript(s)
+    setCurrentScript(s)
+    window.location.reload()
   }
 
   return (
@@ -89,7 +90,6 @@ const App = () => {
             version={REACT_APP_VERSION}
             theme={theme}
             toggleTheme={handleToggleTheme}
-            script={script}
             changeScript={handleChangeScript}
           />
           <AppBody>

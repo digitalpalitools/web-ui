@@ -3,6 +3,7 @@ import * as M from '@material-ui/core'
 import * as MLab from '@material-ui/lab'
 import * as MIcon from '@material-ui/icons'
 import * as FS from 'file-saver'
+import PSC from '@pathnirvanafoundation/pali-script-converter'
 import * as S from '../../services'
 
 const useStyles = M.makeStyles({
@@ -33,13 +34,17 @@ const useStyles = M.makeStyles({
 })
 
 export type TipitakaHierarchyProps = {
+  script: string
   initialNodeId?: string
   selectedNodeId?: string
   onSelectedNodeChanged: (nodeId: string) => void
 }
 
+const convert = (input: string, script: string) =>
+  PSC.TextProcessor.convert(PSC.TextProcessor.convertFrom(input, PSC.Script.RO), script)
+
 export const TipitakaHierarchy = (props: TipitakaHierarchyProps) => {
-  const { initialNodeId, onSelectedNodeChanged } = props
+  const { script, initialNodeId, onSelectedNodeChanged } = props
   const [selectedNodeIds, setSelectedNodeIds] = useState<string[]>([])
 
   const rootNodes = S.getChildren(S.RootNodeId)
@@ -81,7 +86,7 @@ export const TipitakaHierarchy = (props: TipitakaHierarchyProps) => {
                       onClick={handleNodeCheckboxClicked}
                       className={classes.treeItemCheckbox}
                     />
-                    <span>{node.name}</span>
+                    <span>{convert(node.name, script)}</span>
                   </div>
                 }
               >
