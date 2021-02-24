@@ -1,5 +1,5 @@
 import * as M from '@material-ui/core'
-import React, { Suspense, lazy } from 'react'
+import { Suspense, lazy } from 'react'
 import { HashRouter as Router, Route, Switch } from 'react-router-dom'
 import styled from 'styled-components'
 import * as KSCUI from '@kitamstudios/common-ui'
