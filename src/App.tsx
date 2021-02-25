@@ -70,7 +70,6 @@ const App = () => {
     } else {
       setTheme('light')
     }
-    window.location.reload()
   }
 
   const handleChangeScript = (s: string) => {
