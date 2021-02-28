@@ -39,6 +39,11 @@ const createCardData = (props: any): any[] => [
     title: 'Converter',
     details: 'Convert pāli between various scripts.',
   },
+  {
+    fn: () => props.history.push('/inflect'),
+    title: 'Inflections',
+    details: 'Show conjugations & declensions for pāli words.',
+  },
 ]
 
 export const Home = (props: RouteComponentProps) => {

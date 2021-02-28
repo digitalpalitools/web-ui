@@ -38,14 +38,4 @@
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
   </body>
-
-  <script src='%PUBLIC_URL%/pali_core/pkg/pali_core.js'></script>
-  <script>
-    async function run() {
-      await wasm_bindgen('%PUBLIC_URL%/pali_core/pkg/pali_core_bg.wasm');
-    }
-
-    run();
-  </script>
-
 </html>

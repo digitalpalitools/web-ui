@@ -15,6 +15,7 @@ const WordFrequencyPage = lazy(() => import('./pages/WordFrequency/WordFrequency
 const PaliSortPage = lazy(() => import('./pages/PaliSort/PaliSort'))
 const CountPage = lazy(() => import('./pages/Count/Count'))
 const ConverterPage = lazy(() => import('./pages/Converter/Converter'))
+const InflectPage = lazy(() => import('./pages/InflectPage/InflectPage'))
 const ComingSoonPage = lazy(() => import('./pages/ComingSoon/ComingSoon'))
 
 const { REACT_APP_VERSION, REACT_APP_AI_INSTRUMENTATION_KEY } = process.env
@@ -99,7 +100,7 @@ const App = () => {
                     <Route exact path="/count" component={CountPage} />
                     <Route exact path="/converter" component={ConverterPage} />
                     <Route path="/word-frequency/:nodeId?" component={WordFrequencyPage} />
-                    <Route exact path="/inflect" component={ComingSoonPage} />
+                    <Route exact path="/inflect" component={InflectPage} />
                     <Route exact path="/match" component={ComingSoonPage} />
                     <Route exact path="/sandhi" component={ComingSoonPage} />
                     <Route exact path="/variant" component={ComingSoonPage} />

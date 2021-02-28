@@ -2,9 +2,7 @@ import { useState } from 'react'
 import * as M from '@material-ui/core'
 import * as Icons from '@material-ui/icons'
 import PSC from '@pathnirvanafoundation/pali-script-converter'
-
-// eslint-disable-next-line @typescript-eslint/naming-convention
-declare const wasm_bindgen: any
+import * as PLS from '@digitalpalitools/pali-language-services'
 
 const useStyles = M.makeStyles((theme) => ({
   inputArea: {
@@ -41,9 +39,7 @@ export const PaliSort = () => {
     setSortedText(
       inputText
         .split('\n')
-        .sort((s1, s2) =>
-          wasm_bindgen.string_compare(PSC.convertAny(s1, PSC.Script.RO), PSC.convertAny(s2, PSC.Script.RO)),
-        )
+        .sort((s1, s2) => PLS.string_compare(PSC.convertAny(s1, PSC.Script.RO), PSC.convertAny(s2, PSC.Script.RO)))
         .join('\n'),
     )
   }
