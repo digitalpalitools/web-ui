@@ -1,5 +1,6 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+/* eslint-disable @typescript-eslint/no-var-requires */
 const { addBeforeLoader, loaderByName } = require('@craco/craco')
+const CopyPlugin = require('copy-webpack-plugin')
 
 const configure = (webpackConfig) => {
   const wasmExtensionRegExp = /\.wasm$/
@@ -28,6 +29,20 @@ const configure = (webpackConfig) => {
 module.exports = () => {
   return {
     webpack: {
+      plugins: [
+        new CopyPlugin({
+          patterns: [
+            {
+              from: 'node_modules/sql.js/dist/sql-wasm.wasm',
+              to: 'static/js/',
+            },
+            {
+              from: 'node_modules/sql.js/dist/sql-wasm-debug.wasm',
+              to: 'static/js/',
+            },
+          ],
+        }),
+      ],
       configure,
     },
   }
