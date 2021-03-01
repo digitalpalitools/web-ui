@@ -39,7 +39,7 @@ export const Count = () => {
     setSortedText(
       inputText
         .split('\n')
-        .map((s1) => `${PLS.string_length(PSC.convertAny(s1, PSC.Script.RO))}`)
+        .map((s1) => `${PLS.stringLength(PSC.convertAny(s1, PSC.Script.RO))}`)
         .join('\n'),
     )
   }

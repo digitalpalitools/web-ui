@@ -39,7 +39,7 @@ export const PaliSort = () => {
     setSortedText(
       inputText
         .split('\n')
-        .sort((s1, s2) => PLS.string_compare(PSC.convertAny(s1, PSC.Script.RO), PSC.convertAny(s2, PSC.Script.RO)))
+        .sort((s1, s2) => PLS.stringCompare(PSC.convertAny(s1, PSC.Script.RO), PSC.convertAny(s2, PSC.Script.RO)))
         .join('\n'),
     )
   }

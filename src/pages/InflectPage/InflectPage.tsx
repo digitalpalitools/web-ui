@@ -1,46 +1,40 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import initSqlJs from 'sql.js'
 import * as PLS from '@digitalpalitools/pali-language-services'
 
+declare const window: any
+
 const createMarkup = () => {
-  return { __html: PLS.generate_inflection_table('xxx') }
+  return { __html: PLS.generateInflectionTable('ābādheti') }
 }
 
-/*
-const dataPromise = fetch("/path/to/databse.sqlite").then(res => res.arrayBuffer());
-const [SQL, buf] = await Promise.all([sqlPromise, dataPromise])
-const db = new SQL.Database(new Uint8Array(buf));
-*/
-
 export const InflectPage = () => {
-  // useEffect(() => {
-  //   const buf = await fetch(http://apps.kitamstudios.com/inflections/inflections.db')
-  //     .then(res => res.arrayBuffer())
-  //     .then(response => {
-  //       setCommitHistory(response.items);
-  //       setIsLoading(false);
-  //     })
-  //     .catch(error => console.log(error));
-  // }, [page])
+  const [db, setDb] = useState<any>()
 
   useEffect(() => {
     const loadSqlDb = async () => {
-      // eslint-disable-next-line no-debugger
-      debugger
-      const SQL = await initSqlJs()
-      const buf = await fetch('http://apps.kitamstudios.com/inflections/inflections.db').then((res) =>
+      const loadSQL = initSqlJs({
+        locateFile: (file) => {
+          return `/static/js/${file}`
+        },
+      })
+
+      const loadDbData = fetch('https://apps.kitamstudios.com/inflections/inflections.db').then((res) =>
         res.arrayBuffer(),
       )
-      const db = new SQL.Database(new Uint8Array(buf))
 
-      console.log(db)
+      const [SQL, DbData] = await Promise.all([loadSQL, loadDbData])
+
+      // eslint-disable-next-line no-underscore-dangle
+      window.__inflections_db = db
+      setDb(new SQL.Database(new Uint8Array(DbData)))
     }
 
     loadSqlDb()
-  }, [])
+  }, [db])
 
   // eslint-disable-next-line react/no-danger
-  return <div dangerouslySetInnerHTML={createMarkup()} />
+  return db ? <div dangerouslySetInnerHTML={createMarkup()} /> : <div>Loading db...</div>
 }
 
 export default InflectPage

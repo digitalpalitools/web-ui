@@ -1369,10 +1369,10 @@
     enabled "2.0.x"
     kuler "^2.0.0"
 
-"@digitalpalitools/pali-language-services@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@digitalpalitools/pali-language-services/-/pali-language-services-0.2.0.tgz#aa7257d87eca00204e0cfb4c9f8b502620c3f58a"
-  integrity sha512-7CVYqlem+XiY20ynNCJgUASmx+7j2SyddpNrasQd9HBaYALgnv5/RB+Rv3b5GfDWs0xQAc8obSA45VUyQP7WvA==
+"@digitalpalitools/pali-language-services@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@digitalpalitools/pali-language-services/-/pali-language-services-1.0.1.tgz#17e61f73be6030076f4cdaf3753ca44f997d47fa"
+  integrity sha512-LX22DkxvufOVnvLqYzuCzYDEgwQsVBv7RkDIVQsrTi1uarKdIE1lV/SIUtH7UR7quQY959cve+J3ywYvNUzrAQ==
 
 "@emotion/hash@^0.8.0":
   version "0.8.0"
