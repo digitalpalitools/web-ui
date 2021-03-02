@@ -10,6 +10,8 @@ import * as T from './themes'
 import * as C from './components'
 import * as H from './hooks'
 
+declare const window: any
+
 const HomePage = lazy(() => import('./pages/Home/Home'))
 const WordFrequencyPage = lazy(() => import('./pages/WordFrequency/WordFrequency'))
 const PaliSortPage = lazy(() => import('./pages/PaliSort/PaliSort'))
@@ -61,7 +63,9 @@ const AppFooter = ({ version }: any) => {
 
 const App = () => {
   const [theme, setTheme] = H.useLocalStorageState<T.ThemeType>('dark', 'currentTheme')
-  const [, setCurrentScript] = H.useLocalStorageState<string>(PSC.Script.RO, 'currentScript')
+  const [currentScript, setCurrentScript] = H.useLocalStorageState<string>(PSC.Script.RO, 'currentScript')
+  // eslint-disable-next-line no-underscore-dangle
+  window.__pali_script_converter_convert = (text: string) => PSC.convert(text, PSC.Script.RO, currentScript)
 
   const { i18n } = useTranslation()
 
