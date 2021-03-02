@@ -70,10 +70,13 @@ jobs:
           inlineScript: |
               az storage blob upload-batch --account-name ksapplications -d '$web\apps' -s ./build
 
-      - name: Set cache-control
+      - name: Set blob properties
         run: |
               az storage blob upload --account-name ksapplications --container-name '$web' --name 'apps/service-worker.js' --file ./build/service-worker.js --content-cache-control 'no-store max-age=0'
               az storage blob upload --account-name ksapplications --container-name '$web' --name 'apps/app.ver' --file ./build/app.ver --content-cache-control 'no-store max-age=0'
+              az storage blob update --account-name ksapplications --container-name '$web' --name 'apps/static/js/sql-wasm.wasm' --content-type "application/wasm"
+              dir ./build/*.module.wasm | % { echo $_.Name; az storage blob update --account-name ksapplications --container-name '$web' --name "apps/$($_.Name)" --content-type "application/wasm" }
+        shell: pwsh
 
       - name: Azure Logout
         run: |

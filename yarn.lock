@@ -1841,7 +1841,7 @@
 
 "@pathnirvanafoundation/pali-script-converter@https://github.com/Path-Nirvana-Foundation/pali-script-converter":
   version "1.0.0"
-  resolved "https://github.com/Path-Nirvana-Foundation/pali-script-converter#2a090daeee846fbd7b2a8a68477a346e972ef2da"
+  resolved "https://github.com/Path-Nirvana-Foundation/pali-script-converter#c4bc1300b28b0b437196151654d2f2580cf55ad3"
 
 "@pmmmwh/react-refresh-webpack-plugin@0.4.2":
   version "0.4.2"

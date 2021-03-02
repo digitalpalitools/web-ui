@@ -2,10 +2,8 @@ import { useEffect, useState } from 'react'
 import * as M from '@material-ui/core'
 import PSC from '@pathnirvanafoundation/pali-script-converter'
 import * as KSCUI from '@kitamstudios/common-ui'
+import * as PLS from '@digitalpalitools/pali-language-services'
 import * as S from '../../services'
-
-// eslint-disable-next-line @typescript-eslint/naming-convention
-declare const wasm_bindgen: any
 
 interface WordFrequencyViewRecord {
   id: number
@@ -39,7 +37,7 @@ const loadWFData = async (nodeId: string): Promise<WordFrequencyViewRecord[] | s
           id: i,
           word: parts[0],
           frequency: parseInt(parts[1], 10),
-          length: wasm_bindgen.string_length(parts[0]),
+          length: PLS.stringLength(parts[0]),
         }
       })
   }
@@ -77,7 +75,7 @@ const sortData = (sortBy: string, sortOrder: KSCUI.C.KsTableSortOrder, data: any
   switch (sortBy) {
     case 'word':
       compareFn = (r1: any, r2: any) => {
-        let ret = wasm_bindgen.string_compare(r1.word, r2.word)
+        let ret = PLS.stringCompare(r1.word, r2.word)
         if (sortOrder === 'desc') {
           ret *= -1
         } else if (sortOrder === undefined) {
