@@ -36,10 +36,6 @@ module.exports = () => {
               from: 'node_modules/sql.js/dist/sql-wasm.wasm',
               to: 'static/js/',
             },
-            {
-              from: 'node_modules/sql.js/dist/sql-wasm-debug.wasm',
-              to: 'static/js/',
-            },
           ],
         }),
       ],
