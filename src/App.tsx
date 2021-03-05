@@ -65,7 +65,8 @@ const App = () => {
   const [theme, setTheme] = H.useLocalStorageState<T.ThemeType>('dark', 'currentTheme')
   const [currentScript, setCurrentScript] = H.useLocalStorageState<string>(PSC.Script.RO, 'currentScript')
   // eslint-disable-next-line no-underscore-dangle
-  window.__pali_script_converter_convert = (text: string) => PSC.convert(text, PSC.Script.RO, currentScript)
+  window.__pali_script_converter_transliterate_from_roman = (text: string) =>
+    PSC.convert(text, PSC.Script.RO, currentScript)
 
   const { i18n } = useTranslation()
 

@@ -1,7 +1,11 @@
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable react/no-danger */
 import { useEffect, useState } from 'react'
+import * as M from '@material-ui/core'
 import initSqlJs from 'sql.js'
 import JSZip from 'jszip'
 import * as PLS from '@digitalpalitools/pali-language-services'
+import * as C from './components'
 
 declare const window: any
 
@@ -18,11 +22,21 @@ const loadDbData = () =>
     .then((buf) => JSZip.loadAsync(buf))
     .then((zip) => zip.file('inflections.db')?.async('uint8array'))
 
-const createMarkup = () => {
-  return { __html: PLS.generateInflectionTable('ābādheti') }
+const createMarkup = (pali1: string) => {
+  return { __html: PLS.generateInflectionTable(pali1) }
 }
 
+const useStyles = M.makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
+    padding: theme.spacing(1.5),
+  },
+}))
+
 export const InflectPage = () => {
+  const classes = useStyles()
+  const [pali1, setPali1] = useState('ābādheti')
   const [db, setDb] = useState<any>(null)
 
   useEffect(() => {
@@ -30,7 +44,6 @@ export const InflectPage = () => {
       const [Sqlite, DbData] = await Promise.all([loadSqlite(), loadDbData()])
 
       const iDb = new Sqlite.Database(DbData)
-      // eslint-disable-next-line no-underscore-dangle
       window.__pali_language_services_inflections_db = iDb
       setDb(iDb)
     }
@@ -40,8 +53,16 @@ export const InflectPage = () => {
     }
   }, [db])
 
-  // eslint-disable-next-line react/no-danger
-  return db ? <div dangerouslySetInnerHTML={createMarkup()} /> : <div>Loading db...</div>
+  const handleChangePali1 = (value: string) => {
+    setPali1(value)
+  }
+
+  return (
+    <div className={classes.root}>
+      <C.Pali1AutoComplete db={db} initialValue={pali1} onChangePali1={handleChangePali1} />
+      {db ? <div dangerouslySetInnerHTML={createMarkup(pali1)} /> : <div>Loading db...</div>}
+    </div>
+  )
 }
 
 export default InflectPage
