@@ -2,6 +2,7 @@
 /* eslint-disable react/no-danger */
 import { useEffect, useState } from 'react'
 import * as M from '@material-ui/core'
+import styled from 'styled-components'
 import initSqlJs from 'sql.js'
 import JSZip from 'jszip'
 import * as PLS from '@digitalpalitools/pali-language-services'
@@ -22,8 +23,8 @@ const loadDbData = () =>
     .then((buf) => JSZip.loadAsync(buf))
     .then((zip) => zip.file('inflections.db')?.async('uint8array'))
 
-const createMarkup = (pali1: string) => {
-  return { __html: PLS.generateInflectionTable(pali1) }
+const createMarkup = (db: any, pali1: string) => {
+  return { __html: db ? PLS.generateInflectionTable(pali1) : 'Loading db...' }
 }
 
 const useStyles = M.makeStyles((theme) => ({
@@ -33,6 +34,44 @@ const useStyles = M.makeStyles((theme) => ({
     padding: theme.spacing(1.5),
   },
 }))
+
+const InflectionsRoot = styled.div`
+  margin-top: 1rem;
+
+  .pls-inflection-root {
+    .pls-inflection-summary {
+      margin-bottom: 1rem;
+      font-weight: bold;
+    }
+
+    .pls-inflection-inflected-word-suffix {
+      font-weight: bold;
+    }
+
+    .pls-inflection-table {
+      margin-bottom: 1rem;
+      width: 100%;
+      border: 1px solid;
+      border-collapse: collapse;
+    }
+
+    table,
+    th,
+    td {
+      border: 1px solid;
+      border-collapse: collapse;
+      padding: 0.25rem;
+    }
+
+    table thead tr {
+      width: 22.5%;
+    }
+
+    td:first-child {
+      width: 10%;
+    }
+  }
+`
 
 export const InflectPage = () => {
   const classes = useStyles()
@@ -60,7 +99,7 @@ export const InflectPage = () => {
   return (
     <div className={classes.root}>
       <C.Pali1AutoComplete db={db} initialValue={pali1} onChangePali1={handleChangePali1} />
-      {db ? <div dangerouslySetInnerHTML={createMarkup(pali1)} /> : <div>Loading db...</div>}
+      <InflectionsRoot dangerouslySetInnerHTML={createMarkup(db, pali1)} />
     </div>
   )
 }
