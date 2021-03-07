@@ -44,6 +44,15 @@ const InflectionsRoot = styled.div`
       font-weight: bold;
     }
 
+    .pls-inflection-table-title {
+      font-weight: bold;
+    }
+
+    .pls-inflection-row-header,
+    .pls-inflection-col-header {
+      color: orange;
+    }
+
     .pls-inflection-inflected-word-suffix {
       font-weight: bold;
     }

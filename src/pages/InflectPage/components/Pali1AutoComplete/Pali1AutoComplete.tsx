@@ -22,7 +22,7 @@ export const Pali1AutoComplete = ({ db, initialValue, onChangePali1 }: Pali1Auto
     }
 
     const loadOptions = () => {
-      const results = db.exec(`SELECT pāli1 FROM '_stems' WHERE pāli1 like '%${pali1}%' order by pāli1 asc`)
+      const results = db.exec(`SELECT pāli1 FROM '_stems' WHERE pāli1 like '${pali1}%' order by pāli1 asc`)
       const pali1s = (results[0]?.values || []).flatMap((x: any[]) => x)
 
       if (active) {
