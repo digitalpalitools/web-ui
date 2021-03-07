@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@craco/craco": "^6.1.1",
-    "@digitalpalitools/pali-language-services": "^3.2.0",
+    "@digitalpalitools/pali-language-services": "^3.3.0",
     "@kitamstudios/common-ui": "https://github.com/kitamstudios/common-ui",
     "@material-ui/core": "^4.11.1",
     "@material-ui/icons": "^4.11.2",
