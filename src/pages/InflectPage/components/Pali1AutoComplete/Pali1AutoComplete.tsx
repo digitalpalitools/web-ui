@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import * as M from '@material-ui/core'
 import * as MLab from '@material-ui/lab'
-import PSC from '@pathnirvanafoundation/pali-script-converter'
 import * as PLS from '@digitalpalitools/pali-language-services'
 
 export interface Pali1AutoCompleteProps {
@@ -25,11 +24,7 @@ export const Pali1AutoComplete = ({ db, initialValue, onChangePali1 }: Pali1Auto
 
     const loadOptions = () => {
       const results = db.exec(`SELECT pāli1 FROM '_stems' WHERE pāli1 like '${pali1}%' order by pāli1 asc`)
-      const pali1s = (results[0]?.values || [])
-        .flatMap((x: any[]) => x)
-        .sort((s1: string, s2: string) =>
-          PLS.stringCompare(PSC.convertAny(s1, PSC.Script.RO), PSC.convertAny(s2, PSC.Script.RO)),
-        )
+      const pali1s = (results[0]?.values || []).flatMap((x: any[]) => x).sort(PLS.stringCompare)
 
       if (active) {
         setOptions(pali1s)
