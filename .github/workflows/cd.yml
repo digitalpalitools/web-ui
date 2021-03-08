@@ -3,6 +3,8 @@ name: Continuous Deployment
 on:
   push:
     branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
 jobs:
   continuous-deployment:
@@ -59,11 +61,13 @@ jobs:
         run: echo ${{steps.createbuildversion.outputs.buildversion}} >./build/app.ver
 
       - name: Azure Login
+        if: github.event_name != 'pull_request'
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS_KSAPPLICATIONS_STORAGE }}
 
       - name: Deploy
+        if: github.event_name != 'pull_request'
         uses: azure/CLI@v1
         with:
           azcliversion: 2.0.72
@@ -71,6 +75,7 @@ jobs:
               az storage blob upload-batch --account-name ksapplications -d '$web\apps' -s ./build
 
       - name: Set blob properties
+        if: github.event_name != 'pull_request'
         run: |
               az storage blob upload --account-name ksapplications --container-name '$web' --name 'apps/service-worker.js' --file ./build/service-worker.js --content-cache-control 'no-store max-age=0'
               az storage blob upload --account-name ksapplications --container-name '$web' --name 'apps/app.ver' --file ./build/app.ver --content-cache-control 'no-store max-age=0'
@@ -79,11 +84,12 @@ jobs:
         shell: pwsh
 
       - name: Azure Logout
+        if: github.event_name != 'pull_request'
         run: |
               az logout
 
       - name: Notify DPT on Discord
-        if: always()
+        if: github.event_name != 'pull_request'
         env:
           JOB_STATUS: ${{ job.status }}
           WEBHOOK_URL: ${{ secrets.DISCORD_DPT_DEPLOYMENT_NOTIFICATIONS_WEBHOOK_URL }}
