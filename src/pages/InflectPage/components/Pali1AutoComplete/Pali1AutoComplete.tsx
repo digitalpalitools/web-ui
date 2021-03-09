@@ -57,7 +57,12 @@ export const Pali1AutoComplete = ({ db, initialValue, onChangePali1 }: Pali1Auto
   }
 
   const handleOpen = () => setOpen(true)
-  const handleClose = () => setOpen(false)
+  const handleClose = (_event: any) => {
+    if (_event.key === 'Enter') {
+      onChangePali1(_event.target.value)
+    }
+    setOpen(false)
+  }
 
   const handleChange = (_event: any, value: string, reason: string) => {
     if (reason !== 'select-option') {
