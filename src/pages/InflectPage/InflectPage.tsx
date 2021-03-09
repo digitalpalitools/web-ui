@@ -24,7 +24,9 @@ const loadDbData = () =>
     .then((zip) => zip.file('inflections.db')?.async('uint8array'))
 
 const createMarkup = (db: any, pali1: string) => {
-  return { __html: db ? PLS.generateInflectionTable(pali1) : 'Loading db...' }
+  const hostUrl = encodeURIComponent(window.location.href)
+  const { REACT_APP_VERSION } = process.env
+  return { __html: db ? PLS.generateInflectionTable(pali1, hostUrl, REACT_APP_VERSION ?? 'v0') : 'Loading db...' }
 }
 
 const useStyles = M.makeStyles((theme) => ({
