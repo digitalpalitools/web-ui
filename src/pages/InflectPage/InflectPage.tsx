@@ -1,6 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/no-danger */
 import { useEffect, useState } from 'react'
+import { RouteComponentProps } from 'react-router-dom'
 import * as M from '@material-ui/core'
 import styled from 'styled-components'
 import initSqlJs from 'sql.js'
@@ -23,10 +24,19 @@ const loadDbData = () =>
     .then((buf) => JSZip.loadAsync(buf))
     .then((zip) => zip.file('inflections.db')?.async('uint8array'))
 
+const safeGenerateInflectionTable = (pali1: string, hostUrl: string, hostVersion: string) => {
+  try {
+    return PLS.generateInflectionTable(pali1, hostUrl, hostVersion)
+  } catch (e) {
+    // eslint-disable-next-line max-len
+    return `Error generating inflection tables. It means, most likely, the word does not exist in the DPT dictionary. Please report this using the feedback button. Error details: ${e.message}`
+  }
+}
+
 const createMarkup = (db: any, pali1: string) => {
   const hostUrl = encodeURIComponent(window.location.href)
   const { REACT_APP_VERSION } = process.env
-  return { __html: db ? PLS.generateInflectionTable(pali1, hostUrl, REACT_APP_VERSION ?? 'v0') : 'Loading db...' }
+  return { __html: db ? safeGenerateInflectionTable(pali1, hostUrl, REACT_APP_VERSION ?? 'v0') : 'Loading db...' }
 }
 
 const useStyles = M.makeStyles((theme) => ({
@@ -84,9 +94,18 @@ const InflectionsRoot = styled.div`
   }
 `
 
-export const InflectPage = () => {
+export interface InflectPageParams {
+  pali1?: string
+}
+
+export const InflectPage = (props: RouteComponentProps<InflectPageParams>) => {
   const classes = useStyles()
-  const [pali1, setPali1] = useState('ābādheti')
+
+  const {
+    match: { params },
+  } = props
+  const initialValue = { pali1: params.pali1 || 'ābādheti', pos: '' } as C.Pali1AutoCompleteOption
+  const [pali1, setPali1] = useState(initialValue.pali1)
   const [db, setDb] = useState<any>(null)
 
   useEffect(() => {
@@ -105,11 +124,12 @@ export const InflectPage = () => {
 
   const handleChangePali1 = (value: string) => {
     setPali1(value)
+    props.history.push(`/inflect/${value}`)
   }
 
   return (
     <div className={classes.root}>
-      <C.Pali1AutoComplete db={db} initialValue={pali1} onChangePali1={handleChangePali1} />
+      <C.Pali1AutoComplete db={db} initialValue={initialValue} onChangePali1={handleChangePali1} />
       <InflectionsRoot dangerouslySetInnerHTML={createMarkup(db, pali1)} />
     </div>
   )

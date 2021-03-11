@@ -220,10 +220,8 @@ export const WordFrequencyView = (props: WordFrequencyViewParams) => {
   if (loadingError) {
     return (
       <div>
-        {loadingError}
         <br />
-        <br />
-        <strong>Please check the individual suttas for now.</strong>
+        <strong>Combined word frequency not available yet. Please check the individual suttas for now.</strong>
       </div>
     )
   }

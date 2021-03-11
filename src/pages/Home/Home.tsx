@@ -20,9 +20,9 @@ const useStyles = M.makeStyles((theme) => ({
 
 const createCardData = (props: any): any[] => [
   {
-    fn: () => props.history.push('/word-frequency'),
-    title: 'Word frequency',
-    details: 'Examine hierarchial word frequency and compare inclusion and exclusion lists.',
+    fn: () => props.history.push('/count'),
+    title: 'Count',
+    details: 'Count the length of pāli words.',
   },
   {
     fn: () => props.history.push('/pali-sort'),
@@ -30,14 +30,14 @@ const createCardData = (props: any): any[] => [
     details: 'Sort a list of pāli words.',
   },
   {
-    fn: () => props.history.push('/count'),
-    title: 'Count',
-    details: 'Count the length of pāli words.',
-  },
-  {
     fn: () => props.history.push('/converter'),
     title: 'Converter',
     details: 'Convert pāli between various scripts.',
+  },
+  {
+    fn: () => props.history.push('/word-frequency'),
+    title: 'Word frequency',
+    details: 'Examine hierarchial word frequency and compare inclusion and exclusion lists.',
   },
   {
     fn: () => props.history.push('/inflect'),

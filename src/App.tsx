@@ -105,7 +105,7 @@ const App = () => {
                     <Route exact path="/count" component={CountPage} />
                     <Route exact path="/converter" component={ConverterPage} />
                     <Route path="/word-frequency/:nodeId?" component={WordFrequencyPage} />
-                    <Route exact path="/inflect" component={InflectPage} />
+                    <Route path="/inflect/:pali1?" component={InflectPage} />
                     <Route exact path="/match" component={ComingSoonPage} />
                     <Route exact path="/sandhi" component={ComingSoonPage} />
                     <Route exact path="/variant" component={ComingSoonPage} />
