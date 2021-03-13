@@ -51,18 +51,23 @@ const InflectionsRoot = styled.div`
   margin-top: 1rem;
 
   .pls-inflection-root {
-    .pls-inflection-summary {
+    .pls-inflection-header {
       margin-bottom: 1rem;
-      font-weight: bold;
+
+      .pls-inflection-summary-word-info {
+        font-weight: bold;
+      }
     }
 
     .pls-inflection-table-title {
+      white-space: nowrap;
       font-weight: bold;
     }
 
     .pls-inflection-row-header,
     .pls-inflection-col-header {
-      color: orange;
+      white-space: nowrap;
+      color: #b81f1f;
     }
 
     .pls-inflection-inflected-word-suffix {
@@ -70,8 +75,8 @@ const InflectionsRoot = styled.div`
     }
 
     .pls-inflection-table {
+      width: min-content;
       margin-bottom: 1rem;
-      width: 100%;
       border: 1px solid;
       border-collapse: collapse;
     }
@@ -82,10 +87,6 @@ const InflectionsRoot = styled.div`
       border: 1px solid;
       border-collapse: collapse;
       padding: 0.25rem;
-    }
-
-    table thead tr {
-      width: 22.5%;
     }
 
     td:first-child {
