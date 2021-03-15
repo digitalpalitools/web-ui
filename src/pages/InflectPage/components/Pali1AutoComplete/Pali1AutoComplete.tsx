@@ -97,6 +97,7 @@ export const Pali1AutoComplete = ({ db, initialValue, onChangePali1 }: Pali1Auto
     if (reason !== 'input') {
       return
     }
+
     setSelectedWord({ pali1: velthuisToUnicode(value, true), pos: '???' })
   }
 
