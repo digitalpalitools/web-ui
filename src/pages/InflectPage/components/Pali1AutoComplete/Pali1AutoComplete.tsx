@@ -54,42 +54,50 @@ export const Pali1AutoComplete = ({ db, initialValue, onChangePali1 }: Pali1Auto
     }
   }, [open])
 
-  const velthuisToUnicode = (velthiusString: string) => {
-    let processedString = velthiusString
-    const mapping = {
-      AA: 'Ā',
-      aa: 'ā',
-      II: 'Ī',
-      ii: 'ī',
-      UU: 'Ū',
-      uu: 'ū',
-      '"N': 'Ṅ',
-      '"n': 'ṅ',
-      '.M': 'Ṃ',
-      '"m': 'ṁ',
-      '.m': 'ṃ',
-      '~N': 'Ñ',
-      '~n': 'ñ',
-      '.T': 'Ṭ',
-      '.t': 'ṭ',
-      '.D': 'Ḍ',
-      '.d': 'ḍ',
-      '.N': 'Ṇ',
-      '.n': 'ṇ',
-      '.L': 'Ḷ',
-      '.l': 'ḷ',
-    }
-    Object.entries(mapping).forEach((map) => {
-      processedString = processedString.replace(map[0], map[1])
-    })
-    return processedString
+  const velthuisToUnicode = (input: string, nigahitaStyleUpper: boolean) => {
+    if (!input || input === '') return input
+    const nigahita = nigahitaStyleUpper ? 'ṁ' : 'ṃ'
+    const Nigahita = nigahitaStyleUpper ? 'Ṁ' : 'Ṃ'
+
+    const inputProcessed = input
+      .replace(/aa/g, 'ā')
+      .replace(/ii/g, 'ī')
+      .replace(/uu/g, 'ū')
+      .replace(/\.t/g, 'ṭ')
+      .replace(/\.d/g, 'ḍ')
+      .replace(/"n\b/g, 'ṅ')
+      .replace(/"nk/g, 'ṅk')
+      .replace(/"ng/g, 'ṅg')
+      .replace(/\.n/g, 'ṇ')
+      .replace(/\.m/g, nigahita)
+      .replace(/\u1E41/g, nigahita)
+      .replace(/~n/g, 'ñ')
+      .replace(/\.l/g, 'ḷ')
+      .replace(/AA/g, 'Ā')
+      .replace(/II/g, 'Ī')
+      .replace(/UU/g, 'Ū')
+      .replace(/\.T/g, 'Ṭ')
+      .replace(/\.D/g, 'Ḍ')
+      .replace(/"N/g, 'Ṅ')
+      .replace(/\.N/g, 'Ṇ')
+      .replace(/\.M/g, Nigahita)
+      .replace(/~N/g, 'Ñ')
+      .replace(/\.L/g, 'Ḷ')
+      .replace(/\.ll/g, 'ḹ')
+      .replace(/\.r/g, 'ṛ')
+      .replace(/\.rr/g, 'ṝ')
+      .replace(/\.s/g, 'ṣ')
+      .replace(/"s/g, 'ś')
+      .replace(/\.h/g, 'ḥ')
+
+    return inputProcessed
   }
 
   const handleInputChange = (_event: any, value: string, reason: string) => {
     if (reason !== 'input') {
       return
     }
-    setSelectedWord({ pali1: velthuisToUnicode(value), pos: '???' })
+    setSelectedWord({ pali1: velthuisToUnicode(value, true), pos: '???' })
   }
 
   const handleInputChangeThrottled = _.debounce((e, v, r) => handleInputChange(e, v, r), 500)
