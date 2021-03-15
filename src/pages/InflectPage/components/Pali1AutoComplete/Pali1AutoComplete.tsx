@@ -54,12 +54,42 @@ export const Pali1AutoComplete = ({ db, initialValue, onChangePali1 }: Pali1Auto
     }
   }, [open])
 
+  const velthuisToUnicode = (velthiusString: string) => {
+    let processedString = velthiusString
+    const mapping = {
+      AA: 'Ā',
+      aa: 'ā',
+      II: 'Ī',
+      ii: 'ī',
+      UU: 'Ū',
+      uu: 'ū',
+      '"N': 'Ṅ',
+      '"n': 'ṅ',
+      '.M': 'Ṃ',
+      '"m': 'ṁ',
+      '.m': 'ṃ',
+      '~N': 'Ñ',
+      '~n': 'ñ',
+      '.T': 'Ṭ',
+      '.t': 'ṭ',
+      '.D': 'Ḍ',
+      '.d': 'ḍ',
+      '.N': 'Ṇ',
+      '.n': 'ṇ',
+      '.L': 'Ḷ',
+      '.l': 'ḷ',
+    }
+    Object.entries(mapping).forEach((map) => {
+      processedString = processedString.replace(map[0], map[1])
+    })
+    return processedString
+  }
+
   const handleInputChange = (_event: any, value: string, reason: string) => {
     if (reason !== 'input') {
       return
     }
-
-    setSelectedWord({ pali1: value, pos: '???' })
+    setSelectedWord({ pali1: velthuisToUnicode(value), pos: '???' })
   }
 
   const handleInputChangeThrottled = _.debounce((e, v, r) => handleInputChange(e, v, r), 500)
