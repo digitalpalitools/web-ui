@@ -3,6 +3,8 @@ import * as M from '@material-ui/core'
 import * as MLab from '@material-ui/lab'
 import * as _ from 'lodash'
 import * as PLS from '@digitalpalitools/pali-language-services'
+import PSC from '@pathnirvanafoundation/pali-script-converter'
+import * as H from '../../../../hooks'
 
 export interface Pali1AutoCompleteOption {
   pali1: string
@@ -20,6 +22,7 @@ export const Pali1AutoComplete = ({ db, initialValue, onChangePali1 }: Pali1Auto
   const [options, setOptions] = useState<Pali1AutoCompleteOption[]>([])
   const loading = open
   const [selectedWord, setSelectedWord] = useState(initialValue)
+  const [script] = H.useLocalStorageState<string>(PSC.Script.RO, 'currentScript')
 
   useEffect(() => {
     let active = true
@@ -30,10 +33,13 @@ export const Pali1AutoComplete = ({ db, initialValue, onChangePali1 }: Pali1Auto
 
     const loadOptions = () => {
       const results = db.exec(
-        `SELECT pāli1, pos FROM '_stems' WHERE pāli1 like '${selectedWord.pali1}%' order by pāli1 asc`,
+        `SELECT pāli1, pos FROM '_stems' WHERE pāli1 like '${PSC.convertAny(
+          selectedWord.pali1,
+          PSC.Script.RO,
+        )}%' order by pāli1 asc`,
       )
       const pali1s = (results[0]?.values || [])
-        .map((x: string[]) => ({ pali1: x[0], pos: x[1] }))
+        .map((x: string[]) => ({ pali1: PSC.convertAny(x[0], script), pos: x[1] }))
         .sort((p1: Pali1AutoCompleteOption, p2: Pali1AutoCompleteOption) => PLS.stringCompare(p1.pali1, p2.pali1))
 
       if (active) {
@@ -46,7 +52,7 @@ export const Pali1AutoComplete = ({ db, initialValue, onChangePali1 }: Pali1Auto
     return () => {
       active = false
     }
-  }, [db, loading, selectedWord])
+  }, [db, loading, selectedWord, script])
 
   useEffect(() => {
     if (!open) {
@@ -114,7 +120,7 @@ export const Pali1AutoComplete = ({ db, initialValue, onChangePali1 }: Pali1Auto
       return
     }
 
-    onChangePali1(value.pali1)
+    onChangePali1(PSC.convertAny(value.pali1, PSC.Script.RO))
   }
 
   const handleGetOptionSelected = (option: Pali1AutoCompleteOption, value: Pali1AutoCompleteOption) =>
