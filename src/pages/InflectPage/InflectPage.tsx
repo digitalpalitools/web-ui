@@ -8,6 +8,8 @@ import initSqlJs from 'sql.js'
 import JSZip from 'jszip'
 import * as PLS from '@digitalpalitools/pali-language-services'
 import * as C from './components'
+import * as H from '../../hooks'
+import * as T from '../../themes'
 
 declare const window: any
 
@@ -81,6 +83,11 @@ const InflectionsRoot = styled.div`
       border-collapse: collapse;
     }
 
+    .pls-inflection-feedback-link {
+      color: ${(props) => props.theme.palette.error.light};
+      font-weight: bold;
+    }
+
     table,
     th,
     td {
@@ -108,6 +115,7 @@ export const InflectPage = (props: RouteComponentProps<InflectPageParams>) => {
   const initialValue = { pali1: params.pali1 || 'ābādheti', pos: '' } as C.Pali1AutoCompleteOption
   const [pali1, setPali1] = useState(initialValue.pali1)
   const [db, setDb] = useState<any>(null)
+  const [theme] = H.useLocalStorageState<string>('dark', 'currentTheme')
 
   useEffect(() => {
     const loadSqlDb = async () => {
@@ -131,7 +139,10 @@ export const InflectPage = (props: RouteComponentProps<InflectPageParams>) => {
   return (
     <div className={classes.root}>
       <C.Pali1AutoComplete db={db} initialValue={initialValue} onChangePali1={handleChangePali1} />
-      <InflectionsRoot dangerouslySetInnerHTML={createMarkup(db, pali1)} />
+      <InflectionsRoot
+        theme={theme === 'light' ? T.lightTheme : T.darkTheme}
+        dangerouslySetInnerHTML={createMarkup(db, pali1)}
+      />
     </div>
   )
 }
