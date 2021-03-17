@@ -6,9 +6,6 @@
   "license": "CC BY-NC-SA 4.0",
   "homepage": ".",
   "scripts": {
-    "cli:start": "nodemon",
-    "cli:run": "TS_NODE_PROJECT=tsconfig.cli.json node --max-old-space-size=8192 -r ts-node/register ./src/index-cli.ts generate-files",
-    "cli:build": "rimraf ./build && TS_NODE_PROJECT=tsconfig.cli.json webpack --config webpack.cli.config.ts",
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",
@@ -18,7 +15,7 @@
   },
   "dependencies": {
     "@craco/craco": "^6.1.1",
-    "@digitalpalitools/pali-language-services": "^4.2.0",
+    "@digitalpalitools/pali-language-services": "^4.2.1",
     "@kitamstudios/common-ui": "https://github.com/kitamstudios/common-ui",
     "@material-ui/core": "^4.11.1",
     "@material-ui/icons": "^4.11.2",
@@ -49,7 +46,6 @@
     "sql.js": "^1.4.0",
     "styled-components": "^5.2.1",
     "web-vitals": "^0.2.4",
-    "winston": "^3.3.3",
     "workbox-background-sync": "^5.1.3",
     "workbox-broadcast-update": "^5.1.3",
     "workbox-cacheable-response": "^5.1.3",
@@ -62,15 +58,13 @@
     "workbox-routing": "^5.1.3",
     "workbox-strategies": "^5.1.3",
     "workbox-streams": "^5.1.3",
-    "xmldom": "^0.5.0",
-    "yargs": "^16.0.3"
+    "xmldom": "^0.5.0"
   },
   "devDependencies": {
     "@types/file-saver": "^2.0.1",
     "@types/jest": "^26.0.15",
     "@types/lodash": "^4.14.168",
     "@types/luxon": "^1.25.0",
-    "@types/node": "^14.14.10",
     "@types/react": "^16.9.53",
     "@types/react-dom": "^16.9.8",
     "@types/react-router-dom": "^5.1.6",
@@ -85,18 +79,15 @@
     "eslint": "^7.14.0",
     "eslint-config-airbnb": "18.2.1",
     "eslint-config-airbnb-typescript": "^12.0.0",
-    "eslint-config-node": "^4.1.0",
     "eslint-config-prettier": "^6.15.0",
     "eslint-plugin-import": "2.22.1",
     "eslint-plugin-jest": "^24.1.3",
     "eslint-plugin-jsx-a11y": "6.4.1",
-    "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "7.21.5",
     "eslint-plugin-react-hooks": "4.0.0",
     "husky": "^4.3.0",
     "lint-staged": "^10.5.2",
-    "nodemon": "^1.19.1",
     "prettier": "^2.2.0",
     "rimraf": "^3.0.2",
     "stylelint": "^13.8.0",
@@ -105,14 +96,12 @@
     "stylelint-processor-styled-components": "^1.10.0",
     "ts-jest": "^26.4.4",
     "ts-loader": "^8.0.11",
-    "ts-node": "^9.1.0",
     "tsconfig-paths": "^3.9.0",
     "tsconfig-paths-webpack-plugin": "^3.3.0",
     "typescript": "^4.1.2",
-    "wasm-loader": "^1.3.0",
     "webpack": "4.44.2",
     "webpack-cli": "^4.2.0",
-    "worker-loader": "^3.0.5"
+    "wasm-loader": "^1.3.0"
   },
   "husky": {
     "hooks": {
