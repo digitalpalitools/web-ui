@@ -69,7 +69,7 @@ const InflectionsRoot = styled.div`
     .pls-inflection-row-header,
     .pls-inflection-col-header {
       white-space: nowrap;
-      color: #b81f1f;
+      color: ${(props) => props.theme.palette.primary.light};
     }
 
     .pls-inflection-inflected-word-suffix {
@@ -84,7 +84,7 @@ const InflectionsRoot = styled.div`
     }
 
     .pls-inflection-feedback-link {
-      color: ${(props) => props.theme.palette.error.light};
+      color: ${(props) => props.theme.palette.secondary.light};
       font-weight: bold;
     }
 
