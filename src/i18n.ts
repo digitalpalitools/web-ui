@@ -14,7 +14,7 @@ i18n
       loadPath: `${process.env.REACT_APP_RELATIVE_ROOT}/locales/{{ns}}.{{lng}}.json`,
     },
     debug: process.env.NODE_ENV === 'development',
-    supportedLngs: [...PSC.getSupportedLocales()],
+    supportedLngs: [...PSC.getSupportedLocales(), 'xx'],
     interpolation: {
       escapeValue: false, // not needed for react as it escapes by default
     },

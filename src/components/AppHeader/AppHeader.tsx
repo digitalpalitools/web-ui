@@ -89,7 +89,7 @@ export const AppHeader = ({ version, theme, toggleTheme, changeScript }: AppHead
         <M.Box>
           <>
             <M.Button className={classes.selectLocaleButton} onClick={handleClick}>
-              {PSC.getLocaleNameForScript(script)} <MIcon.ArrowDropDown />
+              {script === 'xx' ? 'English' : PSC.getLocaleNameForScript(script)} <MIcon.ArrowDropDown />
             </M.Button>
             <M.Menu
               id="simple-menu"
