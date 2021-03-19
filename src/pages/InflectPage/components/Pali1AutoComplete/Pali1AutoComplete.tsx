@@ -39,7 +39,7 @@ export const Pali1AutoComplete = ({ db, initialValue, onChangePali1 }: Pali1Auto
         )}%' order by pāli1 asc`,
       )
       const pali1s = (results[0]?.values || [])
-        .map((x: string[]) => ({ pali1: PSC.convertAny(x[0], script), pos: x[1] }))
+        .map((x: string[]) => ({ pali1: PSC.convertAny(x[0], script === 'xx' ? 'Latn' : script), pos: x[1] }))
         .sort((p1: Pali1AutoCompleteOption, p2: Pali1AutoCompleteOption) => PLS.stringCompare(p1.pali1, p2.pali1))
 
       if (active) {

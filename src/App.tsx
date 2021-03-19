@@ -64,9 +64,12 @@ const AppFooter = ({ version }: any) => {
 const App = () => {
   const [theme, setTheme] = H.useLocalStorageState<T.ThemeType>('dark', 'currentTheme')
   const [currentScript, setCurrentScript] = H.useLocalStorageState<string>(PSC.Script.RO, 'currentScript')
+  const toScript = currentScript === 'xx' ? 'Latn' : currentScript
+
   // eslint-disable-next-line no-underscore-dangle
-  window.__pali_script_converter_transliterate_from_roman = (text: string) =>
-    PSC.convert(text, PSC.Script.RO, currentScript)
+  window.__pali_script_converter_transliterate_from_roman = (text: string) => {
+    return PSC.convert(text, PSC.Script.RO, toScript)
+  }
 
   const { i18n } = useTranslation()
 
@@ -79,9 +82,13 @@ const App = () => {
   }
 
   const handleChangeScript = (s: string) => {
-    i18n.changeLanguage(PSC.getLocaleForScript(s))
+    i18n.changeLanguage(s === 'xx' ? 'xx' : PSC.getLocaleForScript(s))
     setCurrentScript(s)
     window.location.reload()
+  }
+
+  window.change_locale_to_dev = () => {
+    handleChangeScript('xx')
   }
 
   return (
