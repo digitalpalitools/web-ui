@@ -67,9 +67,7 @@ const App = () => {
   const toScript = currentScript === 'xx' ? 'Latn' : currentScript
 
   // eslint-disable-next-line no-underscore-dangle
-  window.__pali_script_converter_transliterate_from_roman = (text: string) => {
-    return PSC.convert(text, PSC.Script.RO, toScript)
-  }
+  window.__pali_script_converter_transliterate_from_roman = (text: string) => PSC.convert(text, PSC.Script.RO, toScript)
 
   const { i18n } = useTranslation()
 
