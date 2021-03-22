@@ -1,5 +1,43 @@
 {
-  "appHeader": {
-    "giveFeedback": "^Give feedback$"
+  "App": {
+    "Loading": "^Loading...$"
+  },
+  "AppHeader": {
+    "GiveFeedback": "^Give feedback$",
+    "GoHome": "^Go Home$",
+    "ToggleMode": "^Toggle light/dark theme$"
+  },
+  "InflectPage": {
+    "AutoCompleteLabel": "^Pāli 1$"
+  },
+  "FromFunctions": {
+    "LoadingDB": "^Loading db1...$",
+    "NotFoundInflection": "^Error generating inflection tables. It means, most likely, the word does not exist in the DPT dictionary. Please report this using the feedback button. Error details:$"
+  },
+  "HomePage": {
+    "DPTinfo": "^Digital Pāli Tools: A Step-by-Step Process Towards Natural Language Processing of Pāli. Check out the$",
+    "VisionDocument": "^vision document$",
+    "DPRTitle": "^Digital Pāli Reader$",
+    "DPRDetails": "^A tool facilitating immersive study of the Pāli language, canon and related scriptures.$",
+    "CountTitle": "^Count$",
+    "CountDetails": "^Count the length of pāli words.$",
+    "PaliSortTitle": "^Pāli Sort$",
+    "PaliSortDetails": "^Sort a list of pāli words.$",
+    "ConverterTitle": "^Converter$",
+    "ConverterDetails": "^Convert pāli between various scripts.$",
+    "WordFreqTitle": "^Word frequency$",
+    "WordFreqDetails": "^Examine hierarchial word frequency and compare inclusion and exclusion lists.$",
+    "InflectionsTitle": "^Inflections$",
+    "InflectionsDetails": "^Show conjugations & declensions for pāli words.$"
+  },
+  "WordFreq": {
+    "DiffViewLabel": "^diff view$",
+    "Words": "^words$",
+    "Word": "^Word$",
+    "Frequency": "^Frequency$",
+    "Max": "^Max$",
+    "Length": "^Length$",
+    "WFSpace": "^ $",
+    "CombinedWordMsg": "^Combined word frequency not available yet. Please check the individual suttas for now.$"
   }
 }

@@ -69,7 +69,7 @@ const App = () => {
   // eslint-disable-next-line no-underscore-dangle
   window.__pali_script_converter_transliterate_from_roman = (text: string) => PSC.convert(text, PSC.Script.RO, toScript)
 
-  const { i18n } = useTranslation()
+  const { i18n, t } = useTranslation()
 
   const handleToggleTheme = () => {
     if (theme === 'light') {
@@ -103,7 +103,7 @@ const App = () => {
           <AppBody>
             <Router>
               <TelemetryProvider instrumentationKey={REACT_APP_AI_INSTRUMENTATION_KEY || '0xBAADF00D'}>
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<div>{t`App.Loading`}</div>}>
                   <Switch>
                     <Route exact path="/" component={HomePage} />
                     <Route exact path="/pali-sort" component={PaliSortPage} />

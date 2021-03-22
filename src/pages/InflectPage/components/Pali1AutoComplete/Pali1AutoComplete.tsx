@@ -3,6 +3,7 @@ import * as M from '@material-ui/core'
 import * as MLab from '@material-ui/lab'
 import * as _ from 'lodash'
 import * as PLS from '@digitalpalitools/pali-language-services'
+import { useTranslation } from 'react-i18next'
 import PSC from '@pathnirvanafoundation/pali-script-converter'
 import * as H from '../../../../hooks'
 
@@ -23,6 +24,7 @@ export const Pali1AutoComplete = ({ db, initialValue, onChangePali1 }: Pali1Auto
   const loading = open
   const [selectedWord, setSelectedWord] = useState(initialValue)
   const [script] = H.useLocalStorageState<string>(PSC.Script.RO, 'currentScript')
+  const { t } = useTranslation()
 
   useEffect(() => {
     let active = true
@@ -148,7 +150,7 @@ export const Pali1AutoComplete = ({ db, initialValue, onChangePali1 }: Pali1Auto
       renderInput={(params) => (
         <M.TextField
           {...params}
-          label="Pāli 1"
+          label={t`InflectPage.AutoCompleteLabel`}
           variant="outlined"
           InputProps={{
             ...params.InputProps,
