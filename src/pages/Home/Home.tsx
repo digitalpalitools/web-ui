@@ -57,6 +57,7 @@ const createCardData = (props: any, translateFunc: (str: string) => string): any
 
 export const Home = (props: RouteComponentProps) => {
   const classes = useStyles()
+
   const { t } = useTranslation()
   const cardData = createCardData(props, t)
 

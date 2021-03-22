@@ -127,6 +127,7 @@ export const WordFrequencyView = (props: WordFrequencyViewParams) => {
   const { nodeId, script } = props
   const classes = useStyles()
   const { t } = useTranslation()
+
   const [rows, setRows] = useState([] as WordFrequencyViewRecord[])
   const [displayRows, setDisplayRows] = useState([] as WordFrequencyViewRecord[])
   const [isLoading, setIsLoading] = useState(true)

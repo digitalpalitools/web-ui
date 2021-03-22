@@ -127,6 +127,7 @@ export const InflectPage = (props: RouteComponentProps<InflectPageParams>) => {
   const [db, setDb] = useState<any>(null)
   const [theme] = H.useLocalStorageState<string>('dark', 'currentTheme')
   const { t } = useTranslation()
+
   useEffect(() => {
     const loadSqlDb = async () => {
       const [Sqlite, DbData] = await Promise.all([loadSqlite(), loadDbData()])
