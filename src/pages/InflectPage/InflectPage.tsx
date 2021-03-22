@@ -7,6 +7,7 @@ import styled from 'styled-components'
 import initSqlJs from 'sql.js'
 import JSZip from 'jszip'
 import * as PLS from '@digitalpalitools/pali-language-services'
+import { useTranslation } from 'react-i18next'
 import * as C from './components'
 import * as H from '../../hooks'
 import * as T from '../../themes'
@@ -26,19 +27,28 @@ const loadDbData = () =>
     .then((buf) => JSZip.loadAsync(buf))
     .then((zip) => zip.file('inflections.db')?.async('uint8array'))
 
-const safeGenerateInflectionTable = (pali1: string, hostUrl: string, hostVersion: string) => {
+const safeGenerateInflectionTable = (
+  pali1: string,
+  hostUrl: string,
+  hostVersion: string,
+  translateFunc: (key: string) => string,
+) => {
   try {
     return PLS.generateInflectionTable(pali1, hostUrl, hostVersion)
   } catch (e) {
     // eslint-disable-next-line max-len
-    return `Error generating inflection tables. It means, most likely, the word does not exist in the DPT dictionary. Please report this using the feedback button. Error details: ${e.message}`
+    return `${translateFunc('FromFunctions.NotFoundInflection')} ${e.message}`
   }
 }
 
-const createMarkup = (db: any, pali1: string) => {
+const createMarkup = (db: any, pali1: string, translateFunc: (key: string) => string) => {
   const hostUrl = encodeURIComponent(window.location.href)
   const { REACT_APP_VERSION } = process.env
-  return { __html: db ? safeGenerateInflectionTable(pali1, hostUrl, REACT_APP_VERSION ?? 'v0') : 'Loading db...' }
+  return {
+    __html: db
+      ? safeGenerateInflectionTable(pali1, hostUrl, REACT_APP_VERSION ?? 'v0', translateFunc)
+      : translateFunc('FromFunctions.LoadingDB'),
+  }
 }
 
 const useStyles = M.makeStyles((theme) => ({
@@ -116,6 +126,7 @@ export const InflectPage = (props: RouteComponentProps<InflectPageParams>) => {
   const [pali1, setPali1] = useState(initialValue.pali1)
   const [db, setDb] = useState<any>(null)
   const [theme] = H.useLocalStorageState<string>('dark', 'currentTheme')
+  const { t } = useTranslation()
 
   useEffect(() => {
     const loadSqlDb = async () => {
@@ -141,7 +152,7 @@ export const InflectPage = (props: RouteComponentProps<InflectPageParams>) => {
       <C.Pali1AutoComplete db={db} initialValue={initialValue} onChangePali1={handleChangePali1} />
       <InflectionsRoot
         theme={theme === 'light' ? T.lightTheme : T.darkTheme}
-        dangerouslySetInnerHTML={createMarkup(db, pali1)}
+        dangerouslySetInnerHTML={createMarkup(db, pali1, t)}
       />
     </div>
   )

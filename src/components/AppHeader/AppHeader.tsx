@@ -50,7 +50,7 @@ export const AppHeader = ({ version, theme, toggleTheme, changeScript }: AppHead
 
   const [script, setScript] = H.useLocalStorageState<string>(PSC.Script.RO, 'currentScript')
 
-  const { t } = useTranslation()
+  const { t }: { t: any } = useTranslation()
 
   const handleFeedbackOnClick = () =>
     window.open(
@@ -80,7 +80,7 @@ export const AppHeader = ({ version, theme, toggleTheme, changeScript }: AppHead
     <M.AppBar position="static" className={classes.appBar}>
       <M.Toolbar variant="dense" className={classes.toolBar}>
         <M.Box>
-          <M.Tooltip title="Go home">
+          <M.Tooltip title={t`AppHeader.GoHome`}>
             <M.IconButton className={classes.goHomeButton} href="/apps">
               <MIcon.Home />
             </M.IconButton>
@@ -106,21 +106,21 @@ export const AppHeader = ({ version, theme, toggleTheme, changeScript }: AppHead
             </M.Menu>
           </>
           {theme === 'light' && (
-            <M.Tooltip title="Toggle light/dark theme">
+            <M.Tooltip title={t`AppHeader.ToggleMode`}>
               <M.IconButton onClick={toggleTheme}>
                 <MIcon.Brightness4 />
               </M.IconButton>
             </M.Tooltip>
           )}
           {theme === 'dark' && (
-            <M.Tooltip title="Toggle light/dark theme">
+            <M.Tooltip title={t`AppHeader.ToggleMode`}>
               <M.IconButton onClick={toggleTheme}>
                 <MIcon.Brightness7 />
               </M.IconButton>
             </M.Tooltip>
           )}
           <M.Button className={classes.feedbackButton} onClick={handleFeedbackOnClick}>
-            {t`appHeader.giveFeedback`}
+            {t`AppHeader.GiveFeedback`}
           </M.Button>
         </M.Box>
       </M.Toolbar>

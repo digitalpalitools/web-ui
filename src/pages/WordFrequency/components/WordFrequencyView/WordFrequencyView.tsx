@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import * as M from '@material-ui/core'
 import PSC from '@pathnirvanafoundation/pali-script-converter'
 import * as KSCUI from '@kitamstudios/common-ui'
+import { useTranslation } from 'react-i18next'
 import * as PLS from '@digitalpalitools/pali-language-services'
 import * as S from '../../services'
 
@@ -45,29 +46,32 @@ const loadWFData = async (nodeId: string): Promise<WordFrequencyViewRecord[] | s
   return `Error in loading ${csvUrl}: Details: ${resp.statusText}`
 }
 
-const columnDefinitions: KSCUI.C.KsTableColumnDefinition[] = [
-  {
-    id: 0,
-    field: 'word',
-    displayName: 'Word',
-    sortable: true,
-    width: 'auto',
-  },
-  {
-    id: 1,
-    field: 'frequency',
-    displayName: 'Frequency',
-    sortable: true,
-    width: 'auto',
-  },
-  {
-    id: 2,
-    field: 'length',
-    displayName: 'Length',
-    sortable: true,
-    align: 'left',
-  },
-]
+const columnDefinitionsGen = (translateFunc: (str: string) => string) => {
+  const columnDefinitions: KSCUI.C.KsTableColumnDefinition[] = [
+    {
+      id: 0,
+      field: 'word',
+      displayName: translateFunc('WordFreq.Word'),
+      sortable: true,
+      width: 'auto',
+    },
+    {
+      id: 1,
+      field: 'frequency',
+      displayName: translateFunc('WordFreq.Frequency'),
+      sortable: true,
+      width: 'auto',
+    },
+    {
+      id: 2,
+      field: 'length',
+      displayName: translateFunc('WordFreq.Length'),
+      sortable: true,
+      align: 'left',
+    },
+  ]
+  return columnDefinitions
+}
 
 const sortData = (sortBy: string, sortOrder: KSCUI.C.KsTableSortOrder, data: any[]) => {
   let compareFn: (a: any, b: any) => number = (a, b) => a - b
@@ -122,6 +126,7 @@ export interface WordFrequencyViewParams {
 export const WordFrequencyView = (props: WordFrequencyViewParams) => {
   const { nodeId, script } = props
   const classes = useStyles()
+  const { t } = useTranslation()
 
   const [rows, setRows] = useState([] as WordFrequencyViewRecord[])
   const [displayRows, setDisplayRows] = useState([] as WordFrequencyViewRecord[])
@@ -200,11 +205,13 @@ export const WordFrequencyView = (props: WordFrequencyViewParams) => {
     <>
       <M.Paper className={classes.header}>
         <strong>{transliterateFromRoman(nodeName, script)}</strong>
-        {`: ${transliterateFromRoman(rows.length.toString(), script)} words`}
-        {`, ${transliterateFromRoman(maxWordLength.toString(), script)} max length`}
+        {`: ${transliterateFromRoman(rows.length.toString(), script)} ${t('WordFreq.Words')} `}
+        {`, ${transliterateFromRoman(maxWordLength.toString(), script)} ${
+          t('WordFreq.Max') + t('WordFreq.WFSpace') + t('WordFreq.Length')
+        }`}
       </M.Paper>
       <KSCUI.C.KsTable
-        columnDefinitions={columnDefinitions}
+        columnDefinitions={columnDefinitionsGen(t)}
         rows={displayRows}
         sortOrder={sortOrder}
         sortBy={sortBy}
@@ -214,14 +221,14 @@ export const WordFrequencyView = (props: WordFrequencyViewParams) => {
   )
 
   if (isLoading) {
-    return <div>Loading...</div>
+    return <div>{t`App.Loading`}</div>
   }
 
   if (loadingError) {
     return (
       <div>
         <br />
-        <strong>Combined word frequency not available yet. Please check the individual suttas for now.</strong>
+        <strong>{t`WordFreq.CombinedWordMsg`}</strong>
       </div>
     )
   }

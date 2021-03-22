@@ -31,7 +31,8 @@ export interface WordFrequencyParams {
 }
 
 export const WordFrequency = (props: RouteComponentProps<WordFrequencyParams>) => {
-  const [script] = H.useLocalStorageState<string>(PSC.Script.RO, 'currentScript')
+  const [scriptRaw] = H.useLocalStorageState<string>(PSC.Script.RO, 'currentScript')
+  const script = scriptRaw === 'xx' ? 'Latn' : scriptRaw
 
   const classes = useStyles()
 
