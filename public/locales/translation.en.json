@@ -8,7 +8,7 @@
     "ToggleMode": "Toggle light/dark theme"
   },
   "InflectPage": {
-    "AutocompleteLabel": "Pāli 1"
+    "AutoCompleteLabel": "Select Pāli Word"
   },
   "FromFunctions": {
     "LoadingDB": "Loading db1...",
