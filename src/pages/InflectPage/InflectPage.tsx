@@ -129,7 +129,6 @@ export const InflectPage = (props: RouteComponentProps<InflectPageParams>) => {
     pali1: PSC.convertAny(params.pali1 || 'ābādheti', script),
     pos: '',
   } as C.Pali1AutoCompleteOption
-
   const [pali1, setPali1] = useState(PSC.convertAny(initialValue.pali1, PSC.Script.RO))
   const [db, setDb] = useState<any>(null)
   const [theme] = H.useLocalStorageState<string>('dark', 'currentTheme')
