@@ -7,6 +7,7 @@ import styled from 'styled-components'
 import initSqlJs from 'sql.js'
 import JSZip from 'jszip'
 import * as PLS from '@digitalpalitools/pali-language-services'
+import PSC from '@pathnirvanafoundation/pali-script-converter'
 import { useTranslation } from 'react-i18next'
 import * as C from './components'
 import * as H from '../../hooks'
@@ -32,21 +33,22 @@ const safeGenerateInflectionTable = (
   hostUrl: string,
   hostVersion: string,
   translateFunc: (key: string) => string,
+  locale: string,
 ) => {
   try {
-    return PLS.generateInflectionTable(pali1, hostUrl, hostVersion)
+    return PLS.generateInflectionTable(pali1, hostUrl, hostVersion, locale)
   } catch (e) {
     // eslint-disable-next-line max-len
     return `${translateFunc('FromFunctions.NotFoundInflection')} ${e.message}`
   }
 }
 
-const createMarkup = (db: any, pali1: string, translateFunc: (key: string) => string) => {
+const createMarkup = (db: any, pali1: string, translateFunc: (key: string) => string, locale: string) => {
   const hostUrl = encodeURIComponent(window.location.href)
   const { REACT_APP_VERSION } = process.env
   return {
     __html: db
-      ? safeGenerateInflectionTable(pali1, hostUrl, REACT_APP_VERSION ?? 'v0', translateFunc)
+      ? safeGenerateInflectionTable(pali1, hostUrl, REACT_APP_VERSION ?? 'v0', translateFunc, locale)
       : translateFunc('FromFunctions.LoadingDB'),
   }
 }
@@ -122,8 +124,12 @@ export const InflectPage = (props: RouteComponentProps<InflectPageParams>) => {
   const {
     match: { params },
   } = props
-  const initialValue = { pali1: params.pali1 || 'ābādheti', pos: '' } as C.Pali1AutoCompleteOption
-  const [pali1, setPali1] = useState(initialValue.pali1)
+  const [script] = H.useLocalStorageState<string>(PSC.Script.RO, 'currentScript')
+  const initialValue = {
+    pali1: PSC.convertAny(params.pali1 || 'ābādheti', script === 'xx' ? 'Latn' : script),
+    pos: '',
+  } as C.Pali1AutoCompleteOption
+  const [pali1, setPali1] = useState(PSC.convertAny(initialValue.pali1, PSC.Script.RO))
   const [db, setDb] = useState<any>(null)
   const [theme] = H.useLocalStorageState<string>('dark', 'currentTheme')
   const { t } = useTranslation()
@@ -152,7 +158,7 @@ export const InflectPage = (props: RouteComponentProps<InflectPageParams>) => {
       <C.Pali1AutoComplete db={db} initialValue={initialValue} onChangePali1={handleChangePali1} />
       <InflectionsRoot
         theme={theme === 'light' ? T.lightTheme : T.darkTheme}
-        dangerouslySetInnerHTML={createMarkup(db, pali1, t)}
+        dangerouslySetInnerHTML={createMarkup(db, pali1, t, script === 'Latn' ? 'en' : script.toLowerCase())}
       />
     </div>
   )
