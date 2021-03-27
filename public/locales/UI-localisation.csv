@@ -1,7 +1,7 @@
 JSON_field,English,Sinhala,Devanagari,Russian,Bengali,Myanmar,Khmer,Laos,Gurumukhi,Gujarati,Telegu,Kannada,Malayalam,Tibetan,Thai
 json_field,en,si,hi,ru,bn,my,km,lo,pa,gu,te,kn,ml,bo,th
 App__Loading,Loading...,,चालू हो रहा है।,Загружается ...,,,,,,,,,,,
-AppHeader__GiveFeedback,give feedback,ප්රතිචාර දක්වන්න,प्रतिक्रिया दें,дать обратную связь,মতামত দিন,တုံ့ပြန်ချက်ပေးပါ,ផ្ដល់​មតិ​យោបល់,ໃຫ້ ຄຳ ຄິດເຫັນ,ਫੀਡਬੈਕ ਦਿਓ,અભીપ્રાય આપો,అభిప్రాయం తెలియజేయండి,ಪ್ರತಿಕ್ರಿಯೆ ನೀಡಿ,ഫീഡ്‌ബാക്ക് നൽകുക,,дать обратную связь
+AppHeader__GiveFeedback,give feedback,ප්රතිචාර දක්වන්න,प्रतिक्रिया दें,дать обратную связь,মতামত দিন,တုံ့ပြန်ချက်ပေးပါ,ផ្ដល់​មតិ​យោបល់,ໃຫ້ ຄຳ ຄິດເຫັນ,ਫੀਡਬੈਕ ਦਿਓ,અભીપ્રાય આપો,అభిప్రాయం తెలియజేయండి,ಪ್ರತಿಕ್ರಿಯೆ ನೀಡಿ,ഫീഡ്‌ബാക്ക് നൽകുക,,ให้ข้อเสนอแนะ
 AppHeader__GoHome,Go Home,,मुख पृष्ठ,На главную,,,,,,,,,,,
 AppHeader__ToggleMode,Toggle light/dark theme,,थीम रंग बदलें गहरा/हल्का,Переключить светлую / темную тему,,,,,,,,,,,
 InflectPage__AutocompleteLabel,Pāli word,,पाळि वचन लिखें।,слово на Пали,,,,,,,,,,,
