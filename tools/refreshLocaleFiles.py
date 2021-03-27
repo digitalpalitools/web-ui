@@ -7,7 +7,7 @@ def ndd():
 
 dictionaryOfLocales = ndd()
 
-with open("UI-localisation.csv") as localisationFile:
+with open("./public/locales/UI-localisation.csv") as localisationFile:
     csvReader = csv.reader(localisationFile)
     next(csvReader)
     listOfLocales = next(csvReader)[1:]
@@ -19,4 +19,4 @@ with open("UI-localisation.csv") as localisationFile:
         dictionaryOfLocales["en"]["WordFreq"]["WFSpace"] = " "
     for locale in dictionaryOfLocales:
         json.dump(dictionaryOfLocales[locale], open(
-            "translation.{}.json".format(locale), "w+"), indent=2, ensure_ascii=False)
+            "./public/locales/translation.{}.json".format(locale), "w+"), indent=2, ensure_ascii=False)
