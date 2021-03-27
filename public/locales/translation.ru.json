@@ -8,7 +8,7 @@
     "ToggleMode": "Переключить светлую / темную тему"
   },
   "InflectPage": {
-    "AutocompleteLabel": "слово на Пали"
+    "AutoCompleteLabel": "слово на Пали"
   },
   "FromFunctions": {
     "LoadingDB": "Загрузка базы данных...",
