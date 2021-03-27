@@ -2,13 +2,23 @@
   "App": {
     "Loading": "Loading..."
   },
+  "WordFreq": {
+    "WFSpace": " ",
+    "DiffViewLabel": "diff view",
+    "Words": "words",
+    "Word": "Word",
+    "Frequency": "Frequency",
+    "Max": "Max",
+    "Length": "Length",
+    "CombinedWordMsg": "Combined word frequency not available yet. Please check the individual suttas for now."
+  },
   "AppHeader": {
-    "GiveFeedback": "Give feedback",
+    "GiveFeedback": "give feedback",
     "GoHome": "Go Home",
     "ToggleMode": "Toggle light/dark theme"
   },
   "InflectPage": {
-    "AutoCompleteLabel": "Select Pāli Word"
+    "AutocompleteLabel": "Pāli word"
   },
   "FromFunctions": {
     "LoadingDB": "Loading db1...",
@@ -24,20 +34,10 @@
     "PaliSortTitle": "Pāli Sort",
     "PaliSortDetails": "Sort a list of pāli words.",
     "ConverterTitle": "Converter",
-    "ConverterDetails": "Convert pāli between various scripts.",
+    "ConverterDetails": "Convert Pāli between various scripts.",
     "WordFreqTitle": "Word frequency",
-    "WordFreqDetails": "Examine hierarchial word frequency and compare inclusion and exclusion lists.",
+    "WordFreqDetails": "Examine hierarchical word frequency and compare inclusion and exclusion lists.",
     "InflectionsTitle": "Inflections",
-    "InflectionsDetails": "Show conjugations & declensions for pāli words."
-  },
-  "WordFreq": {
-    "DiffViewLabel": "diff view",
-    "Words": "words",
-    "Word": "Word",
-    "Frequency": "Frequency",
-    "Max": "Max",
-    "Length": "Length",
-    "WFSpace": " ",
-    "CombinedWordMsg": "Combined word frequency not available yet. Please check the individual suttas for now."
+    "InflectionsDetails": "Show conjugations & declensions for Pāli words."
   }
 }
