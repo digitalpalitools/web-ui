@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import * as M from '@material-ui/core'
 import PSC from '@pathnirvanafoundation/pali-script-converter'
+import * as H from '../../hooks'
 
 const useStyles = M.makeStyles((theme) => ({
   inputArea: {
@@ -31,17 +32,23 @@ const getScriptsInfo = () =>
 
 export const Converter = () => {
   const classes = useStyles()
-  const [inputText, setInputText] = useState(
+
+  const [script] = H.useLocalStorageState<string>(PSC.Script.RO, 'currentScript')
+
+  const initialText = PSC.convertAny(
     // eslint-disable-next-line max-len
     'manopubbaṅgamā dhammā\nmanoseṭṭhā manomayā\nmanasā ce pasannena\nbhāsati vā karoti vā\ntato naṁo sukhamanveti\nchāyā va anapāyinī',
+    script,
   )
+
+  const [inputText, setInputText] = useState(initialText)
   const [convertedText, setConvertedText] = useState('')
 
   const convertInputs = (e: any) => {
     setConvertedText(
       inputText
         .split('\n')
-        .map((s1) => PSC.convertAny(s1, e.target.value))
+        .map((s1: string) => PSC.convertAny(s1, e.target.value))
         .join('\n'),
     )
   }
