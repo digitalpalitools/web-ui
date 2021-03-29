@@ -46,7 +46,6 @@ const transliterateFromRoman = (input: string, script: string) => PSC.convert(in
 export const TipitakaHierarchy = (props: TipitakaHierarchyProps) => {
   const { script, initialNodeId, onSelectedNodeChanged } = props
   const [selectedNodeIds, setSelectedNodeIds] = useState<string[]>([])
-
   const { t }: { t: any } = useTranslation()
 
   const rootNodes = S.getChildren(S.RootNodeId)

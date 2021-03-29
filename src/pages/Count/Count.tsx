@@ -27,15 +27,12 @@ const useStyles = M.makeStyles((theme) => ({
 
 export const Count = () => {
   const classes = useStyles()
-
   const [script] = H.useLocalStorageState<string>(PSC.Script.RO, 'currentScript')
-
   const initialText = PSC.convertAny(
     // eslint-disable-next-line max-len
     'khantī paramaṃ tapo titikkhā a ā i ī u ū e o k kh g gh ṅ c ch j jh ñ ṭ ṭh ḍ ḍh ṇ t th d dh n p ph b bh m y r l v s h ḷ ṃ',
     script === 'xx' ? 'Latn' : script,
   ).replaceAll(' ', '\n')
-
   const [inputText, setInputText] = useState(initialText)
   const [sortedText, setSortedText] = useState('')
 
