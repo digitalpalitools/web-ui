@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import PSC from '@pathnirvanafoundation/pali-script-converter'
 import * as KSCUI from '@kitamstudios/common-ui'
+import { useTranslation } from 'react-i18next'
 
 interface DiffViewRecord {
   id: number
@@ -28,6 +29,7 @@ export interface DiffViewProps {
 
 export const DiffView = (props: DiffViewProps) => {
   const { script, nodeRelativePath } = props
+  const { t } = useTranslation()
 
   const [rows, setRows] = useState([] as DiffViewRecord[])
   const [isLoading, setIsLoading] = useState(true)
@@ -65,42 +67,45 @@ export const DiffView = (props: DiffViewProps) => {
     fetchData()
   }, [nodeRelativePath, script])
 
-  const columnDefinitions: KSCUI.C.KsTableColumnDefinition[] = [
-    {
-      id: 0,
-      field: 'line',
-      displayName: '',
-      sortable: false,
-      align: 'center',
-      width: '3rem',
-    },
-    {
-      id: 1,
-      field: 'inclusions',
-      displayName: 'Inclusions',
-      sortable: false,
-      align: 'left',
-      width: '33%',
-    },
-    {
-      id: 2,
-      field: 'original',
-      displayName: 'Original',
-      sortable: false,
-      align: 'left',
-      width: '33%',
-    },
-    {
-      id: 3,
-      field: 'exclusions',
-      displayName: 'Exclusions',
-      sortable: false,
-      align: 'left',
-      width: '33%',
-    },
-  ]
+  const columnDefinitionsGen = (translateFunc: (str: string) => string) => {
+    const columnDefinitions: KSCUI.C.KsTableColumnDefinition[] = [
+      {
+        id: 0,
+        field: 'line',
+        displayName: '',
+        sortable: false,
+        align: 'center',
+        width: '3rem',
+      },
+      {
+        id: 1,
+        field: 'inclusions',
+        displayName: translateFunc('WordFreq.Inclusions'),
+        sortable: false,
+        align: 'left',
+        width: '33%',
+      },
+      {
+        id: 2,
+        field: 'original',
+        displayName: translateFunc('WordFreq.Original'),
+        sortable: false,
+        align: 'left',
+        width: '33%',
+      },
+      {
+        id: 3,
+        field: 'exclusions',
+        displayName: translateFunc('WordFreq.Exclusions'),
+        sortable: false,
+        align: 'left',
+        width: '33%',
+      },
+    ]
+    return columnDefinitions
+  }
 
-  const table = <KSCUI.C.KsTable columnDefinitions={columnDefinitions} rows={rows} sortBy="line" />
+  const table = <KSCUI.C.KsTable columnDefinitions={columnDefinitionsGen(t)} rows={rows} sortBy="line" />
 
   return isLoading ? <div>Loading...</div> : table
 }
