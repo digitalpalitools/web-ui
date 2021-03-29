@@ -19,4 +19,4 @@ with open("./public/locales/UI-localisation.csv") as localisationFile:
         dictionaryOfLocales["en"]["WordFreq"]["WFSpace"] = " "
     for locale in dictionaryOfLocales:
         json.dump(dictionaryOfLocales[locale], open(
-            "./public/locales/translation.{}.json".format(locale), "w+"), indent=2, ensure_ascii=False)
+            "./public/locales/translation.{}.json".format(locale), "w+"), indent=2, ensure_ascii=False, sort_keys=True)
