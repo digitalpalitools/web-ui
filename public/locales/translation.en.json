@@ -3,41 +3,45 @@
     "Loading": "Loading..."
   },
   "AppHeader": {
-    "GiveFeedback": "Give feedback",
+    "GiveFeedback": "Give Feedback",
     "GoHome": "Go Home",
     "ToggleMode": "Toggle light/dark theme"
-  },
-  "InflectPage": {
-    "AutoCompleteLabel": "Select Pāli Word"
   },
   "FromFunctions": {
     "LoadingDB": "Loading db1...",
     "NotFoundInflection": "Error generating inflection tables. It means, most likely, the word does not exist in the DPT dictionary. Please report this using the feedback button. Error details:"
   },
   "HomePage": {
-    "DPTinfo": "Digital Pāli Tools: A Step-by-Step Process Towards Natural Language Processing of Pāli. Check out the",
-    "VisionDocument": "vision document",
-    "DPRTitle": "Digital Pāli Reader",
-    "DPRDetails": "A tool facilitating immersive study of the Pāli language, canon and related scriptures.",
-    "CountTitle": "Count",
-    "CountDetails": "Count the length of pāli words.",
-    "PaliSortTitle": "Pāli Sort",
-    "PaliSortDetails": "Sort a list of pāli words.",
+    "ConverterDetails": "Convert Pāli between various scripts.",
     "ConverterTitle": "Converter",
-    "ConverterDetails": "Convert pāli between various scripts.",
-    "WordFreqTitle": "Word frequency",
-    "WordFreqDetails": "Examine hierarchial word frequency and compare inclusion and exclusion lists.",
+    "CountDetails": "Count the length of pāli words.",
+    "CountTitle": "Count",
+    "DPRDetails": "A tool facilitating immersive study of the Pāli language, canon and related scriptures.",
+    "DPRTitle": "Digital Pāli Reader",
+    "DPTinfo": "Digital Pāli Tools: A Step-by-Step Process Towards Natural Language Processing of Pāli. Check out the",
+    "InflectionsDetails": "Show conjugations & declensions for Pāli words.",
     "InflectionsTitle": "Inflections",
-    "InflectionsDetails": "Show conjugations & declensions for pāli words."
+    "PaliSortDetails": "Sort a list of pāli words.",
+    "PaliSortTitle": "Pāli Sort",
+    "VisionDocument": "vision document",
+    "WordFreqDetails": "Examine hierarchical word frequency and compare inclusion and exclusion lists.",
+    "WordFreqTitle": "Word frequency"
+  },
+  "InflectPage": {
+    "AutoCompleteLabel": "Pāli word"
   },
   "WordFreq": {
-    "DiffViewLabel": "diff view",
-    "Words": "words",
-    "Word": "Word",
+    "CombinedWordMsg": "Combined word frequency not available yet. Please check the individual suttas for now.",
+    "DiffViewLabel": "Diff View",
+    "DownloadTooltip": "Download Selected Nodes",
+    "Exclusions": "Exclusions",
     "Frequency": "Frequency",
-    "Max": "Max",
+    "Inclusions": "Inclusions",
     "Length": "Length",
+    "Max": "Max",
+    "Original": "Original",
     "WFSpace": " ",
-    "CombinedWordMsg": "Combined word frequency not available yet. Please check the individual suttas for now."
+    "Word": "Word",
+    "Words": "Words"
   }
 }

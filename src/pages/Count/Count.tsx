@@ -3,6 +3,7 @@ import * as M from '@material-ui/core'
 import * as Icons from '@material-ui/icons'
 import PSC from '@pathnirvanafoundation/pali-script-converter'
 import * as PLS from '@digitalpalitools/pali-language-services'
+import * as H from '../../hooks'
 
 const useStyles = M.makeStyles((theme) => ({
   inputArea: {
@@ -26,21 +27,24 @@ const useStyles = M.makeStyles((theme) => ({
 
 export const Count = () => {
   const classes = useStyles()
-  const [inputText, setInputText] = useState(
+  const [script] = H.useLocalStorageState<string>(PSC.Script.RO, 'currentScript')
+  const initialText = PSC.convertAny(
     // eslint-disable-next-line max-len
-    'khantī paramaṃ tapo titikkhā a ā i ī u ū e o k kh g gh ṅ c ch j jh ñ ṭ ṭh ḍ ḍh ṇ t th d dh n p ph b bh m y r l v s h ḷ ṃ'.replaceAll(
-      ' ',
-      '\n',
-    ),
-  )
+    'khantī paramaṃ tapo titikkhā a ā i ī u ū e o k kh g gh ṅ c ch j jh ñ ṭ ṭh ḍ ḍh ṇ t th d dh n p ph b bh m y r l v s h ḷ ṃ',
+    script === 'xx' ? 'Latn' : script,
+  ).replaceAll(' ', '\n')
+  const [inputText, setInputText] = useState(initialText)
   const [sortedText, setSortedText] = useState('')
 
   const sortInputs = () => {
     setSortedText(
-      inputText
-        .split('\n')
-        .map((s1) => `${PLS.stringLength(PSC.convertAny(s1, PSC.Script.RO))}`)
-        .join('\n'),
+      PSC.convertAny(
+        inputText
+          .split('\n')
+          .map((s1: string) => `${PLS.stringLength(PSC.convertAny(s1, PSC.Script.RO))}`)
+          .join('\n'),
+        script === 'xx' ? 'Latn' : script,
+      ),
     )
   }
 
