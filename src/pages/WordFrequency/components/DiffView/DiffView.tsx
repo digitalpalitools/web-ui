@@ -67,45 +67,42 @@ export const DiffView = (props: DiffViewProps) => {
     fetchData()
   }, [nodeRelativePath, script])
 
-  const columnDefinitionsGen = (translateFunc: (str: string) => string) => {
-    const columnDefinitions: KSCUI.C.KsTableColumnDefinition[] = [
-      {
-        id: 0,
-        field: 'line',
-        displayName: '',
-        sortable: false,
-        align: 'center',
-        width: '3rem',
-      },
-      {
-        id: 1,
-        field: 'inclusions',
-        displayName: translateFunc('WordFreq.Inclusions'),
-        sortable: false,
-        align: 'left',
-        width: '33%',
-      },
-      {
-        id: 2,
-        field: 'original',
-        displayName: translateFunc('WordFreq.Original'),
-        sortable: false,
-        align: 'left',
-        width: '33%',
-      },
-      {
-        id: 3,
-        field: 'exclusions',
-        displayName: translateFunc('WordFreq.Exclusions'),
-        sortable: false,
-        align: 'left',
-        width: '33%',
-      },
-    ]
-    return columnDefinitions
-  }
+  const columnDefinitions: KSCUI.C.KsTableColumnDefinition[] = [
+    {
+      id: 0,
+      field: 'line',
+      displayName: '',
+      sortable: false,
+      align: 'center',
+      width: '3rem',
+    },
+    {
+      id: 1,
+      field: 'inclusions',
+      displayName: t('WordFreq.Inclusions'),
+      sortable: false,
+      align: 'left',
+      width: '33%',
+    },
+    {
+      id: 2,
+      field: 'original',
+      displayName: t('WordFreq.Original'),
+      sortable: false,
+      align: 'left',
+      width: '33%',
+    },
+    {
+      id: 3,
+      field: 'exclusions',
+      displayName: t('WordFreq.Exclusions'),
+      sortable: false,
+      align: 'left',
+      width: '33%',
+    },
+  ]
 
-  const table = <KSCUI.C.KsTable columnDefinitions={columnDefinitionsGen(t)} rows={rows} sortBy="line" />
+  const table = <KSCUI.C.KsTable columnDefinitions={columnDefinitions} rows={rows} sortBy="line" />
 
   return isLoading ? <div>Loading...</div> : table
 }
