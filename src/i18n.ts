@@ -11,10 +11,10 @@ i18n
   .init({
     fallbackLng: PSC.getLocaleForScript(PSC.Script.RO),
     backend: {
-      loadPath: `${process.env.REACT_APP_RELATIVE_ROOT}/locales/{{lng}}/{{ns}}.json`,
+      loadPath: `${process.env.REACT_APP_RELATIVE_ROOT}/locales/{{ns}}.{{lng}}.json`,
     },
     debug: process.env.NODE_ENV === 'development',
-    supportedLngs: [...PSC.getSupportedLocales()],
+    supportedLngs: [...PSC.getSupportedLocales(), 'xx'],
     interpolation: {
       escapeValue: false, // not needed for react as it escapes by default
     },

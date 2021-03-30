@@ -1,6 +1,7 @@
 import { RouteComponentProps } from 'react-router-dom'
 import * as M from '@material-ui/core'
 import * as MLab from '@material-ui/lab'
+import { useTranslation } from 'react-i18next'
 
 const useStyles = M.makeStyles((theme) => ({
   cardGrid: {
@@ -21,50 +22,51 @@ const useStyles = M.makeStyles((theme) => ({
   },
 }))
 
-const createCardData = (props: any): any[] => [
+const createCardData = (props: any, translateFunc: (str: string) => string): any[] => [
   {
     fn: () => window.open('https://digitalpalireader.online'),
-    title: 'Digital Pāli Reader',
-    details: 'A tool facilitating immersive study of the Pāli language, canon and related scriptures.',
+    title: translateFunc('HomePage.DPRTitle'),
+    details: translateFunc('HomePage.DPRDetails'),
   },
   {
     fn: () => props.history.push('/count'),
-    title: 'Count',
-    details: 'Count the length of Pāli words.',
+    title: translateFunc('HomePage.CountTitle'),
+    details: translateFunc('HomePage.CountDetails'),
   },
   {
     fn: () => props.history.push('/pali-sort'),
-    title: 'Pāli Sort',
-    details: 'Sort a list of Pāli words.',
+    title: translateFunc('HomePage.PaliSortTitle'),
+    details: translateFunc('HomePage.PaliSortDetails'),
   },
   {
     fn: () => props.history.push('/converter'),
-    title: 'Converter',
-    details: 'Convert Pāli between various scripts.',
+    title: translateFunc('HomePage.ConverterTitle'),
+    details: translateFunc('HomePage.ConverterDetails'),
   },
   {
     fn: () => props.history.push('/word-frequency'),
-    title: 'Word Frequency',
-    details: 'Examine hierarchial word frequency and compare inclusion and exclusion lists.',
+    title: translateFunc('HomePage.WordFreqTitle'),
+    details: translateFunc('HomePage.WordFreqDetails'),
   },
   {
     fn: () => props.history.push('/inflect'),
-    title: 'Inflections',
-    details: 'Show conjugations & declensions for Pāli words.',
+    title: translateFunc('HomePage.InflectionsTitle'),
+    details: translateFunc('HomePage.InflectionsDetails'),
   },
 ]
 
 export const Home = (props: RouteComponentProps) => {
   const classes = useStyles()
 
-  const cardData = createCardData(props)
+  const { t } = useTranslation()
+  const cardData = createCardData(props, t)
 
   return (
     <M.Container className={classes.cardGrid} maxWidth="md">
       <MLab.Alert className={classes.info} severity="info">
-        Digital Pāli Tools: A Step-by-Step Process Towards Natural Language Processing of Pāli. Check out the&nbsp;
+        {t('HomePage.DPTinfo')}&nbsp;
         <a href="https://bitly.com/dptvision" target="_blank" rel="noreferrer">
-          vision document
+          {t('HomePage.VisionDocument')}
         </a>
         .
       </MLab.Alert>

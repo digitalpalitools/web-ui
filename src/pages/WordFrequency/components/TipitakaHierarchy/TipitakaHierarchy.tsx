@@ -4,6 +4,7 @@ import * as MLab from '@material-ui/lab'
 import * as MIcon from '@material-ui/icons'
 import * as FS from 'file-saver'
 import PSC from '@pathnirvanafoundation/pali-script-converter'
+import { useTranslation } from 'react-i18next'
 import * as S from '../../services'
 
 const useStyles = M.makeStyles({
@@ -45,6 +46,7 @@ const transliterateFromRoman = (input: string, script: string) => PSC.convert(in
 export const TipitakaHierarchy = (props: TipitakaHierarchyProps) => {
   const { script, initialNodeId, onSelectedNodeChanged } = props
   const [selectedNodeIds, setSelectedNodeIds] = useState<string[]>([])
+  const { t }: { t: any } = useTranslation()
 
   const rootNodes = S.getChildren(S.RootNodeId)
 
@@ -114,10 +116,10 @@ export const TipitakaHierarchy = (props: TipitakaHierarchyProps) => {
     <>
       <div className={classes.root}>
         <M.Paper className={classes.header}>
-          <M.Tooltip title="Download selected nodes" aria-label="download selected nodes">
+          <M.Tooltip title={t`WordFreq.DownloadTooltip`} aria-label={t`WordFreq.DownloadToolTip`}>
             <span>
               <M.IconButton
-                aria-label="download selected nodes"
+                aria-label={t`WordFreq.DownloadToolTip`}
                 disabled={selectedNodeIds.length === 0}
                 onClick={downloadSelectedNodes}
               >

@@ -1,0 +1,47 @@
+{
+  "App": {
+    "Loading": "^Loading...$"
+  },
+  "AppHeader": {
+    "GiveFeedback": "^Give Feedback$",
+    "GoHome": "^Go Home$",
+    "ToggleMode": "^Toggle light/dark theme$"
+  },
+  "FromFunctions": {
+    "LoadingDB": "^Loading db1...$",
+    "NotFoundInflection": "^Error generating inflection tables. It means, most likely, the word does not exist in the DPT dictionary. Please report this using the feedback button. Error details:$"
+  },
+  "HomePage": {
+    "ConverterDetails": "^Convert Pāli between various scripts.$",
+    "ConverterTitle": "^Converter$",
+    "CountDetails": "^Count the length of pāli words.$",
+    "CountTitle": "^Count$",
+    "DPRDetails": "^A tool facilitating immersive study of the Pāli language, canon and related scriptures.$",
+    "DPRTitle": "^Digital Pāli Reader$",
+    "DPTinfo": "^Digital Pāli Tools: A Step-by-Step Process Towards Natural Language Processing of Pāli. Check out the$",
+    "InflectionsDetails": "^Show conjugations & declensions for Pāli words.$",
+    "InflectionsTitle": "^Inflections$",
+    "PaliSortDetails": "^Sort a list of pāli words.$",
+    "PaliSortTitle": "^Pāli Sort$",
+    "VisionDocument": "^vision document$",
+    "WordFreqDetails": "^Examine hierarchical word frequency and compare inclusion and exclusion lists.$",
+    "WordFreqTitle": "^Word frequency$"
+  },
+  "InflectPage": {
+    "AutoCompleteLabel": "^Pāli word$"
+  },
+  "WordFreq": {
+    "CombinedWordMsg": "^Combined word frequency not available yet. Please check the individual suttas for now.$",
+    "DiffViewLabel": "^Diff View$",
+    "DownloadTooltip": "^Download Selected Nodes$",
+    "Exclusions": "^Exclusions$",
+    "Frequency": "^Frequency$",
+    "Inclusions": "^Inclusions$",
+    "Length": "^Length$",
+    "Max": "^Max$",
+    "Original": "^Original$",
+    "WFSpace": "^ $",
+    "Word": "^Word$",
+    "Words": "^Words$"
+  }
+}

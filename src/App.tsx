@@ -64,11 +64,12 @@ const AppFooter = ({ version }: any) => {
 const App = () => {
   const [theme, setTheme] = H.useLocalStorageState<T.ThemeType>('dark', 'currentTheme')
   const [currentScript, setCurrentScript] = H.useLocalStorageState<string>(PSC.Script.RO, 'currentScript')
-  // eslint-disable-next-line no-underscore-dangle
-  window.__pali_script_converter_transliterate_from_roman = (text: string) =>
-    PSC.convert(text, PSC.Script.RO, currentScript)
+  const toScript = currentScript === 'xx' ? 'Latn' : currentScript
 
-  const { i18n } = useTranslation()
+  // eslint-disable-next-line no-underscore-dangle
+  window.__pali_script_converter_transliterate_from_roman = (text: string) => PSC.convert(text, PSC.Script.RO, toScript)
+
+  const { i18n, t } = useTranslation()
 
   const handleToggleTheme = () => {
     if (theme === 'light') {
@@ -79,9 +80,13 @@ const App = () => {
   }
 
   const handleChangeScript = (s: string) => {
-    i18n.changeLanguage(PSC.getLocaleForScript(s))
+    i18n.changeLanguage(s === 'xx' ? 'xx' : PSC.getLocaleForScript(s))
     setCurrentScript(s)
     window.location.reload()
+  }
+
+  window.change_locale_to_dev = () => {
+    handleChangeScript('xx')
   }
 
   return (
@@ -98,7 +103,7 @@ const App = () => {
           <AppBody>
             <Router>
               <TelemetryProvider instrumentationKey={REACT_APP_AI_INSTRUMENTATION_KEY || '0xBAADF00D'}>
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<div>{t`App.Loading`}</div>}>
                   <Switch>
                     <Route exact path="/" component={HomePage} />
                     <Route exact path="/pali-sort" component={PaliSortPage} />

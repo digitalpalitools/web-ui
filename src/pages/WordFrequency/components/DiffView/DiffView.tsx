@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import PSC from '@pathnirvanafoundation/pali-script-converter'
 import * as KSCUI from '@kitamstudios/common-ui'
+import { useTranslation } from 'react-i18next'
 
 interface DiffViewRecord {
   id: number
@@ -28,6 +29,7 @@ export interface DiffViewProps {
 
 export const DiffView = (props: DiffViewProps) => {
   const { script, nodeRelativePath } = props
+  const { t } = useTranslation()
 
   const [rows, setRows] = useState([] as DiffViewRecord[])
   const [isLoading, setIsLoading] = useState(true)
@@ -77,7 +79,7 @@ export const DiffView = (props: DiffViewProps) => {
     {
       id: 1,
       field: 'inclusions',
-      displayName: 'Inclusions',
+      displayName: t('WordFreq.Inclusions'),
       sortable: false,
       align: 'left',
       width: '33%',
@@ -85,7 +87,7 @@ export const DiffView = (props: DiffViewProps) => {
     {
       id: 2,
       field: 'original',
-      displayName: 'Original',
+      displayName: t('WordFreq.Original'),
       sortable: false,
       align: 'left',
       width: '33%',
@@ -93,7 +95,7 @@ export const DiffView = (props: DiffViewProps) => {
     {
       id: 3,
       field: 'exclusions',
-      displayName: 'Exclusions',
+      displayName: t('WordFreq.Exclusions'),
       sortable: false,
       align: 'left',
       width: '33%',
