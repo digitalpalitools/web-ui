@@ -3,7 +3,7 @@
     "Loading": "Loading..."
   },
   "AppHeader": {
-    "GiveFeedback": "give feedback",
+    "GiveFeedback": "Give Feedback",
     "GoHome": "Go Home",
     "ToggleMode": "Toggle light/dark theme"
   },
@@ -32,7 +32,7 @@
   },
   "WordFreq": {
     "CombinedWordMsg": "Combined word frequency not available yet. Please check the individual suttas for now.",
-    "DiffViewLabel": "diff view",
+    "DiffViewLabel": "Diff View",
     "DownloadTooltip": "Download Selected Nodes",
     "Exclusions": "Exclusions",
     "Frequency": "Frequency",
@@ -42,6 +42,6 @@
     "Original": "Original",
     "WFSpace": " ",
     "Word": "Word",
-    "Words": "words"
+    "Words": "Words"
   }
 }

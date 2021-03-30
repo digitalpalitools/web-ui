@@ -1,7 +1,7 @@
 JSON_field,English,Sinhala,Devanagari,Russian,Bengali,Myanmar,Khmer,Laos,Gurumukhi,Gujarati,Telegu,Kannada,Malayalam,Tibetan,Thai
 json_field,en,si,hi,ru,bn,my,km,lo,pa,gu,te,kn,ml,bo,th
 App__Loading,Loading...,,चालू हो रहा है।,Загружается ...,,,,,,,,,,,
-AppHeader__GiveFeedback,give feedback,ප්රතිචාර දක්වන්න,"प्रतिक्रिया दें
+AppHeader__GiveFeedback,Give Feedback,ප්රතිචාර දක්වන්න,"प्रतिक्रिया दें
 ",дать обратную связь,মতামত দিন,တုံ့ပြန်ချက်ပေးပါ,ផ្ដល់​មតិ​យោបល់,ໃຫ້ ຄຳ ຄິດເຫັນ,ਫੀਡਬੈਕ ਦਿਓ,અભીપ્રાય આપો,అభిప్రాయం తెలియజేయండి,ಪ್ರತಿಕ್ರಿಯೆ ನೀಡಿ,ഫീഡ്‌ബാക്ക് നൽകുക,,ให้ข้อเสนอแนะ
 AppHeader__GoHome,Go Home,,मुख पृष्ठ,На главную,,,,,,,,,,,
 AppHeader__ToggleMode,Toggle light/dark theme,,थीम रंग बदलें गहरा/हल्का,Переключить светлую / темную тему,,,,,,,,,,,
@@ -22,13 +22,13 @@ HomePage__WordFreqTitle,Word frequency,,शब्दावृत्ति,Час
 HomePage__WordFreqDetails,Examine hierarchical word frequency and compare inclusion and exclusion lists.,,"शब्दानुक्रमणिका के शब्दावृत्ति की जांच कर, समावेश तथा बहिष्करण तालिकाओं का तुलना करें।",Исследование частоты слов в каноне и сравнение списков включения и исключения.,,,,,,,,,,,
 HomePage__InflectionsTitle,Inflections,,विभक्तियां,Изменение формы слова,,,,,,,,,,,
 HomePage__InflectionsDetails,Show conjugations & declensions for Pāli words.,,पाळि शब्दों के क्रिया-रूप तथा विभक्ति-रूप देखें।,Спряжения и склонения палийских слов.,,,,,,,,,,,
-WordFreq__DiffViewLabel,diff view,,विभेद,просмотр различий,,,,,,,,,,,
-WordFreq__Words,words,,वचन,слов,,,,,,,,,,,
+WordFreq__DiffViewLabel,Diff View,,विभेद,просмотр различий,,,,,,,,,,,
+WordFreq__Words,Words,,वचन,слов,,,,,,,,,,,
 WordFreq__Word,Word,,वचन,Слово,,,,,,,,,,,
 WordFreq__Frequency,Frequency,,आवृत्ति,Частота,,,,,,,,,,,
 WordFreq__Max,Max,,अधिकतम अक्षर,Максимальная,,,,,,,,,,,
 WordFreq__Length,Length,,अक्षरों की गणना,Длина,,,,,,,,,,,
-WordFreq__WFSpace,,,अक्षर (लम्बाई),,,,,,,,,,,,
+WordFreq__WFSpace,,,,,,,,,,,,,,,
 WordFreq__CombinedWordMsg,Combined word frequency not available yet. Please check the individual suttas for now.,,संयुक्त शब्दावृत्ति अब तक नहीं उपलब्ध है। कृपया एक-एक सुत्र के लिए खोजें।,"Частота слов нескольких частей канона пока недоступна. Пожалуйста, проверьте пока отдельные сутты.",,,,,,,,,,,
 WordFreq__Inclusions,Inclusions,,समावेश,включения,,,,,,,,,,,
 WordFreq__Exclusions,Exclusions,,बहिष्करणों,исключения,,,,,,,,,,,
