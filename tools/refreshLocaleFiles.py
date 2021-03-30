@@ -7,7 +7,7 @@ def ndd():
 
 dictionaryOfLocales = ndd()
 
-with open("./public/locales/UI-localisation.csv") as localisationFile:
+with open("UI-strings.csv") as localisationFile:
     csvReader = csv.reader(localisationFile)
     next(csvReader)
     listOfLocales = next(csvReader)[1:]
