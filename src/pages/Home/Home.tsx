@@ -30,27 +30,27 @@ const createCardData = (props: any): any[] => [
   {
     fn: () => props.history.push('/count'),
     title: 'Count',
-    details: 'Count the length of pāli words.',
+    details: 'Count the length of Pāli words.',
   },
   {
     fn: () => props.history.push('/pali-sort'),
     title: 'Pāli Sort',
-    details: 'Sort a list of pāli words.',
+    details: 'Sort a list of Pāli words.',
   },
   {
     fn: () => props.history.push('/converter'),
     title: 'Converter',
-    details: 'Convert pāli between various scripts.',
+    details: 'Convert Pāli between various scripts.',
   },
   {
     fn: () => props.history.push('/word-frequency'),
-    title: 'Word frequency',
+    title: 'Word Frequency',
     details: 'Examine hierarchial word frequency and compare inclusion and exclusion lists.',
   },
   {
     fn: () => props.history.push('/inflect'),
     title: 'Inflections',
-    details: 'Show conjugations & declensions for pāli words.',
+    details: 'Show conjugations & declensions for Pāli words.',
   },
 ]
 
