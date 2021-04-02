@@ -35,15 +35,20 @@ export const Pali1AutoComplete = ({ db, initialValue, onChangePali1 }: Pali1Auto
 
     const loadOptions = () => {
       const results = db.exec(
-        `SELECT pāli1, pos FROM '_stems' WHERE pāli1 like '${PSC.convertAny(
+        `SELECT pāli1, pos, ${
+          script === 'Latn' || script === 'xx' ? 'name' : script.toLowerCase()
+        } FROM '_stems' left join '_abbreviations' on pos = name WHERE pāli1 like '${PSC.convertAny(
           selectedWord.pali1,
           PSC.Script.RO,
-        )}%' order by pāli1 asc`,
+        )}%' order by pāli1 asc `,
       )
+      console.log(results)
       const pali1s = (results[0]?.values || [])
-        .map((x: string[]) => ({ pali1: PSC.convertAny(x[0], script === 'xx' ? 'Latn' : script), pos: x[1] }))
+        .map((x: string[]) => ({
+          pali1: PSC.convertAny(x[0], script === 'xx' ? 'Latn' : script),
+          pos: x[2] ? x[2] : x[1],
+        }))
         .sort((p1: Pali1AutoCompleteOption, p2: Pali1AutoCompleteOption) => PLS.stringCompare(p1.pali1, p2.pali1))
-
       if (active) {
         setOptions(pali1s)
       }
