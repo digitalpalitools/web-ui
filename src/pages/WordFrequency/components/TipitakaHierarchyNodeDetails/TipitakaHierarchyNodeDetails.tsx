@@ -78,7 +78,7 @@ export const TipitakaHierarchyNodeDetails = (props: TipitakaHierarchyNodeDetails
       <div className={classes.root}>
         <M.AppBar className={classes.appBar} position="static">
           <M.Tabs value={activeTab} onChange={handleChange}>
-            <M.Tab label={t`WordFreq.Word` + t`WordFreq.WFSpace` + t`WordFreq.Frequency`} {...a11yProps(0)} />
+            <M.Tab label={` ${t`WordFreq.Word`} ${t`WordFreq.Frequency`}`} {...a11yProps(0)} />
           </M.Tabs>
         </M.AppBar>
         <TabPanel value={activeTab} index={0}>
@@ -92,7 +92,7 @@ export const TipitakaHierarchyNodeDetails = (props: TipitakaHierarchyNodeDetails
     <div className={classes.root}>
       <M.AppBar className={classes.appBar} position="static">
         <M.Tabs value={activeTab} onChange={handleChange}>
-          <M.Tab label={t`WordFreq.Word` + t`WordFreq.WFSpace` + t`WordFreq.Frequency`} {...a11yProps(0)} />
+          <M.Tab label={` ${t`WordFreq.Word`} ${t`WordFreq.Frequency`}`} {...a11yProps(0)} />
           <M.Tab label={t`WordFreq.DiffViewLabel`} {...a11yProps(1)} />
         </M.Tabs>
       </M.AppBar>
