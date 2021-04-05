@@ -16,7 +16,6 @@ with open("UI-strings.csv") as localisationFile:
         for index, entry in enumerate(row[1:]):
             if entry:
                 dictionaryOfLocales[listOfLocales[index]][row[0][0]][row[0][1]] = entry
-        dictionaryOfLocales["en"]["WordFreq"]["WFSpace"] = " "
         for controlName in dictionaryOfLocales['en']:
             for shortID in dictionaryOfLocales['en'][controlName]:
                 dictionaryOfLocales['xx'][controlName][shortID]='^{}$'.format(dictionaryOfLocales['en'][controlName][shortID])
