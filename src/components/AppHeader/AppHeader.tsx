@@ -50,7 +50,7 @@ export const AppHeader = ({ version, theme, toggleTheme, changeScript }: AppHead
 
   const [script, setScript] = H.useLocalStorageState<string>(PSC.Script.RO, 'currentScript')
 
-  const { t }: { t: any } = useTranslation()
+  const { t }: any = useTranslation()
 
   const handleFeedbackOnClick = () =>
     window.open(

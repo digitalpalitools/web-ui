@@ -206,9 +206,7 @@ export const WordFrequencyView = (props: WordFrequencyViewParams) => {
       <M.Paper className={classes.header}>
         <strong>{transliterateFromRoman(nodeName, script)}</strong>
         {`: ${transliterateFromRoman(rows.length.toString(), script)} ${t('WordFreq.Words')} `}
-        {`, ${transliterateFromRoman(maxWordLength.toString(), script)} ${
-          t('WordFreq.Max') + t('WordFreq.WFSpace') + t('WordFreq.Length')
-        }`}
+        {`, ${transliterateFromRoman(maxWordLength.toString(), script)} ${t('WordFreq.Max')} ${t('WordFreq.Length')}`}
       </M.Paper>
       <KSCUI.C.KsTable
         columnDefinitions={columnDefinitionsGen(t)}
