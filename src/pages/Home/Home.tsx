@@ -63,11 +63,11 @@ export const Home = (props: RouteComponentProps) => {
 
   return (
     <M.Container className={classes.cardGrid} maxWidth="md">
-      <MLab.Alert className={classes.info} severity="info">
+      <MLab.Alert className={classes.info} variant="outlined" severity="info">
         {t('HomePage.DPTinfo')}&nbsp;
-        <a href="https://bitly.com/dptvision" target="_blank" rel="noreferrer">
+        <M.Link href="https://bitly.com/dptvision" target="_blank" rel="noreferrer">
           {t('HomePage.VisionDocument')}
-        </a>
+        </M.Link>
         .
       </MLab.Alert>
       <M.Grid className={classes.grid} container spacing={4}>

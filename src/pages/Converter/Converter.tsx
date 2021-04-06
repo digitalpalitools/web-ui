@@ -35,7 +35,7 @@ export const Converter = () => {
   const [script] = H.useLocalStorageState<string>(PSC.Script.RO, 'currentScript')
   const initialText = PSC.convertAny(
     // eslint-disable-next-line max-len
-    'manopubbaṅgamā dhammā\nmanoseṭṭhā manomayā\nmanasā ce pasannena\nbhāsati vā karoti vā\ntato naṁo sukhamanveti\nchāyā va anapāyinī',
+    'manopubbaṅgamā dhammā\nmanoseṭṭhā manomayā\nmanasā ce pasannena\nbhāsati vā karoti vā\ntato naṁ sukhamanveti\nchāyā va anapāyinī',
     script,
   )
   const [inputText, setInputText] = useState(initialText)

@@ -5,6 +5,7 @@ import * as T from 'src/themes'
 import { useTranslation } from 'react-i18next'
 import PSC from '@pathnirvanafoundation/pali-script-converter'
 import * as H from '../../hooks'
+import dptLogo from './dptlogo.png'
 
 const useStyles = M.makeStyles((theme: M.Theme) =>
   M.createStyles({
@@ -18,7 +19,13 @@ const useStyles = M.makeStyles((theme: M.Theme) =>
       paddingLeft: theme.spacing(0),
       paddingRight: theme.spacing(0),
       display: 'flex',
-      justifyContent: 'space-between',
+    },
+    utilitiesBox: {
+      marginLeft: 'auto',
+    },
+    title: {
+      marginRight: theme.spacing(0),
+      color: theme.palette.text.primary,
     },
     goHomeButton: {
       marginRight: theme.spacing(1),
@@ -82,11 +89,16 @@ export const AppHeader = ({ version, theme, toggleTheme, changeScript }: AppHead
         <M.Box>
           <M.Tooltip title={t`AppHeader.GoHome`}>
             <M.IconButton className={classes.goHomeButton} href="/apps">
-              <MIcon.Home />
+              <img src={dptLogo} alt="DPT Logo" width="28" />
             </M.IconButton>
           </M.Tooltip>
         </M.Box>
         <M.Box>
+          <M.Typography variant="h5" className={classes.title}>
+            Digital Pāli Tools
+          </M.Typography>
+        </M.Box>
+        <M.Box className={classes.utilitiesBox}>
           <>
             <M.Button className={classes.selectLocaleButton} onClick={handleClick}>
               {script === 'xx' ? 'English' : PSC.getLocaleNameForScript(script)} <MIcon.ArrowDropDown />
