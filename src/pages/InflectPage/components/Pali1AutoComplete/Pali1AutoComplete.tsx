@@ -34,11 +34,12 @@ export const Pali1AutoComplete = ({ db, initialValue, onChangePali1 }: Pali1Auto
     }
 
     const loadOptions = () => {
+      const selectedWordSanitised = selectedWord.pali1.replaceAll("'", '')
       const results = db.exec(
         `SELECT pāli1, pos, ${
           script === 'Latn' || script === 'xx' ? 'name' : script.toLowerCase()
         } FROM '_stems' left join '_abbreviations' on pos = name WHERE pāli1 like '${PSC.convertAny(
-          selectedWord.pali1,
+          selectedWordSanitised,
           PSC.Script.RO,
         )}%' order by pāli1 asc`,
       )
