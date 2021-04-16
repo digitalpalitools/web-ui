@@ -34,17 +34,16 @@ export const Pali1AutoComplete = ({ db, initialValue, onChangePali1 }: Pali1Auto
     }
 
     const loadOptions = () => {
-      const selectedWordSanitised = selectedWord.pali1.replaceAll("'", '')
-      const results = db
-        ? db.exec(
-            `SELECT pāli1, pos, ${
-              script === 'Latn' || script === 'xx' ? 'name' : script.toLowerCase()
-            } FROM '_stems' left join '_abbreviations' on pos = name WHERE pāli1 like '${PSC.convertAny(
-              selectedWordSanitised,
-              PSC.Script.RO,
-            )}%' order by pāli1 asc`,
-          )
-        : []
+      // eslint-disable-next-line no-useless-escape
+      const selectedWordSanitised = selectedWord.pali1.replaceAll(/[!"#\$%&'()*\+,-\.\/:;<=>?@\[\]^_`{\|}~’‘“”]/g, '')
+      const results = db.exec(
+        `SELECT pāli1, pos, ${
+          script === 'Latn' || script === 'xx' ? 'name' : script.toLowerCase()
+        } FROM '_stems' left join '_abbreviations' on pos = name WHERE pāli1 like '${PSC.convertAny(
+          selectedWordSanitised,
+          PSC.Script.RO,
+        )}%' order by pāli1 asc`,
+      )
       const pali1s = (results[0]?.values || [])
         .map((x: string[]) => ({
           pali1: PSC.convertAny(x[0], script === 'xx' ? 'Latn' : script),
@@ -143,6 +142,7 @@ export const Pali1AutoComplete = ({ db, initialValue, onChangePali1 }: Pali1Auto
   return (
     <MLab.Autocomplete
       value={selectedWord}
+      disabled={!db}
       freeSolo
       disableClearable
       open={open}
