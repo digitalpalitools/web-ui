@@ -141,8 +141,8 @@ export const Pali1AutoComplete = ({ db, initialValue, onChangePali1 }: Pali1Auto
 
   return (
     <MLab.Autocomplete
-      value={selectedWord}
       disabled={!db}
+      value={selectedWord}
       freeSolo
       disableClearable
       open={open}
