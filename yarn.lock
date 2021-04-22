@@ -1184,10 +1184,10 @@
   resolved "https://registry.yarnpkg.com/@csstools/normalize.css/-/normalize.css-10.1.0.tgz#f0950bba18819512d42f7197e56c518aa491cf18"
   integrity sha512-ij4wRiunFfaJxjB0BdrYHIH8FxBJpOwNPhhAcunlmPdXudL1WQV1qoP9un6JsEBAgQH+7UXyyjh0g7jTxXK6tg==
 
-"@digitalpalitools/pali-language-services@^4.4.0":
-  version "4.4.0"
-  resolved "https://registry.yarnpkg.com/@digitalpalitools/pali-language-services/-/pali-language-services-4.4.0.tgz#5045f6f8fc99f0d5d6b7544b1f4daf5c013ba814"
-  integrity sha512-x+CjGNc3qBnx4sPgeab/mvuEPXgIMz6t2AUK86EaQLAwQEsedfB73D7NMTD+eE23UkAQxaeIMdjdUJXiYsIZ1A==
+"@digitalpalitools/pali-language-services@^4.5.0":
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/@digitalpalitools/pali-language-services/-/pali-language-services-4.5.0.tgz#09cc450d4f7616207ef265ed071a8ad6c36ab774"
+  integrity sha512-1WyeQZTpYqluxCaSukdnzJavwBvferud/DhVEPOH89GHuJ8DnzxzbyPg1HUVHZ3ZUtFsIX/wv3y+9qdTFRiWOg==
 
 "@discoveryjs/json-ext@^0.5.0":
   version "0.5.2"
