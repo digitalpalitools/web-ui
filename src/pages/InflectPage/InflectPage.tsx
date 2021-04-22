@@ -67,10 +67,6 @@ const InflectionsRoot = styled.div`
   .pls-inflection-root {
     .pls-inflection-header {
       margin-bottom: 1rem;
-
-      .pls-inflection-summary-word-info {
-        font-weight: bold;
-      }
     }
 
     .pls-inflection-table-title {
