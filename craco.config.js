@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const { addBeforeLoader, loaderByName } = require('@craco/craco')
 const CopyPlugin = require('copy-webpack-plugin')
+const webpack = require('webpack')
 
 const configure = (webpackConfig) => {
   const wasmExtensionRegExp = /\.wasm$/
@@ -37,6 +38,10 @@ module.exports = () => {
               to: 'static/js/',
             },
           ],
+        }),
+        new webpack.ProvidePlugin({
+          __assign: ['@microsoft/applicationinsights-shims', '__assignFn'],
+          __extends: ['@microsoft/applicationinsights-shims', '__extendsFn'],
         }),
       ],
       configure,
