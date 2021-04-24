@@ -22,7 +22,7 @@ jobs:
           echo "Using version ${{steps.createbuildversion.outputs.buildversion}}"
 
       - name: Install
-        run: yarn --no-progress --non-interactive --no-lockfile
+        run: yarn --no-progress --non-interactive --frozen-lockfile
 
       - name: Update locale files
         run: python3 tools/refreshLocaleFiles.py
