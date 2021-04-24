@@ -21,8 +21,8 @@
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.57",
     "@material-ui/styles": "^4.11.2",
-    "@microsoft/applicationinsights-react-js": "^3.0.5",
-    "@microsoft/applicationinsights-web": "^2.5.10",
+    "@microsoft/applicationinsights-react-js": "3.1.0",
+    "@microsoft/applicationinsights-web": "2.6.2",
     "@pathnirvanafoundation/pali-script-converter": "https://github.com/Path-Nirvana-Foundation/pali-script-converter",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
@@ -58,6 +58,7 @@
     "workbox-routing": "^5.1.3",
     "workbox-strategies": "^5.1.3",
     "workbox-streams": "^5.1.3",
+    "webpack": "4.44.2",
     "xmldom": "^0.5.0"
   },
   "devDependencies": {
@@ -100,7 +101,6 @@
     "tsconfig-paths-webpack-plugin": "^3.3.0",
     "typescript": "^4.1.2",
     "wasm-loader": "^1.3.0",
-    "webpack": "4.44.2",
     "webpack-cli": "^4.2.0"
   },
   "husky": {

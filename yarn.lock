@@ -1605,7 +1605,7 @@
     "@microsoft/applicationinsights-shims" "2.0.0"
     "@microsoft/dynamicproto-js" "^1.1.2"
 
-"@microsoft/applicationinsights-react-js@^3.0.5":
+"@microsoft/applicationinsights-react-js@3.1.0":
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/@microsoft/applicationinsights-react-js/-/applicationinsights-react-js-3.1.0.tgz#baa5e0a4a69d7d488bfb46e27cd745a32d6e753d"
   integrity sha512-o5mz/hH3GemWDlm/NkalHyaupDJNSQfnhvdsuAW6iyxmDdfG5bcspkNiRpSUj2qW2QNmj2OmrkXHScu97sBxbA==
@@ -1625,7 +1625,7 @@
   resolved "https://registry.yarnpkg.com/@microsoft/applicationinsights-shims/-/applicationinsights-shims-1.0.3.tgz#9f1d16bab0430f25cc17611c537756cf4dfd3833"
   integrity sha512-+S17aqEkOYpyBpmclhgwcEplwnxSo5AxYBdRg38GBobI1GKPSpZfnLssLzcjJ6XZCS5tqB5xjyTZs6gHj7ZJWQ==
 
-"@microsoft/applicationinsights-web@^2.5.10":
+"@microsoft/applicationinsights-web@2.6.2":
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/@microsoft/applicationinsights-web/-/applicationinsights-web-2.6.2.tgz#420d9f33b893635e970020e59555745d23978422"
   integrity sha512-JkBr5gX/l9C4HQxtvOeowZeQW6jlqotWgCMhpIryWqfX2Fx3m5Q0RVSYo7vCHbk2JrJbzcBd+EH7Par/XOgrgw==
