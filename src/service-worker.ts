@@ -12,7 +12,7 @@ import { clientsClaim } from 'workbox-core'
 import { ExpirationPlugin } from 'workbox-expiration'
 import { precacheAndRoute, createHandlerBoundToURL } from 'workbox-precaching'
 import { registerRoute } from 'workbox-routing'
-import { StaleWhileRevalidate } from 'workbox-strategies'
+import { StaleWhileRevalidate, NetworkFirst } from 'workbox-strategies'
 
 declare const self: ServiceWorkerGlobalScope
 
@@ -70,6 +70,26 @@ registerRoute(
   }),
 )
 
+registerRoute(
+  ({ url }) => url.origin === self.location.origin && url.pathname.endsWith('.json'),
+  new NetworkFirst({
+    cacheName: 'jsonCache',
+  }),
+)
+
+registerRoute(
+  new RegExp('https://raw.githubusercontent.com/digitalpalitools/wordFreq/master/cscd.*'),
+  new NetworkFirst({
+    cacheName: 'WordFrequencyData',
+  }),
+)
+
+registerRoute(
+  new RegExp('https://apps.kitamstudios.com/inflections/.*'),
+  new NetworkFirst({
+    cacheName: 'ComputedData',
+  }),
+)
 // This allows the web app to trigger skipWaiting via
 // registration.waiting.postMessage({type: 'SKIP_WAITING'})
 self.addEventListener('message', (event) => {
