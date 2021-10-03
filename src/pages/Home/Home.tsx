@@ -29,6 +29,11 @@ const createCardData = (props: any, translateFunc: (str: string) => string): any
     details: translateFunc('HomePage.DPRDetails'),
   },
   {
+    fn: () => props.history.push('/talks-search'),
+    title: translateFunc('HomePage.TalksSearchTitle'),
+    details: translateFunc('HomePage.TalksSearchDetails'),
+  },
+  {
     fn: () => props.history.push('/count'),
     title: translateFunc('HomePage.CountTitle'),
     details: translateFunc('HomePage.CountDetails'),

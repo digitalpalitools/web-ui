@@ -18,6 +18,7 @@ const PaliSortPage = lazy(() => import('./pages/PaliSort/PaliSort'))
 const CountPage = lazy(() => import('./pages/Count/Count'))
 const ConverterPage = lazy(() => import('./pages/Converter/Converter'))
 const InflectPage = lazy(() => import('./pages/InflectPage/InflectPage'))
+const TalksSearchPage = lazy(() => import('./pages/TalksSearchPage/TalksSearchPage'))
 const ComingSoonPage = lazy(() => import('./pages/ComingSoon/ComingSoon'))
 
 const { REACT_APP_VERSION, REACT_APP_AI_INSTRUMENTATION_KEY } = process.env
@@ -106,6 +107,7 @@ const App = () => {
                 <Suspense fallback={<div>{t`App.Loading`}</div>}>
                   <Switch>
                     <Route exact path="/" component={HomePage} />
+                    <Route exact path="/talks-search/:searchCorpus?/:searchString?" component={TalksSearchPage} />
                     <Route exact path="/pali-sort" component={PaliSortPage} />
                     <Route exact path="/count" component={CountPage} />
                     <Route exact path="/converter" component={ConverterPage} />

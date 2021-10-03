@@ -14,18 +14,20 @@
   "HomePage": {
     "ConverterDetails": "^Convert Pāli between various scripts.$",
     "ConverterTitle": "^Converter$",
-    "CountDetails": "^Count the length of pāli words.$",
+    "CountDetails": "^Count the length of Pāli words.$",
     "CountTitle": "^Count$",
     "DPRDetails": "^A tool facilitating immersive study of the Pāli language, canon and related scriptures.$",
     "DPRTitle": "^Digital Pāli Reader$",
     "DPTinfo": "^Digital Pāli Tools: A Step-by-Step Process Towards Natural Language Processing of Pāli. Check out the$",
     "InflectionsDetails": "^Show conjugations & declensions for Pāli words.$",
     "InflectionsTitle": "^Inflections$",
-    "PaliSortDetails": "^Sort a list of pāli words.$",
+    "PaliSortDetails": "^Sort a list of Pāli words.$",
     "PaliSortTitle": "^Pāli Sort$",
+    "TalksSearchDetails": "^Search through audio talks of Ṭhānissaro Bhikkhu.$",
+    "TalksSearchTitle": "^Audio Talks Search$",
     "VisionDocument": "^vision document$",
     "WordFreqDetails": "^Examine hierarchical word frequency and compare inclusion and exclusion lists.$",
-    "WordFreqTitle": "^Word frequency$"
+    "WordFreqTitle": "^Word Frequency$"
   },
   "InflectPage": {
     "AutoCompleteLabel": "^Pāli word$"
@@ -40,7 +42,6 @@
     "Length": "^Length$",
     "Max": "^Max$",
     "Original": "^Original$",
-    "WFSpace": "^ $",
     "Word": "^Word$",
     "Words": "^Words$"
   }

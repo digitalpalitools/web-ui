@@ -22,6 +22,8 @@ HomePage__WordFreqTitle,Word Frequency,,शब्दावृत्ति,Час
 HomePage__WordFreqDetails,Examine hierarchical word frequency and compare inclusion and exclusion lists.,,"शब्दानुक्रमणिका के शब्दावृत्ति की जांच कर, समावेश तथा बहिष्करण तालिकाओं का तुलना करें।",Исследование частоты слов в каноне и сравнение списков включения и исключения.,,,,,,,,,,,
 HomePage__InflectionsTitle,Inflections,,विभक्तियां,Изменение формы слова,,,,,,,,,,,
 HomePage__InflectionsDetails,Show conjugations & declensions for Pāli words.,,पाळि शब्दों के क्रिया-रूप तथा विभक्ति-रूप देखें।,Спряжения и склонения палийских слов.,,,,,,,,,,,
+HomePage__TalksSearchTitle,Audio Talks Search,,,,,,,,,,,,,,
+HomePage__TalksSearchDetails,Search through audio talks of Ṭhānissaro Bhikkhu.,,,,,,,,,,,,,,
 WordFreq__DiffViewLabel,Diff View,,विभेद,просмотр различий,,,,,,,,,,,
 WordFreq__Words,Words,,वचन,слов,,,,,,,,,,,
 WordFreq__Word,Word,,वचन,Слово,,,,,,,,,,,
