@@ -70,7 +70,7 @@ export const TalksSearchPage = (props: RouteComponentProps<TalksSearchPageParams
     match: { params },
   } = props
   const initialValue = {
-    searchString: params.searchString || 'buddha',
+    searchString: params.searchString || 'the four noble truths',
     searchCorpus: SearchCorpus.Talks,
   } as SearchOptions
   const [theme] = H.useLocalStorageState<string>('dark', 'currentTheme')
