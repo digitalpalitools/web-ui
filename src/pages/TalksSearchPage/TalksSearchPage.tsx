@@ -20,10 +20,20 @@ const useStyles = M.makeStyles((theme) => ({
     marginBottom: '1rem',
   },
   searchString: {
-    flex: '1',
     marginRight: '0.5rem',
+    flex: '1',
   },
   searchCorpus: {
+    marginLeft: 'auto',
+    flex: '0.5',
+  },
+  searchResultHeader: {
+    display: 'flex',
+  },
+  searchResultHeaderTitle: {
+    flex: '1',
+  },
+  searchResultHeaderActions: {
     marginLeft: 'auto',
   },
 }))
@@ -41,10 +51,28 @@ const createSearchHighlightMarkup = (searchHighlight: string) => {
 }
 
 enum SearchCorpus {
-  Talks = 'talks',
+  TsbDt = 'TsbDt',
+  TsbSdt = 'TsbSdt',
+  YdbMain = 'YdbMain',
 }
 
-const SearchCorpusDisplayNames = new Map([[SearchCorpus.Talks, 'Ṭhānissaro Bhikkhu Talks']])
+const SearchCorpusStringToEnumMap = new Map([
+  ['TsbDt', SearchCorpus.TsbDt],
+  ['TsbSdt', SearchCorpus.TsbSdt],
+  ['YdbMain', SearchCorpus.YdbMain],
+])
+
+const SearchCorpusDisplayNames = new Map([
+  [SearchCorpus.TsbDt, 'Ṭhānissaro Bhikkhu - Dhamma Talks'],
+  [SearchCorpus.TsbSdt, 'Ṭhānissaro Bhikkhu - Short Dhamma Talks'],
+  [SearchCorpus.YdbMain, 'Yuttadhammo Bhikkhu Talks'],
+])
+
+const AuthorChannelFromCorpus = new Map([
+  [SearchCorpus.TsbDt, { author: 'tsb', channel: 'dt' }],
+  [SearchCorpus.TsbSdt, { author: 'tsb', channel: 'sdt' }],
+  [SearchCorpus.YdbMain, { author: 'ydb', channel: 'main' }],
+])
 
 export interface TalksSearchPageParams {
   searchString?: string
@@ -59,6 +87,8 @@ interface SearchOptions {
 interface SearchResult {
   id: string
   score: number
+  author: string
+  channel: string
   highlights: string[]
   content: string
   name: string
@@ -70,41 +100,53 @@ export const TalksSearchPage = (props: RouteComponentProps<TalksSearchPageParams
     match: { params },
   } = props
   const initialValue = {
-    searchString: params.searchString || 'the four noble truths',
-    searchCorpus: SearchCorpus.Talks,
+    searchString: params.searchString || 'four noble truths',
+    searchCorpus: SearchCorpusStringToEnumMap.get(params.searchCorpus || SearchCorpus.TsbDt),
   } as SearchOptions
   const [theme] = H.useLocalStorageState<string>('dark', 'currentTheme')
-  const [searchString, setSearchString] = useState(initialValue.searchString)
-  const [searchCorpus, setSearchCorpus] = useState(SearchCorpus.Talks)
   const [searchOptions, setSearchOptions] = useState<SearchOptions>(initialValue)
   const [searchRunning, setSearchRunning] = useState(false)
   const [searchResults, setSearchResults] = useState<SearchResult[]>([])
+  const [searchCorpus, setSearchCorpus] = useState<SearchCorpus>(initialValue.searchCorpus)
+  const [searchString, setSearchString] = useState<string>(initialValue.searchString)
+  const [searchError, setSearchError] = useState<string>('')
 
   useEffect(() => {
+    console.log('Triggering new search...')
+    const { author, channel } = AuthorChannelFromCorpus.get(searchOptions.searchCorpus) || {
+      author: 'tsb',
+      channel: 'dt',
+    }
     const fetchSearchResults = async () => {
-      const res = await fetch(
-        `https://tsbtalks.search.windows.net/indexes/azureblob-index/docs?api-version=2020-06-30&search=${searchOptions.searchString}&searchMode=any&searchFields=content&highlight=content&highlightPreTag=<span class='search-result-highlight'>&highlightPostTag=</span>`,
-        {
-          headers: {
-            'api-key': 'D0CA5AF719558AA344C3111934DA874D',
-            Accept: 'application/json; odata.metadata=none',
+      try {
+        const res = await fetch(
+          `https://audio-talks-search.search.windows.net/indexes/audio-talks-search-index/docs?api-version=2020-06-30-Preview&search=${searchOptions.searchString}&$filter=(author eq '${author}' and channel eq '${channel}')&searchFields=subtitles&highlight=subtitles&highlightPreTag=<span class='search-result-highlight'>&highlightPostTag=</span>`,
+          {
+            headers: {
+              'api-key': '62AF11064983663506CBBE4E052947F0',
+              Accept: 'application/json; odata.metadata=none',
+            },
           },
-        },
-      )
+        )
 
-      const json = await res.json()
-      setSearchResults(
-        json.value.map(
-          (sr: any) =>
-            ({
-              id: sr.metadata_storage_path,
-              score: sr['@search.score'],
-              highlights: sr['@search.highlights'].content.map((h: any) => h),
-              content: sr.content,
-              name: sr.metadata_storage_name,
-            } as SearchResult),
-        ),
-      )
+        const json = await res.json()
+        setSearchResults(
+          json.value.map(
+            (sr: any) =>
+              ({
+                id: sr.metadata_storage_path,
+                score: sr['@search.score'],
+                highlights: sr['@search.highlights'].subtitles.map((h: any) => h),
+                content: sr.subtitles,
+                name: sr.title,
+                author: sr.author,
+                channel: sr.channel,
+              } as SearchResult),
+          ),
+        )
+      } catch (e) {
+        setSearchError(e.toString())
+      }
 
       setSearchRunning(false)
     }
@@ -115,22 +157,29 @@ export const TalksSearchPage = (props: RouteComponentProps<TalksSearchPageParams
     }
   }, [searchOptions])
 
-  const handleChangeSearchString = (e: any) => {
+  const triggerNewSearch = (corpus: SearchCorpus, str: string) => {
+    props.history.push(`/talks-search/${corpus}/${str}`)
+    setSearchError('')
+    setSearchResults([])
+    setSearchOptions({ searchString: str, searchCorpus: corpus })
+  }
+
+  const handleSearchStringChange = (e: any) => {
     setSearchString(e.target.value)
   }
 
   const handleSearchCorpusChange = (e: any) => {
-    setSearchCorpus(e.target.value)
+    const corpus = SearchCorpusStringToEnumMap.get(e.target.value) || SearchCorpus.TsbDt
+    setSearchCorpus(corpus)
+    triggerNewSearch(corpus, searchString)
   }
 
-  const handlesSarchStringKeyDown = (e: any) => {
-    if (e.keyCode !== 13 || searchString.length === 0) {
+  const handlesSearchStringKeyDown = (e: any) => {
+    if (e.keyCode !== 13 || e.target.value.length === 0) {
       return
     }
 
-    props.history.push(`/talks-search/${searchCorpus}/${searchString}`)
-    setSearchResults([])
-    setSearchOptions({ searchString, searchCorpus })
+    triggerNewSearch(searchCorpus, e.target.value)
   }
 
   return (
@@ -140,9 +189,9 @@ export const TalksSearchPage = (props: RouteComponentProps<TalksSearchPageParams
           className={classes.searchString}
           label="Search for..."
           variant="outlined"
-          onChange={handleChangeSearchString}
-          onKeyDown={handlesSarchStringKeyDown}
           value={searchString}
+          onChange={handleSearchStringChange}
+          onKeyDown={handlesSearchStringKeyDown}
         />
         <M.TextField
           className={classes.searchCorpus}
@@ -163,7 +212,9 @@ export const TalksSearchPage = (props: RouteComponentProps<TalksSearchPageParams
         </M.TextField>
       </div>
       <div>
-        {searchString.length === 0
+        {searchError.length !== 0
+          ? `Error in getting search results: ${searchError}`
+          : searchOptions.searchString.length === 0
           ? 'Type a something to search in the box above and press enter key...'
           : searchRunning
           ? 'Searching...'
@@ -174,9 +225,17 @@ export const TalksSearchPage = (props: RouteComponentProps<TalksSearchPageParams
               .map((sr: SearchResult) => (
                 <M.Accordion key={sr.id} defaultExpanded>
                   <M.AccordionSummary expandIcon={<MIcon.ExpandMore />}>
-                    <M.Typography>
-                      {sr.score} | {sr.name}
-                    </M.Typography>
+                    <div className={classes.searchResultHeader}>
+                      <M.Tooltip title={`Author: ${sr.author}, Channel: ${sr.channel}, Score: ${sr.score}`} arrow>
+                        <div className={classes.searchResultHeaderTitle}>
+                          <M.Typography>{sr.name}</M.Typography>
+                        </div>
+                      </M.Tooltip>
+                      <div className={classes.searchResultHeaderActions}>
+                        <MIcon.TextRotateUpRounded />
+                        <MIcon.PlayArrow />
+                      </div>
+                    </div>
                   </M.AccordionSummary>
                   <M.AccordionDetails>
                     <SearchResultHighlightRoot
